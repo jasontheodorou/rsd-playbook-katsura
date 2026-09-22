@@ -26,7 +26,6 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
         </a>
         <TopBar />
         <div className="page-shell">
-          <span aria-hidden className="orange-circle page-shell__circle" />
           <main id="main" className="container page">
             {children}
           </main>

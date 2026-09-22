@@ -168,11 +168,13 @@ body {
   flex-direction: column;
 }
 
-/* Decorative orange circle, top right, partly off canvas. Same size, offset and rendered opacity as the reference home page. */
-.page-shell__circle {
-  position: absolute;
-  top: -80px;
+/* Decorative orange circle on the home page only, top right, partly off canvas.
+   Same size, offset and rendered opacity as the reference home page. */
+.home__circle {
+  position: fixed;
+  top: -17px;
   right: -120px;
+  z-index: -1;
   width: 320px;
   height: 320px;
   opacity: 0.7;

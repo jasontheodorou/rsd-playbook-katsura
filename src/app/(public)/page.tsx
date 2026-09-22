@@ -12,6 +12,8 @@ export const dynamic = 'force-dynamic'
 export default function HomePage() {
   return (
     <div className="home">
+      {/* The large decorative circle belongs to the home page only. */}
+      <span aria-hidden className="orange-circle home__circle" />
       <div className="home__hero">
         <p className="eyebrow">Research and design</p>
         <h1 className="home__headline">
