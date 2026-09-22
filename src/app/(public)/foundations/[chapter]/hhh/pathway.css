@@ -1,0 +1,1189 @@
+/* Ported from the-rsd-playbook: Pathway1.css, Layouts.css (layered media), HeadHeartHandsPattern.css, QuoteCard.css. */
+
+/*
+ * Pilot — pathway 1 as vertical click-through pages.
+ * Mounted inside the RSD Playbook shell — no home affordance of its own.
+ * Scoped to `.pilot-*`.
+ */
+
+.pilot-root {
+  position: fixed;
+  top: 63px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  background: var(--pilot-bg, #FAF8F6);
+  transition: background 500ms ease;
+  color: #111111;
+  font-family: 'Open Sans', -apple-system, 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Left rail: fixed column with progress line + centred hamburger ──────── */
+
+.pilot-rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 48px;
+  border-right: 1px solid #E6E3DF;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* Solid accent border running the full height on the far left of the rail. */
+.pilot-vribbon {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 6px;
+  background: var(--pilot-accent-track, rgba(216, 180, 163, 0.28));
+  overflow: hidden;
+}
+
+.pilot-vribbon__fill {
+  position: absolute;
+  inset: 0;
+  background: var(--pilot-accent, #D8B4A3);
+}
+
+/* Square hamburger that fills the rail width, sharp corners. Sits over the
+   progress bar and butts against the right divider. Vertically centred. */
+.pilot-hamburger {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  z-index: 30;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--pilot-accent, #D8B4A3);
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 180ms ease;
+}
+
+.pilot-hamburger:hover { background: var(--pilot-accent-hover, #C69A87); }
+
+.pilot-hamburger:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 2px;
+}
+
+.pilot-hamburger__lines {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 14px;
+}
+
+.pilot-hamburger__lines span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: currentColor;
+  transition: transform 220ms cubic-bezier(0.65, 0, 0.45, 1), opacity 180ms ease, top 220ms cubic-bezier(0.65, 0, 0.45, 1);
+}
+
+.pilot-hamburger__lines span:nth-child(1) { top: 0; }
+.pilot-hamburger__lines span:nth-child(2) { top: 6px; }
+.pilot-hamburger__lines span:nth-child(3) { top: 12px; }
+
+.pilot-hamburger__lines[data-open='true'] span:nth-child(1) {
+  top: 6px;
+  transform: rotate(45deg);
+}
+.pilot-hamburger__lines[data-open='true'] span:nth-child(2) {
+  opacity: 0;
+}
+.pilot-hamburger__lines[data-open='true'] span:nth-child(3) {
+  top: 6px;
+  transform: rotate(-45deg);
+}
+
+/* ── Scroll container ───────────────────────────────────────────────────── */
+
+.pilot-scroll {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: clip;
+  scroll-behavior: smooth;
+  padding-left: 48px;
+}
+
+.pilot-marker {
+  margin-bottom: clamp(1.25rem, 2vw, 1.5rem);
+}
+
+.pilot-page__card .pilot-page__headline {
+  margin: 0 0 clamp(1rem, 2vw, 1.5rem);
+  font-weight: 800;
+  font-size: clamp(1.75rem, 3.4vw, 2.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: #111;
+  max-width: 22ch;
+}
+
+.pilot-page__card .pilot-page__lede {
+  margin: 0 0 0.85rem;
+  font-size: clamp(0.95rem, 1.05vw, 1.05rem);
+  line-height: 1.65;
+  color: #3A3A3E;
+  max-width: 38rem;
+}
+
+.pilot-page__card .pilot-next {
+  margin-top: clamp(1.5rem, 3vw, 2rem);
+  margin-left: 0;
+}
+
+@media (max-width: 700px) {
+  .pilot-page__card {
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    max-width: none;
+  }
+}
+
+.pilot-marker {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #EC671B;
+}
+
+.pilot-marker__num {
+  padding: 6px 12px;
+  border: 1.5px solid #EC671B;
+  border-radius: 6px;
+}
+
+.pilot-marker__rule {
+  display: block;
+  width: 56px;
+  height: 1.5px;
+  background: #EC671B;
+  opacity: 0.7;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Spacing v2 — refinement pass: original single-flow topology preserved,
+   only widths, spacings and alignment tuned. Body reads one block at a
+   time (prose → photograph → prose → panel → CTA). Hero retains its
+   desktop text-and-illustration relationship.
+   Scope: `.p1v2` and its descendants only.
+   ══════════════════════════════════════════════════════════════════════ */
+
+.p1v2 {
+  /* Spacing tokens — one 4/8-based scale */
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-7: 28px;
+  --sp-8: 32px;
+  --sp-12: 48px;
+  --sp-14: 56px;
+  --sp-16: 64px;
+  --sp-20: 80px;
+
+  /* Width system — three roles */
+  --w-body:  800px;      /* body working region (== photograph max) */
+  --w-photo: 800px;
+  --w-panel: 720px;
+
+  /* Container — original 1200px cap, side gutters unchanged */
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: clamp(24px, 4vw, 64px);
+  padding-block: clamp(48px, 7vw, 96px) clamp(56px, 8vw, 80px);
+
+  color: #111111;
+  font-family: 'Open Sans', -apple-system, 'Segoe UI', sans-serif;
+}
+
+/* ── Hero ────────────────────────────────────────────────────────────
+   Text left, illustration right at desktop (~6:5). Stacked below the
+   hero-only breakpoint at 56.25rem. Illustration optically centred
+   against the text group. */
+
+.p1v2__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: 48px;
+  align-items: start;
+}
+
+.p1v2__hero-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.p1v2__marker { margin: 0 0 var(--sp-8); }             /* marker → headline: 32 */
+
+.p1v2__headline {
+  margin: 0 0 var(--sp-5);                              /* headline → first para: 20 */
+  font-weight: 800;
+  font-size: clamp(2rem, 4.6vw, 3.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  color: #111;
+  max-width: 18ch;
+}
+
+.p1v2__lede {
+  margin: 0 0 var(--sp-4);                              /* para → para: 16 */
+  max-width: 65ch;                                       /* reading measure */
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: #3A3A3E;
+}
+.p1v2__lede:last-child { margin: 0; }
+
+.p1v2__hero-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.p1v2__hero-art img {
+  width: 100%;
+  max-height: 260px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 40px rgba(33, 61, 89, 0.08));
+}
+
+/* ── Body ────────────────────────────────────────────────────────────
+   Single flow: prose → photograph → prose → panel. 800px working
+   region, left-aligned to the container's inner edge so its left
+   shares the reading edge with the hero text. */
+
+.p1v2__body {
+  max-width: var(--w-body);
+  margin-top: var(--sp-4);                              /* illustration → prose 1: 16 (matches para-to-para) */
+}
+
+.p1v2__body .p1v2__prose {
+  margin: 0;
+  max-width: 65ch;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: #2A2A2E;
+}
+
+/* Adjacent prose paragraphs — proximity within one thought. Owner:
+   the second paragraph. Prior siblings keep margin: 0. */
+.p1v2__body .p1v2__prose + .p1v2__prose {
+  margin-block-start: var(--sp-4);                       /* 16 */
+}
+
+/* ── Subhead ─────────────────────────────────────────────────────────
+   Section title inside the body. Distinct from the hero H1 (smaller,
+   ink not display weight). Introduces the block(s) that follow. */
+.p1v2__subhead {
+  margin: 0;
+  font-size: clamp(1.375rem, 2.4vw, 1.75rem);            /* 22 → 28px */
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #111;
+  max-width: 65ch;
+}
+
+/* Subhead sits tightly above the content it introduces (16px below),
+   with heavy-block-style space above so it reads as a new section. */
+.p1v2__body :is(
+  .p1v2__prose,
+  .p1v2__media,
+  .p1v2__cinema,
+  .p1v2__paired,
+  .p1v2__card,
+  .p1v2__pullquote,
+  .p1v2__triad,
+  .p1v2__reveal,
+  .p1v2__qcard,
+  .gdc,
+  .ly-panel,
+  .p1v2__tabs,
+  .p1v2__participation,
+  .north-star-pattern,
+  .hhh-pattern
+) + .p1v2__subhead {
+  margin-block-start: clamp(2.5rem, 4vw, 3rem);          /* 40 → 48 */
+}
+
+.p1v2__body .p1v2__subhead + :is(.p1v2__prose, .p1v2__card) {
+  margin-block-start: var(--sp-4);                       /* 16 — tight to its section */
+}
+
+/* Object-position override — shifts the crop of a square-framed photo
+   toward its left edge so a left-of-frame subject (e.g. the office
+   cabinet on V2s6) stays in view rather than being cropped out. */
+.p1v2__crop--left .ly-media__img {
+  object-position: left center;
+}
+
+/* Lighter sand tint for the specialists panel on V2s8. Layouts-gallery
+   default (#EDE1D2) reads too dark against Pathway 1's cream page bg. */
+.p1v2__body .ly-panel--sand {
+  background: #F5EFE3;
+}
+
+/* V2s8 specialists — the tabbed practice pattern that replaced the tinted
+   panel. Matches the body working region (== the photograph/reveal max)
+   so it lines up with the "Depth in one discipline" box above it. */
+.p1v2__body .p1v2__tabs {
+  margin: 0;
+  max-width: var(--w-body);
+}
+
+/* ── V2s13 · the interactive participation model ────────────────────────
+   part2.svg, made explorable. Sits on the page's own cream ground with no
+   card around it: a white panel here read as a widget bolted on, where the
+   rest of the page is drawing and prose directly on the paper. The only
+   chrome is the rule the connector line lands on, tinted to the icon. */
+
+.p1v2__body .p1v2__participation {
+  margin: 0;
+  max-width: var(--w-body);
+}
+
+.p1v2__body .p1v2__participation .ly-panel__eyebrow { margin-bottom: 10px; }
+
+.p1v2__body .p1v2__participation-lede {
+  margin: 0 0 clamp(0.75rem, 1.6vw, 1.25rem);
+  max-width: 52ch;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: #6E6A65;
+}
+
+/* Strip the demo page's card treatment: no background, no box — just the
+   coloured rule and the words on the page. */
+.p1v2__participation .spw-strip__inner {
+  padding: clamp(1rem, 2.2vw, 1.375rem) 0 0;
+  background: none;
+  border: 0;
+  border-top: 2px solid currentColor;
+  border-radius: 0;
+}
+
+.p1v2__participation .spw-strip__title {
+  font-size: clamp(1.0625rem, 1.6vw, 1.1875rem);
+  color: #1F1F23;
+}
+
+.p1v2__participation .spw-strip__body {
+  max-width: 64ch;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #3A3A3E;
+}
+
+/* ── Body boundary adjacencies (one owner per boundary) ─────────────
+   Every heavy-block ↔ neighbour transition is set on the *following*
+   element's `margin-block-start`. All heavy blocks carry `margin: 0`
+   individually, so nothing collapses against these values.
+   At 1440: prose→heavy = 48, heavy→prose = 64, heavy→heavy = 56. */
+
+.p1v2__body .p1v2__prose + :is(
+  .p1v2__media,
+  .p1v2__cinema,
+  .p1v2__paired,
+  .p1v2__card,
+  .p1v2__pullquote,
+  .p1v2__triad,
+  .p1v2__reveal,
+  .p1v2__qcard,
+  .gdc,
+  .ly-panel,
+  .p1v2__tabs,
+  .p1v2__participation,
+  .north-star-pattern,
+  .hhh-pattern
+) {
+  margin-block-start: clamp(2.5rem, 4vw, 3rem);          /* 40 → 48 @1440 */
+}
+
+.p1v2__body :is(
+  .p1v2__media,
+  .p1v2__cinema,
+  .p1v2__paired,
+  .p1v2__card,
+  .p1v2__pullquote,
+  .p1v2__triad,
+  .p1v2__reveal,
+  .p1v2__qcard,
+  .gdc,
+  .ly-panel,
+  .p1v2__tabs,
+  .p1v2__participation,
+  .north-star-pattern,
+  .hhh-pattern
+) + .p1v2__prose {
+  margin-block-start: clamp(2.5rem, 4vw, 3rem);          /* 40 → 48 @1440 (symmetric with prose→heavy) */
+}
+
+.p1v2__body :is(
+  .p1v2__media,
+  .p1v2__cinema,
+  .p1v2__paired,
+  .p1v2__card,
+  .p1v2__pullquote,
+  .p1v2__triad,
+  .p1v2__reveal,
+  .p1v2__qcard,
+  .gdc,
+  .ly-panel,
+  .p1v2__tabs,
+  .p1v2__participation,
+  .north-star-pattern,
+  .hhh-pattern
+) + :is(
+  .p1v2__media,
+  .p1v2__cinema,
+  .p1v2__paired,
+  .p1v2__card,
+  .p1v2__pullquote,
+  .p1v2__triad,
+  .p1v2__reveal,
+  .p1v2__qcard,
+  .gdc,
+  .ly-panel,
+  .p1v2__tabs,
+  .p1v2__participation,
+  .north-star-pattern,
+  .hhh-pattern
+) {
+  margin-block-start: clamp(2.75rem, 4.5vw, 3.5rem);     /* 44 → 56 @1440 */
+}
+
+/* Photograph. Boundaries owned by adjacency rules below, not by the
+   block's own margins — this prevents margin-collapse from resolving
+   competing bottom/top pairs to their max. */
+.p1v2__media {
+  margin: 0;
+  max-width: var(--w-photo);
+  aspect-ratio: 16 / 9;
+  overflow: clip;
+  background: #F0EDE7;
+}
+.p1v2__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Information panel ───────────────────────────────────────────────
+   Shares the body's left reading edge with prose and photograph, but
+   at 720px max so its right edge sits inside the photograph's. */
+
+.p1v2__card {
+  /* Panel keeps zero margins; adjacency rules on `.p1v2__body`
+     children own every boundary in one place. */
+  margin: 0;
+  max-width: var(--w-panel);
+  padding: var(--sp-8);                                  /* 32 desktop */
+  border: 1px solid #E6E3DF;
+  background: #FFFFFF;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);                                      /* label → list: 20 */
+}
+.p1v2__card::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 48px;
+  height: 4px;
+  background: #EC671B;
+}
+.p1v2__card-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #EC671B;
+}
+.p1v2__card-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);                                      /* bullet → bullet: 12 */
+}
+.p1v2__card-list li {
+  position: relative;
+  padding-left: 1.25rem;                                 /* hanging indent for wrapped text */
+  font-size: 1rem;
+  line-height: 1.55;
+  color: #2A2A2E;
+}
+.p1v2__card-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #EC671B;
+}
+
+/* ── Wide cinematic media (21:9) ────────────────────────────────────
+   Same width and spacing as the ordinary photograph, but a wider
+   aspect ratio for cinematic imagery (e.g. s10 whole-system view). */
+
+.p1v2__cinema {
+  margin: 0;
+  max-width: var(--w-photo);
+}
+.p1v2__cinema .ly-layered,
+.p1v2__cinema .ly-media {
+  max-width: 100%;
+  margin: 0;
+}
+
+/* ── Paired media wrapper ────────────────────────────────────────────
+   For AsymPair, AvatarContext, OverlapPair, DiagonalPlanes composites.
+   The wrapper owns the v2 spacing (matches photograph); internal
+   `.ly-*` layouts drive the composite. */
+
+.p1v2__paired {
+  margin: 0;
+  max-width: var(--w-photo);
+}
+.p1v2__paired .ly-layered,
+.p1v2__paired .ly-asympair,
+.p1v2__paired .ly-avatarrow,
+.p1v2__paired .ly-overlap-pair {
+  max-width: 100%;
+  margin: 0;
+}
+
+/* The .ly-layered plane hangs 22px outside its parent box on the overhang
+   side. Grow the p1v2 wrapper's border box so it owns the plane's visible
+   footprint; adjacency margins then measure from the true optical edge.
+   Wrapper padding leaves the plane's containing block untouched and does
+   not affect the media (aspect-ratio driven), so the visible composition
+   is byte-identical — only the outer box grows. */
+.p1v2__paired:has(.ly-layered--br,
+                  .ly-layered--bl,
+                  .ly-layered__plane--br,
+                  .ly-layered__plane--bl),
+.p1v2__cinema:has(.ly-layered--br,
+                  .ly-layered--bl,
+                  .ly-layered__plane--br,
+                  .ly-layered__plane--bl) { padding-block-end: 22px; }
+
+.p1v2__paired:has(.ly-layered--tl,
+                  .ly-layered--tr,
+                  .ly-layered__plane--tl,
+                  .ly-layered__plane--tr),
+.p1v2__cinema:has(.ly-layered--tl,
+                  .ly-layered--tr,
+                  .ly-layered__plane--tl,
+                  .ly-layered__plane--tr) { padding-block-start: 22px; }
+
+/* ── HHH triad ───────────────────────────────────────────────────────
+   For s9 "Head, Heart, Hands" — a term/definition list with a rule
+   between entries. Panel-width block. */
+
+.p1v2__triad {
+  margin: 0;
+  max-width: var(--w-panel);
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+.p1v2__triad li {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
+}
+.p1v2__triad-term {
+  font-weight: 800;
+  font-size: clamp(1.5rem, 2.8vw, 2rem);
+  letter-spacing: -0.015em;
+  color: #EC671B;
+  min-width: 4.5em;
+}
+.p1v2__triad-def {
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: #2A2A2E;
+}
+@media (max-width: 40rem) {
+  .p1v2__triad li {
+    flex-direction: column;
+    gap: 0.35rem;
+    align-items: flex-start;
+  }
+  .p1v2__triad-term { min-width: 0; }
+}
+
+/* ── Pull-quote ──────────────────────────────────────────────────────
+   A distinct display block used by pages whose expansion ends in a
+   pull-quote (e.g. s4a). Shares the same "distinct heavy block"
+   grammar as the information panel: 40/48 above from adjacent prose,
+   max-width matching the panel column. Left column is a large
+   terracotta quote mark; right column is the display text. */
+
+.p1v2__pullquote {
+  margin: 0;
+  max-width: var(--w-panel);                              /* 720 */
+  padding: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(1rem, 2vw, 1.5rem);
+  align-items: start;
+}
+.p1v2__pullquote-mark {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(4.5rem, 10vw, 8rem);
+  line-height: 0.7;
+  font-weight: 700;
+  color: #EC671B;
+  user-select: none;
+  margin-top: -0.05em;
+}
+.p1v2__pullquote-text {
+  margin: 0;
+  padding-top: clamp(0.75rem, 1.5vw, 1.25rem);
+  font-size: clamp(1.375rem, 2.8vw, 2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: #111;
+  max-width: 22ch;
+}
+
+/* ── Closing — CTA right-aligned to the photograph's right edge ─────
+   Foot region matches the body width (800px), so `justify-content:
+   flex-end` puts the CTA on the same right edge as the photograph. */
+
+/* Closing-navigation row. Full row width matches the photograph
+   (var(--w-body) = 800). Divider rule removed — CTA is anchored by
+   its right-edge alignment and the existing spacing rhythm. */
+.p1v2__foot {
+  margin-top: clamp(2.5rem, 4vw, 3rem);                  /* content → CTA: 40 → 48 (matches heavy-block rhythm) */
+  max-width: var(--w-body);
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* For pages without a photograph, the widest body element is the
+   panel (or pull-quote at panel width). Align the closing row to
+   that edge so the CTA sits on the visible right-hand alignment. */
+.p1v2__foot--no-photo { max-width: var(--w-panel); }
+
+/* ── Responsive ──────────────────────────────────────────────────────
+   Body remains single-flow at every width. Only the hero switches
+   from side-by-side to stacked at 56.25rem (900px). Section gaps
+   compress gradually. Mobile gutters at ≥20px. */
+
+@media (max-width: 1023px) {
+  .p1v2__hero { gap: 32px; }
+}
+
+@media (max-width: 56.25rem) {
+  .p1v2__hero {
+    grid-template-columns: 1fr;
+    gap: var(--sp-12);                                   /* intro text → illustration stacked: 48 */
+  }
+  /* Cap the img wrapper on stacked so the tight-viewBox source keeps
+     approximately the visible artwork size of the pre-refinement pass.
+     With viewBox "106 102 400 400" the artwork occupies ~77% of the
+     img and the transparent buffer around it is ~9%. Total visible
+     gap = 48 (hero gap) + buffer × img size = 65–70px at 180–230px,
+     which lands inside the 64–72 target. */
+  .p1v2__hero-art img {
+    max-width: clamp(180px, 30vw, 230px);
+    max-height: none;
+  }
+  .p1v2__body { margin-top: var(--sp-4); }               /* illustration → prose 1: 16 (matches para-to-para) */
+  .p1v2__foot { margin-top: var(--sp-8); }               /* content → CTA: 32 stacked */
+}
+
+@media (max-width: 40rem) {
+  .p1v2 {
+    padding-inline: clamp(20px, 5vw, 24px);
+    padding-block: clamp(40px, 6vw, 56px) clamp(48px, 7vw, 64px);
+  }
+  .p1v2__marker { margin-bottom: var(--sp-7); }          /* 28 */
+  .p1v2__card { padding: var(--sp-6); }                  /* 24 mobile */
+  /* CTA fills the closing row on narrow mobile so it doesn't float
+     against a lot of empty space to its left. */
+  .p1v2__next { width: 100%; min-width: 0; }
+}
+
+
+/* ── Layered media, from Layouts.css ── */
+
+.ly-layered {
+  position: relative;
+  isolation: isolate;
+}
+
+.ly-layered__plane {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+/* Any .ly-media directly inside layered wrapper sits above the plane */
+.ly-layered > .ly-media {
+  position: relative;
+  z-index: 0;
+}
+
+/* Offset directions — applied to the FIRST plane via container modifier */
+.ly-layered--tl > .ly-layered__plane:first-of-type { top: -22px; left: -22px; }
+.ly-layered--tr > .ly-layered__plane:first-of-type { top: -22px; right: -22px; }
+.ly-layered--br > .ly-layered__plane:first-of-type { bottom: -22px; right: -22px; }
+.ly-layered--bl > .ly-layered__plane:first-of-type { bottom: -22px; left: -22px; }
+
+/* Additional plane offsets via per-plane modifier (for double-plane layouts) */
+.ly-layered__plane--tl { top: -22px; left: -22px; }
+.ly-layered__plane--tr { top: -22px; right: -22px; }
+.ly-layered__plane--br { bottom: -22px; right: -22px; }
+.ly-layered__plane--bl { bottom: -22px; left: -22px; }
+
+/* Container-level accent colour applies to the first plane */
+.ly-layered--blue       > .ly-layered__plane:first-of-type { background: #619CBA; }
+.ly-layered--warmgrey   > .ly-layered__plane:first-of-type { background: #CCC8C4; }
+.ly-layered--terracotta > .ly-layered__plane:first-of-type { background: #D8B4A3; }
+.ly-layered--yellow     > .ly-layered__plane:first-of-type { background: #F1D46E; }
+.ly-layered--paleblue   > .ly-layered__plane:first-of-type { background: #CBD9DA; }
+
+/* Per-plane colour modifiers (for double-plane layouts) */
+.ly-layered__plane--blue       { background: #619CBA; }
+.ly-layered__plane--warmgrey   { background: #CCC8C4; }
+.ly-layered__plane--terracotta { background: #D8B4A3; }
+.ly-layered__plane--yellow     { background: #F1D46E; }
+.ly-layered__plane--paleblue   { background: #CBD9DA; }
+
+/* Rotated plane — casual "pinned" feel (L50) */
+.ly-layered--rotate > .ly-layered__plane:first-of-type {
+  transform: rotate(-3deg);
+  transform-origin: center;
+}
+
+/* L52 · Ribbon plane — same height as image, extends sideways only */
+.ly-layered--ribbon > .ly-layered__plane:first-of-type {
+  top: 22px;
+  bottom: 22px;
+  left: -36px;
+  right: -36px;
+  width: auto;
+  height: auto;
+}
+
+/* L54 · Circular plane — plane larger than square image, offset TL,
+   with border-radius forming a disk. */
+.ly-layered--circleplane > .ly-layered__plane:first-of-type {
+  top: -18%;
+  left: -18%;
+  width: 130%;
+  height: 130%;
+  border-radius: 50%;
+}
+
+/* L56 · Split-colour diagonal plane */
+.ly-layered--split > .ly-layered__plane:first-of-type {
+  background: linear-gradient(135deg, #619CBA 0%, #619CBA 50%, #D8B4A3 50%, #D8B4A3 100%);
+}
+
+
+/* ── 16:9 placeholder ──────────────────────────────────────────────────── */
+
+.ly-placeholder--16-9 { aspect-ratio: 16 / 9; }
+
+/* ── Boxout (accent-filled panel) ──────────────────────────────────────── */
+
+.ly-boxout {
+  padding: clamp(1.25rem, 2.2vw, 1.75rem);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+}
+
+.ly-boxout--yellow      { background: #F1D46E; color: #111; }
+.ly-boxout--terracotta  { background: #D8B4A3; color: #111; }
+.ly-boxout--warmgrey    { background: #CCC8C4; color: #111; }
+.ly-boxout--blue        { background: #619CBA; color: #FAF8F6; }
+.ly-boxout--paleblue    { background: #CBD9DA; color: #111; }
+
+.ly-boxout__label {
+  display: block;
+  font-weight: 700;
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: inherit;
+  opacity: 0.75;
+}
+
+.ly-boxout__body {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.15vw, 1.05rem);
+  line-height: 1.5;
+  color: inherit;
+  max-width: 32ch;
+}
+
+.ly-boxout--blue .ly-boxout__body { max-width: 32ch; }
+.ly-boxout--wide .ly-boxout__body { max-width: 60ch; }
+
+/* ── Real image slots (Media component) ────────────────────────────────── */
+
+.ly-media {
+  position: relative;
+  overflow: hidden;
+  background: rgba(17, 17, 17, 0.04);
+  width: 100%;
+}
+
+.ly-media__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ly-media--16-9 { aspect-ratio: 16 / 9; }
+.ly-media--21-9 { aspect-ratio: 21 / 9; }
+.ly-media--square { aspect-ratio: 1 / 1; }
+.ly-media--landscape { aspect-ratio: 3 / 2; }
+.ly-media--portrait { aspect-ratio: 4 / 5; }
+.ly-media--portrait-tall { aspect-ratio: 2 / 3; }
+.ly-media--circle { aspect-ratio: 1 / 1; border-radius: 50%; }
+.ly-media--circle .ly-media__img { border-radius: 50%; }
+
+/* ── Head, Heart and Hands pattern ── */
+
+.hhh-pattern {
+  --hhh-paper: #FAF8F6;
+  --hhh-surface: #FCFBF8;
+  --hhh-ink: #333333;
+  --hhh-navy: #213D59;
+  --hhh-orange: #EC671B;
+  --hhh-blue: #619CBA;
+  --hhh-grey: #CCC8C4;
+  --hhh-terracotta: #D8B4A3;
+  --hhh-yellow: #F1D46E;
+  --hhh-mist: #CBD9DA;
+  --hhh-rule: rgba(51, 51, 51, 0.72);
+
+  width: 100%;
+  color: var(--hhh-ink);
+  font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', sans-serif;
+}
+
+.hhh-pattern *,
+.hhh-pattern *::before,
+.hhh-pattern *::after {
+  box-sizing: border-box;
+}
+
+.hhh-frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  gap: clamp(6px, 0.8vw, 12px);
+  padding: clamp(6px, 0.8vw, 12px);
+  overflow: hidden;
+  background: var(--hhh-paper);
+}
+
+.hhh-panel {
+  --hhh-title-bg: var(--hhh-surface);
+  --hhh-title-fg: var(--hhh-navy);
+  --hhh-active-rule: var(--hhh-blue);
+
+  appearance: none;
+  position: relative;
+  min-width: 0;
+  flex: 1 1 0;
+  height: 100%;
+  padding: 0;
+  display: grid;
+  grid-template-rows: clamp(36px, 5vw, 58px) minmax(0, 1fr);
+  overflow: hidden;
+
+  border: 1px solid var(--hhh-rule);
+  border-radius: 0;
+  background: var(--hhh-surface);
+  color: var(--hhh-ink);
+  text-align: left;
+  cursor: pointer;
+
+  transition:
+    flex-grow 720ms cubic-bezier(0.6, 0, 0.1, 1),
+    opacity 280ms ease,
+    border-color 320ms ease;
+}
+
+.hhh-panel[data-active='true'] {
+  flex-grow: 3;
+  cursor: default;
+  border-color: color-mix(in srgb, var(--hhh-active-rule) 72%, var(--hhh-ink));
+}
+
+.hhh-panel[data-active='false'] {
+  opacity: 0.72;
+}
+
+.hhh-panel--head {
+  --hhh-title-bg: var(--hhh-navy);
+  --hhh-title-fg: #FFFFFF;
+  --hhh-active-rule: var(--hhh-navy);
+}
+
+.hhh-panel--heart {
+  --hhh-title-bg: var(--hhh-orange);
+  --hhh-title-fg: #FFFFFF;
+  --hhh-active-rule: var(--hhh-orange);
+}
+
+.hhh-panel--hands {
+  --hhh-title-bg: var(--hhh-mist);
+  --hhh-title-fg: var(--hhh-navy);
+  --hhh-active-rule: var(--hhh-blue);
+}
+
+.hhh-panel__title {
+  position: relative;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  padding: 0 10px;
+  border-bottom: 1px solid var(--hhh-rule);
+  background: var(--hhh-title-bg);
+  color: var(--hhh-title-fg);
+  font-size: clamp(17px, 2vw, 30px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  white-space: nowrap;
+}
+
+.hhh-panel__body {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  display: block;
+  overflow: hidden;
+  background: var(--hhh-surface);
+}
+
+.hhh-panel__drawing,
+.hhh-panel__photo {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transition:
+    opacity 300ms ease,
+    transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.hhh-panel__drawing {
+  z-index: 2;
+  opacity: 1;
+  transform: scale(1);
+  background: var(--hhh-surface);
+}
+
+.hhh-panel__drawing img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  padding: clamp(16px, 3vw, 34px);
+}
+
+.hhh-panel__photo {
+  z-index: 1;
+  opacity: 0;
+  transform: scale(1.018);
+  background: var(--hhh-grey);
+}
+
+.hhh-panel__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hhh-panel--head  .hhh-panel__photo img { object-position: 52% 52%; }
+.hhh-panel--heart .hhh-panel__photo img { object-position: 50% 46%; }
+.hhh-panel--hands .hhh-panel__photo img { object-position: 50% 46%; }
+
+.hhh-panel[data-active='true'] .hhh-panel__drawing {
+  opacity: 0;
+  transform: scale(1.02);
+  transition-delay: 0ms;
+}
+
+.hhh-panel[data-active='true'] .hhh-panel__photo {
+  opacity: 1;
+  transform: scale(1);
+  transition-delay: 145ms;
+}
+
+.hhh-panel[data-active='false'] .hhh-panel__drawing {
+  opacity: 1;
+  transform: scale(1);
+  transition-delay: 180ms;
+}
+
+.hhh-panel[data-active='false'] .hhh-panel__photo {
+  opacity: 0;
+  transform: scale(1.018);
+  transition-delay: 0ms;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hhh-panel[data-active='false']:hover { opacity: 1; }
+  .hhh-panel[data-active='false']:hover .hhh-panel__drawing {
+    transform: scale(1.012);
+  }
+}
+
+.hhh-panel:focus-visible {
+  outline: 2px solid var(--hhh-blue);
+  outline-offset: -3px;
+}
+
+@media (max-width: 700px) {
+  .hhh-frame { gap: 5px; padding: 5px; }
+  .hhh-panel { grid-template-rows: 34px minmax(0, 1fr); }
+  .hhh-panel[data-active='true'] { flex-grow: 4.4; }
+  .hhh-panel__title { font-size: 13px; }
+  .hhh-panel[data-active='false'] .hhh-panel__title { font-size: 11px; }
+  .hhh-panel__drawing svg { padding: 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hhh-panel,
+  .hhh-panel__drawing,
+  .hhh-panel__photo { transition: none; }
+}
+
+
+/* ── Quote card ── */
+
+/* ── QuoteCard · L62 port ──────────────────────────────────────────────
+   Tinted plane with a Georgia speech-mark corner, bold display quote,
+   and small uppercase attribution. Margins are 0 — the enclosing
+   sibling-adjacency rules on `.p1v2__body` own the top/bottom spacing. */
+
+.p1v2__qcard {
+  margin: 0;
+  max-width: var(--w-panel);                              /* 720px — matches .p1v2__card */
+  padding: var(--sp-8);                                   /* 32px — matches .p1v2__card */
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1vw, 0.75rem);
+}
+
+.p1v2__qcard--yellow     { background: #F1D46E; color: #111; }
+.p1v2__qcard--terracotta { background: #D8B4A3; color: #111; }
+.p1v2__qcard--paleblue   { background: #CBD9DA; color: #111; }
+.p1v2__qcard--warmgrey   { background: #CCC8C4; color: #111; }
+.p1v2__qcard--blue       { background: #619CBA; color: #FAF8F6; }
+
+/* Georgia's " sits in the upper ~40% of the em box, so a normal line-height
+   leaves a huge empty strip below the glyph. We clip that with a fixed height
+   and overflow: hidden — the mark reads tight, and the quote text below
+   sits right up against its baseline. */
+.p1v2__qcard-mark {
+  display: block;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(4rem, 8vw, 5.5rem);                    /* toned for 720px frame */
+  line-height: 1;
+  height: 0.55em;
+  overflow: hidden;
+  color: currentColor;
+  margin: 0 0 var(--sp-4);                                /* 16px */
+}
+
+.p1v2__qcard-text {
+  margin: 0;
+  font-size: clamp(1.25rem, 2.2vw, 1.625rem);             /* 20 → 26px — sits between .p1v2__prose and the old L62 display */
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  max-width: 30ch;
+  color: currentColor;
+}
+
+.p1v2__qcard-attribution {
+  display: block;
+  margin-top: var(--sp-5);                                /* 20px — matches .p1v2__card label→list rhythm */
+  font-weight: 700;
+  font-size: 11px;                                        /* matches .p1v2__card-label */
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: currentColor;
+  opacity: 0.65;
+}
+
+
+/* ── katsura additions ─────────────────────────────────────────────────── */
+
+/* The chapter-read applet replaces the reference's Continue footer. */
+.p1v2__end {
+  max-width: var(--w-body);
+}
+.p1v2__end .chapter-end {
+  margin-top: clamp(2.5rem, 4vw, 3rem);
+}
+
+/* Hamburger becomes a back control: lines settle into an arrow while leaving. */
+.pilot-hamburger__lines[data-leaving='true'] span:nth-child(1) {
+  top: 3px;
+  width: 12px;
+  transform: rotate(-45deg);
+}
+.pilot-hamburger__lines[data-leaving='true'] span:nth-child(2) {
+  top: 6px;
+}
+.pilot-hamburger__lines[data-leaving='true'] span:nth-child(3) {
+  top: 9px;
+  width: 12px;
+  transform: rotate(45deg);
+}

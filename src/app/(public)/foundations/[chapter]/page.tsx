@@ -4,6 +4,7 @@ import { currentCompleted } from '@/learning/reader'
 
 import { chapterPageId, chapters, findChapter } from '../chapters'
 import { ChapterEnd } from './ChapterEnd'
+import { HeadHeartHandsChapter } from './hhh/HeadHeartHandsChapter'
 
 export const dynamic = 'force-dynamic'
 
@@ -25,6 +26,28 @@ export default async function ChapterPage({ params }: Props) {
   const index = chapters.findIndex((c) => c.slug === slug)
   const next = chapters[index + 1]
 
+  const end = (
+    <ChapterEnd
+      pageId={pageId}
+      slug={slug}
+      title={chapter.title}
+      initiallyRead={completed.has(pageId)}
+      returnTo={`/foundations/${slug}`}
+      nextHref={next ? `/foundations/${next.slug}` : undefined}
+      nextTitle={next?.title}
+    />
+  )
+
+  if (slug === 'head-heart-and-hands') {
+    return (
+      <>
+        {/* The chapter shell is its own scroll container; stop the page behind it scrolling. */}
+        <style>{'body { overflow: hidden; }'}</style>
+        <HeadHeartHandsChapter number={String(index + 1).padStart(2, '0')} end={end} />
+      </>
+    )
+  }
+
   return (
     <article className="chapter">
       <p className="eyebrow">Chapter {String(index + 1).padStart(2, '0')}</p>
@@ -42,15 +65,7 @@ export default async function ChapterPage({ params }: Props) {
         </p>
       ))}
 
-      <ChapterEnd
-        pageId={pageId}
-        slug={slug}
-        title={chapter.title}
-        initiallyRead={completed.has(pageId)}
-        returnTo={`/foundations/${slug}`}
-        nextHref={next ? `/foundations/${next.slug}` : undefined}
-        nextTitle={next?.title}
-      />
+      {end}
     </article>
   )
 }

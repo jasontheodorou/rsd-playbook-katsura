@@ -26,3 +26,11 @@ test('reaching the end of a chapter with JavaScript fills the mark', async ({ pa
   await page.goto('/foundations')
   await expect(page.getByRole('link', { name: 'Why we do it, read' })).toBeVisible()
 })
+
+test('the Head, Heart and Hands hamburger returns to the foundations grid', async ({ page }) => {
+  await page.goto('/foundations/head-heart-and-hands')
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Head, heart and hands.')
+  await page.getByRole('button', { name: 'Back to the foundations' }).click()
+  await page.waitForURL(/\/foundations$/)
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Explore the')
+})
