@@ -12,7 +12,7 @@ last-updated: 2026-09-22
 
 ## Current state
 
-Architecture agreed on 2026-09-22 (see `artefacts/2026-09-22-architecture-plan.md` and decisions 001 to 007). Build step 1 (foundations) done the same day: Payload 3 on Next 16 skeleton, platform seams, users and media, health and jobs endpoints, first migration, Dockerfile and compose, CI and scheduler workflows. Local dev uses a downloaded Postgres (`npm run db:local`) because Docker cannot be installed here. The reference build is cloned read-only at `.reference/` (gitignored).
+Architecture agreed on 2026-09-22 (see `artefacts/2026-09-22-architecture-plan.md` and decisions 001 to 007). Build step 1 (foundations) done the same day: Payload 3 on Next 16 skeleton, platform seams, users and media, health and jobs endpoints, first migration, Dockerfile and compose, CI and scheduler workflows. Local dev uses a downloaded Postgres (`npm run db:local`) because Docker cannot be installed here. The reference build is cloned read-only at `.reference/` (gitignored). The public site's top bar, brand tokens and page background were carried over from the reference and measured to pixel parity against it running on port 3014 (commits 71543eb, c6080e8). All four commits are local only until the GitHub login gains the `workflow` scope.
 
 ## Active goals
 
