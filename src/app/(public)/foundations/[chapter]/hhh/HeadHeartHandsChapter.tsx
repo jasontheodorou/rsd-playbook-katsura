@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useScroll } from 'motion/react'
+import { motion, useReducedMotion, useScroll, type Variants } from 'motion/react'
 import { useRef, useState, type ReactNode } from 'react'
 
 import HeadHeartHandsPattern from './HeadHeartHandsPattern'
@@ -14,31 +14,67 @@ import './pathway.css'
  * Two changes from the original: the hamburger returns to the Foundations grid instead of
  * opening a page list, and the chapter-read applet (passed in as `end`) replaces the Continue footer.
  *
- * Opening and closing are cross-document view transitions: the card on the grid and this shell
- * share a view-transition-name, so the browser morphs one into the other on a full navigation.
+ * Opening is a short choreography: the paper fades in, the rail and its control slide in from the
+ * left, then the heading, text and artwork rise one after another. The hamburger plays it in
+ * reverse, then leaves. Under reduced motion everything is instant.
  */
-export function HeadHeartHandsChapter({
-  number,
-  slug,
-  end,
-}: {
-  number: string
-  slug: string
-  end: ReactNode
-}) {
+
+// One easing for every entrance (a long, settling ease-out) and a quicker one for exits.
+const EASE_OUT = [0.22, 1, 0.36, 1] as [number, number, number, number]
+const EASE_IN = [0.4, 0, 0.7, 0.2] as [number, number, number, number]
+
+const root: Variants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { duration: 0.5, ease: EASE_OUT } },
+  leave: { opacity: 0, transition: { duration: 0.4, ease: EASE_IN, delay: 0.28 } },
+}
+const rail: Variants = {
+  hidden: { x: -48, opacity: 0 },
+  show: { x: 0, opacity: 1, transition: { duration: 0.65, ease: EASE_OUT, delay: 0.12 } },
+  leave: { x: -48, opacity: 0, transition: { duration: 0.45, ease: EASE_IN, delay: 0.12 } },
+}
+const control: Variants = {
+  hidden: { x: -48, opacity: 0 },
+  show: { x: 0, opacity: 1, transition: { duration: 0.6, ease: EASE_OUT, delay: 0.3 } },
+  leave: { x: -48, opacity: 0, transition: { duration: 0.4, ease: EASE_IN, delay: 0.06 } },
+}
+const article: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      duration: 0.4,
+      ease: EASE_OUT,
+      delay: 0.18,
+      when: 'beforeChildren',
+      staggerChildren: 0.09,
+    },
+  },
+  leave: { opacity: 0, y: 12, transition: { duration: 0.38, ease: EASE_IN } },
+}
+const item: Variants = {
+  hidden: { opacity: 0, y: 22 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.75, ease: EASE_OUT } },
+  leave: { opacity: 0, transition: { duration: 0.3, ease: EASE_IN } },
+}
+export function HeadHeartHandsChapter({ number, end }: { number: string; end: ReactNode }) {
   const scrollRef = useRef<HTMLDivElement>(null)
+  const reduce = useReducedMotion()
   const [leaving, setLeaving] = useState(false)
   const { scrollYProgress } = useScroll({ container: scrollRef })
+  const state = leaving ? 'leave' : 'show'
 
   const accent = '#D8B4A3'
   const accentHover = '#C69A87'
   const accentTrack = 'rgba(216, 180, 163, 0.28)'
 
-  // A full navigation, not a client-side one, so the view transition back into the card runs.
+  // A full navigation, so the grid's own page transition runs when we land there.
+  const goToGrid = () => window.location.assign('/foundations') // eslint-disable-line @next/next/no-location-assign-relative-destination
+
   const leave = () => {
     if (leaving) return
     setLeaving(true)
-    window.location.assign('/foundations') // eslint-disable-line @next/next/no-location-assign-relative-destination
+    if (reduce) goToGrid()
   }
 
   const headItems = [
@@ -60,11 +96,16 @@ export function HeadHeartHandsChapter({
   ]
 
   return (
-    <div
+    <motion.div
       className="pilot-root"
+      variants={root}
+      initial={reduce ? false : 'hidden'}
+      animate={state}
+      onAnimationComplete={(definition) => {
+        if (definition === 'leave') goToGrid()
+      }}
       style={
         {
-          viewTransitionName: `chapter-${slug}`,
           '--pilot-accent': accent,
           '--pilot-accent-hover': accentHover,
           '--pilot-accent-track': accentTrack,
@@ -73,60 +114,80 @@ export function HeadHeartHandsChapter({
       }
     >
       {/* Square hamburger on the left edge. Here it is the way back to the Foundations grid. */}
-      <button
-        type="button"
-        className="pilot-hamburger"
-        aria-label="Back to the foundations"
-        onClick={leave}
+      <motion.div
+        className="pilot-hamburger-wrap"
+        variants={control}
+        initial={reduce ? false : 'hidden'}
+        animate={state}
       >
-        <span
-          className="pilot-hamburger__lines"
-          data-leaving={leaving ? 'true' : 'false'}
-          aria-hidden="true"
+        <button
+          type="button"
+          className="pilot-hamburger"
+          aria-label="Back to the foundations"
+          onClick={leave}
         >
-          <span />
-          <span />
-          <span />
-        </span>
-      </button>
+          <span
+            className="pilot-hamburger__lines"
+            data-leaving={leaving ? 'true' : 'false'}
+            aria-hidden="true"
+          >
+            <span />
+            <span />
+            <span />
+          </span>
+        </button>
+      </motion.div>
 
       {/* Left rail: progress ribbon on the left, hairline divider on the right. */}
-      <div className="pilot-rail" aria-hidden="true">
+      <motion.div
+        className="pilot-rail"
+        aria-hidden="true"
+        variants={rail}
+        initial={reduce ? false : 'hidden'}
+        animate={state}
+      >
         <div className="pilot-vribbon">
           <motion.div
             className="pilot-vribbon__fill"
             style={{ scaleY: scrollYProgress, transformOrigin: 'top' }}
           />
         </div>
-      </div>
+      </motion.div>
 
       <div ref={scrollRef} className="pilot-scroll">
-        <article className="p1v2">
+        <motion.article
+          className="p1v2"
+          variants={article}
+          initial={reduce ? false : 'hidden'}
+          animate={state}
+        >
           <section className="p1v2__hero">
             <div className="p1v2__hero-text">
-              <span className="pilot-marker p1v2__marker">
+              <motion.span className="pilot-marker p1v2__marker" variants={item}>
                 <span className="pilot-marker__num">{number}</span>
                 <span className="pilot-marker__rule" aria-hidden="true" />
                 <span>Our philosophy</span>
-              </span>
-              <h1 className="p1v2__headline">Head, heart and hands.</h1>
-              <p className="p1v2__lede">
+              </motion.span>
+              <motion.h1 className="p1v2__headline" variants={item}>
+                Head, heart and hands.
+              </motion.h1>
+              <motion.p className="p1v2__lede" variants={item}>
                 Our Head, Heart, Hands philosophy brings together clear thinking, genuine care and
                 practical action.
-              </p>
-              <p className="p1v2__lede">
+              </motion.p>
+              <motion.p className="p1v2__lede" variants={item}>
                 It helps organisations build better cultures and create services that make a real
                 difference to people&rsquo;s lives.
-              </p>
+              </motion.p>
             </div>
-            <div className="p1v2__hero-art">
+            <motion.div className="p1v2__hero-art" variants={item}>
               <picture>
                 <img src="/illustrations/head_heart_hands.png" alt="" />
               </picture>
-            </div>
+            </motion.div>
           </section>
 
-          <div className="p1v2__body">
+          <motion.div className="p1v2__body" variants={item}>
             <p className="p1v2__prose">
               We are passionate about building services that truly transform lives and make the
               world a better place through design.
@@ -260,11 +321,13 @@ export function HeadHeartHandsChapter({
               attribution="Our philosophy"
               tone="blue"
             />
-          </div>
+          </motion.div>
 
-          <div className="p1v2__end">{end}</div>
-        </article>
+          <motion.div className="p1v2__end" variants={item}>
+            {end}
+          </motion.div>
+        </motion.article>
       </div>
-    </div>
+    </motion.div>
   )
 }

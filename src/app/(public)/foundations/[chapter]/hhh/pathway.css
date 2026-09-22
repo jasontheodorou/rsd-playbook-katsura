@@ -54,11 +54,17 @@
 
 /* Square hamburger that fills the rail width, sharp corners. Sits over the
    progress bar and butts against the right divider. Vertically centred. */
-.pilot-hamburger {
+.pilot-hamburger-wrap {
   position: absolute;
   top: 50%;
   left: 0;
-  transform: translateY(-50%);
+  z-index: 30;
+  height: 48px;
+  margin-top: -24px;
+}
+
+.pilot-hamburger {
+  position: relative;
   z-index: 30;
   width: 48px;
   height: 48px;

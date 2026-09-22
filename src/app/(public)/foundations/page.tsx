@@ -44,13 +44,12 @@ export default async function FoundationsPage() {
           const read = completed.has(chapterPageId(slug))
           return (
             <li key={slug}>
-              {/* A plain link, so the browser can morph this card into the chapter (a cross-document view transition). */}
+              {/* A plain link (full navigation) so the page-level crossfade runs and the chapter can choreograph its own entrance. */}
               <a
                 href={`/foundations/${slug}`}
                 className="mark-card"
                 data-state={read ? 'read' : 'unread'}
                 aria-label={`${title}${read ? ', read' : ''}`}
-                style={{ viewTransitionName: `chapter-${slug}` }}
               >
                 <span className="mark-card__title">{title}</span>
                 <span className="mark-card__number" aria-hidden>

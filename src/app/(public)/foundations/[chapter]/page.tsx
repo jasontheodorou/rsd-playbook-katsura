@@ -46,7 +46,7 @@ export default async function ChapterPage({ params }: Props) {
       <>
         {/* The chapter shell is its own scroll container; stop the page behind it scrolling. */}
         <style>{'body { overflow: hidden; }'}</style>
-        <HeadHeartHandsChapter number={String(index + 1).padStart(2, '0')} slug={slug} end={end} />
+        <HeadHeartHandsChapter number={String(index + 1).padStart(2, '0')} end={end} />
       </>
     )
   }
