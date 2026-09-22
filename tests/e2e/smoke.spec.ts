@@ -4,7 +4,7 @@ test('public page renders without JavaScript', async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false })
   const page = await context.newPage()
   await page.goto('/')
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('katsura')
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('The RSD Playbook')
   await context.close()
 })
 

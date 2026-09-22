@@ -5,6 +5,7 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
+import { addLearningTables } from './learning/schema'
 import { databasePoolMax, databaseUrl } from './platform/db'
 import { emailAdapter } from './platform/email'
 import { jobsConfig } from './platform/jobs'
@@ -35,6 +36,7 @@ export default buildConfig({
     // Schema changes always go through committed migrations, in development too.
     push: false,
     migrationDir: path.resolve(dirname, '../migrations'),
+    afterSchemaInit: [addLearningTables],
   }),
   sharp,
   email: emailAdapter(),

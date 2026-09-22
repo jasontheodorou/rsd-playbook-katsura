@@ -458,3 +458,194 @@ body {
 .mark-card:hover .mark-card__mark {
   transform: scale(1.03);
 }
+
+/* ---- Marks: one SVG, two states. Unread is a line drawing, read is solid. ---- */
+.mark-card__mark *,
+.chapter-end__svg * {
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+  transition:
+    fill-opacity 400ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    stroke-opacity 400ms ease;
+}
+
+/* Centre shapes fill first, then the rest, so colour appears to spread outward. */
+.mark-card__mark > :nth-child(2),
+.chapter-end__svg > :nth-child(2) { transition-delay: 60ms; }
+.mark-card__mark > :nth-child(3),
+.chapter-end__svg > :nth-child(3) { transition-delay: 120ms; }
+.mark-card__mark > :nth-child(n + 4),
+.chapter-end__svg > :nth-child(n + 4) { transition-delay: 180ms; }
+
+[data-state='unread'] .mark-card__mark *,
+[data-state='unread'] .chapter-end__svg * {
+  fill-opacity: 0;
+  stroke-opacity: 1;
+}
+
+[data-state='read'] .mark-card__mark *,
+[data-state='read'] .chapter-end__svg * {
+  fill-opacity: 1;
+  stroke-opacity: 0;
+}
+
+.mark-card[data-state='read'] .mark-card__number {
+  color: var(--grey-5);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ---- Progress line under the landing blurb ---- */
+.progress-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.progress-line__dots {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.progress-line__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid var(--grey-4);
+  transition: background-color 400ms ease, border-color 400ms ease;
+}
+
+.progress-line__dot[data-state='read'] {
+  background: var(--grey-7);
+  border-color: var(--grey-7);
+}
+
+.privacy-line {
+  margin: 0 auto;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.link-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--navy);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* ---- Chapter page ---- */
+.chapter {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  align-self: flex-start;
+}
+
+.chapter__title {
+  margin: 8px 0 24px;
+  font-size: 42px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.chapter__lede {
+  margin: 0 0 32px;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.chapter__body {
+  margin: 0 0 24px;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.chapter-end {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 64px;
+  padding-top: 48px;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-end__mark {
+  width: 160px;
+  height: 160px;
+}
+
+.chapter-end__form {
+  width: 100%;
+  height: 100%;
+}
+
+.chapter-end__button {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.chapter-end__button:disabled {
+  cursor: default;
+}
+
+.chapter-end__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.chapter-end__status {
+  margin: 0;
+  min-height: 1.6em;
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+.chapter-end__undo {
+  margin: -8px 0 0;
+  font-size: 13px;
+}
+
+.chapter-end__nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+/* ---- Cross-document view transitions: the solid mark glides back into its card. ---- */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 220ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+  .mark-card__mark *,
+  .chapter-end__svg *,
+  .progress-line__dot {
+    transition: none !important;
+  }
+}

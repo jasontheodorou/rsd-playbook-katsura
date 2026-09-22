@@ -49,3 +49,15 @@ The official Payload scaffold shipped a lint config that crashed under the Next 
 ### Technique: a local database without Docker or admin rights
 
 Where Docker cannot be installed, the `embedded-postgres` package downloads real Postgres binaries into the project and starts them on a spare port with one script. Data lives in a gitignored folder. The company-shaped container environment then runs in CI instead of on the laptop, which is where it needs to be trusted anyway.
+
+## Databases
+
+### Lesson: a thrown error inside a transaction can leak the connection
+
+Payload opens a transaction per operation. When an operation throws part-way (here, the job runner before its collection existed), the `begin` is never followed by a commit or rollback and the connection sits "idle in transaction" until the process dies. Four of those exhausted a pool of five and every later write hung with no error while reads still worked. When writes hang but reads work, query `pg_stat_activity` for idle-in-transaction sessions before suspecting the new code. Keep the pool small so this surfaces early.
+
+## Learning design
+
+### Pattern: show completion by completing the picture
+
+For a set of things to read, draw each one's mark as an outline and fill it solid when done. The grid becomes its own progress record, needs no ticks or badges, and the reward is the finished picture. Pair the visual with a non-visual cue (a word in the corner, a count in text) so the state never rests on shape or colour alone, and render the resting state on the server so it holds with no JavaScript.

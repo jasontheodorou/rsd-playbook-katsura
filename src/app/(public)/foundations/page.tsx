@@ -1,14 +1,8 @@
 import Link from 'next/link'
-import type { ComponentType } from 'react'
 
-import {
-  HeadHeartHandsMark,
-  OurDifferenceMark,
-  OurMethodsMark,
-  OurValuesMark,
-  WhatWeDoMark,
-  WhyWeDoItMark,
-} from './marks'
+import { currentCompleted, currentLearnerId } from '@/learning/reader'
+
+import { chapterPageId, chapters } from './chapters'
 
 export const dynamic = 'force-dynamic'
 
@@ -16,23 +10,11 @@ export const metadata = {
   title: 'Explore the foundations. The RSD Playbook',
 }
 
-type Chapter = {
-  slug: string
-  title: string
-  Mark: ComponentType<{ className?: string }>
-}
+export default async function FoundationsPage() {
+  const completed = await currentCompleted('foundations/')
+  const hasLearner = (await currentLearnerId()) !== null
+  const readCount = chapters.filter((c) => completed.has(chapterPageId(c.slug))).length
 
-/** The six Foundations themes, in reading order. Static until the read model carries sections (build step 2). */
-const chapters: Chapter[] = [
-  { slug: 'what-we-do', title: 'What we do', Mark: WhatWeDoMark },
-  { slug: 'why-we-do-it', title: 'Why we do it', Mark: WhyWeDoItMark },
-  { slug: 'our-difference', title: 'Our difference', Mark: OurDifferenceMark },
-  { slug: 'head-heart-and-hands', title: 'Head, heart and hands', Mark: HeadHeartHandsMark },
-  { slug: 'our-methods', title: 'Our methods', Mark: OurMethodsMark },
-  { slug: 'our-values', title: 'Our values', Mark: OurValuesMark },
-]
-
-export default function FoundationsPage() {
   return (
     <div className="landing">
       <div className="landing__intro">
@@ -43,21 +25,53 @@ export default function FoundationsPage() {
         <p className="landing__blurb">
           Six short chapters on how we research and design at Transform, and why it matters.
         </p>
+        <p className="progress-line" aria-label={`${readCount} of ${chapters.length} chapters read`}>
+          <span className="progress-line__dots" aria-hidden>
+            {chapters.map((c) => (
+              <span
+                key={c.slug}
+                className="progress-line__dot"
+                data-state={completed.has(chapterPageId(c.slug)) ? 'read' : 'unread'}
+              />
+            ))}
+          </span>
+          <span className="progress-line__text">
+            {readCount} of {chapters.length} read
+          </span>
+        </p>
       </div>
 
       <ul className="mark-grid" aria-label="Chapters">
-        {chapters.map(({ slug, title, Mark }, i) => (
-          <li key={slug}>
-            <Link href={`/foundations/${slug}`} className="mark-card">
-              <span className="mark-card__title">{title}</span>
-              <span className="mark-card__number" aria-hidden>
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <Mark className="mark-card__mark" />
-            </Link>
-          </li>
-        ))}
+        {chapters.map(({ slug, title, Mark }, i) => {
+          const read = completed.has(chapterPageId(slug))
+          return (
+            <li key={slug}>
+              <Link
+                href={`/foundations/${slug}`}
+                className="mark-card"
+                data-state={read ? 'read' : 'unread'}
+                aria-label={`${title}${read ? ', read' : ''}`}
+              >
+                <span className="mark-card__title">{title}</span>
+                <span className="mark-card__number" aria-hidden>
+                  {read ? 'Read' : String(i + 1).padStart(2, '0')}
+                </span>
+                <Mark className="mark-card__mark" style={{ viewTransitionName: `mark-${slug}` }} />
+              </Link>
+            </li>
+          )
+        })}
       </ul>
+
+      {hasLearner && (
+        <form method="post" action="/progress/forget" className="privacy-line">
+          <input type="hidden" name="returnTo" value="/foundations" />
+          <span>We remember which chapters you have finished on this device.</span>{' '}
+          <button type="submit" className="link-button">
+            Forget my progress
+          </button>
+        </form>
+      )}
     </div>
   )
 }

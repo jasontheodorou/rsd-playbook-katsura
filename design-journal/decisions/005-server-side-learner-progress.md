@@ -25,3 +25,7 @@ Server-side storage means nothing in the page, block or component model changes 
 ## Consequences
 
 Anonymous progress is lost if the hostname changes at cutover unless an email-linking feature is built first; accepted for now. Once identity-backed this is employee learning data: purpose notice, clear-my-progress action, retention period, and a DPIA citing ICO worker-monitoring guidance are required. The cookie secret must be treated like a database credential.
+
+## Addendum, 2026-09-22 (later the same day)
+
+Jason chose automatic completion: a chapter counts as read when its end mark has been fully in view for about a second, recorded in the background by JavaScript. Consequence: the learner cookie is now created the first time someone finishes a chapter, without an explicit press. To keep this honest, the Foundations page shows one plain line, "We remember which chapters you have finished on this device", with a "Forget my progress" action that deletes the learner and clears the cookie. Where JavaScript is absent, the end mark is a "Mark as read" button inside a plain form, so the feature still works. Passive page views are still never recorded.
