@@ -72,12 +72,14 @@ body {
   gap: 16px;
   padding-block: 16px;
   flex-wrap: nowrap;
+  /* The row is as tall as its sign-in button (30px) in the reference, so the header is 63px with its border. */
+  min-height: 30px;
 }
 
 .topbar__wordmark {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   color: var(--text);
   text-decoration: none;
   white-space: nowrap;
@@ -115,8 +117,51 @@ body {
   gap: 12px;
 }
 
+/* Outline pill button, matching the reference's Mantine outline/dark/xs/radius-xl button. */
+.button-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--grey-7);
+  background: transparent;
+  border: 1px solid var(--grey-7);
+  border-radius: 999px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button-outline:hover {
+  background: rgba(51, 51, 51, 0.04);
+}
+
+/* ---- Page shell and background ---- */
+.page-shell {
+  position: relative;
+  overflow: hidden;
+  min-height: calc(100svh - 63px);
+}
+
+/* Decorative orange circle, top right, partly off canvas. Same size, offset and rendered opacity as the reference home page. */
+.page-shell__circle {
+  position: absolute;
+  top: -80px;
+  right: -120px;
+  width: 320px;
+  height: 320px;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
 /* ---- Page body ---- */
 .page {
+  position: relative;
+  z-index: 1;
   padding-block: 40px 64px;
 }
 

@@ -28,7 +28,12 @@ export function TopBar({ trail }: TopBarProps) {
             </span>
           )}
         </Link>
-        <div className="topbar__actions" />
+        <div className="topbar__actions">
+          {/* Placeholder for the reader sign-in that arrives with the access seam (build step 6). */}
+          <Link href="/admin" className="button-outline">
+            Sign in
+          </Link>
+        </div>
       </div>
     </header>
   )
