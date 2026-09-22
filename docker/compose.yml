@@ -1,0 +1,74 @@
+# The after-migration shape: one Node container, plain Postgres, an S3-compatible bucket.
+# Run from the repo root:  docker compose -f docker/compose.yml up --build --wait
+name: katsura
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: katsura
+      POSTGRES_PASSWORD: katsura
+      POSTGRES_DB: katsura
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U katsura -d katsura']
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  minio:
+    image: minio/minio
+    command: server /data --console-address ':9001'
+    environment:
+      MINIO_ROOT_USER: katsura
+      MINIO_ROOT_PASSWORD: katsura-minio
+    healthcheck:
+      test: ['CMD', 'mc', 'ready', 'local']
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - miniodata:/data
+
+  minio-init:
+    image: minio/mc
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      sh -c "mc alias set local http://minio:9000 katsura katsura-minio &&
+             mc mb --ignore-existing local/katsura-media"
+
+  migrate:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: migrate
+    env_file: compose.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: runner
+    env_file: compose.env
+    ports:
+      - '3019:3019'
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      minio-init:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://localhost:3019/api/health || exit 1']
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+volumes:
+  pgdata:
+  miniodata:

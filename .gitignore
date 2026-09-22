@@ -1,0 +1,54 @@
+# Dependencies and build output
+node_modules/
+.next/
+out/
+build/
+dist/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# Secrets and local env
+.env
+.env.local
+.env.*.local
+
+# Local-only runtime data
+media/
+.local/
+.vercel/
+
+# Test output
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# Client data and anything private by default
+client-data/
+private/
+
+# Design journal internals (per-session logs and raw logbook are private to the team;
+# training-manual.md and decisions/ are public)
+design-journal/logbook/
+design-journal/weekly/
+design-journal/.hook.log
+design-journal/.weekly.log
+
+# Claude Code local settings and memory (user-specific, never shipped)
+.claude/settings.local.json
+.claude/memory/
+
+# Reference clone of the-rsd-playbook (read-only scratch, never shipped)
+.reference/
+
+# scribe journal (private to this checkout)
+journal/
+
+# OS and editor crud
+.vscode/
+.DS_Store
+Thumbs.db
+.idea/
+*.pem
+npm-debug.log*

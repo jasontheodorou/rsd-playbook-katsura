@@ -1,0 +1,23 @@
+# Replaces host cron. Calls the app's jobs endpoint so scheduled publishing runs within about 5 minutes.
+# Set repository variable JOBS_RUN_URL (for example https://katsura.example/api/jobs/run)
+# and repository secret JOBS_RUN_SECRET. Does nothing until both exist.
+name: scheduled-jobs
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  run:
+    if: ${{ vars.JOBS_RUN_URL != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run queued jobs
+        env:
+          JOBS_RUN_URL: ${{ vars.JOBS_RUN_URL }}
+          JOBS_RUN_SECRET: ${{ secrets.JOBS_RUN_SECRET }}
+        run: |
+          curl --fail --silent --show-error --request POST \
+            --header "Authorization: Bearer $JOBS_RUN_SECRET" \
+            "$JOBS_RUN_URL"
