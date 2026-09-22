@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic'
 export default function HomePage() {
   return (
     <article>
-      <h1>katsura</h1>
+      <h1>The RSD Playbook</h1>
       <p>Nothing has been published yet.</p>
     </article>
   )
