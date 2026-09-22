@@ -1,5 +1,3 @@
-import Link from 'next/link'
-
 import { currentCompleted, currentLearnerId } from '@/learning/reader'
 
 import { chapterPageId, chapters } from './chapters'
@@ -46,18 +44,20 @@ export default async function FoundationsPage() {
           const read = completed.has(chapterPageId(slug))
           return (
             <li key={slug}>
-              <Link
+              {/* A plain link, so the browser can morph this card into the chapter (a cross-document view transition). */}
+              <a
                 href={`/foundations/${slug}`}
                 className="mark-card"
                 data-state={read ? 'read' : 'unread'}
                 aria-label={`${title}${read ? ', read' : ''}`}
+                style={{ viewTransitionName: `chapter-${slug}` }}
               >
                 <span className="mark-card__title">{title}</span>
                 <span className="mark-card__number" aria-hidden>
                   {read ? 'Read' : String(i + 1).padStart(2, '0')}
                 </span>
                 <Mark className="mark-card__mark" style={{ viewTransitionName: `mark-${slug}` }} />
-              </Link>
+              </a>
             </li>
           )
         })}

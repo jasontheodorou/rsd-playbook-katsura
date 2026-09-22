@@ -636,7 +636,30 @@ body {
 
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation-duration: 220ms;
+  animation-duration: 260ms;
+}
+
+/* The top bar is identical on both pages, so it stays put instead of cross-fading. */
+.topbar {
+  view-transition-name: topbar;
+}
+
+/* A chapter card grows into its page and shrinks back into place. */
+::view-transition-group(chapter-what-we-do),
+::view-transition-group(chapter-why-we-do-it),
+::view-transition-group(chapter-our-difference),
+::view-transition-group(chapter-head-heart-and-hands),
+::view-transition-group(chapter-our-methods),
+::view-transition-group(chapter-our-values) {
+  animation-duration: 480ms;
+  animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+::view-transition-old(chapter-head-heart-and-hands),
+::view-transition-new(chapter-head-heart-and-hands) {
+  animation-duration: 480ms;
+  height: 100%;
+  overflow: clip;
 }
 
 @media (prefers-reduced-motion: reduce) {

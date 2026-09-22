@@ -12,20 +12,39 @@ type Props = {
   returnTo: string
   nextHref?: string
   nextTitle?: string
+  /** Show the back and next links beneath the mark. Off for chapters with their own navigation. */
+  showNav?: boolean
+  /** Give the mark a view-transition-name so it morphs into its card on return. Off when the whole page morphs. */
+  morphMark?: boolean
 }
 
 const DWELL_MS = 900
 
 const noop = () => () => {}
 /** False during server render and hydration, true once JavaScript is running. */
-const useEnhanced = () => useSyncExternalStore(noop, () => true, () => false)
+const useEnhanced = () =>
+  useSyncExternalStore(
+    noop,
+    () => true,
+    () => false,
+  )
 
 /**
  * The end of a chapter: its own mark, outlined. Server-rendered as a plain form so it works
  * without JavaScript ("Mark as read"). With JavaScript, reaching the mark and resting on it for
  * about a second records the completion in the background and fills the mark where it stands.
  */
-export function ChapterEnd({ pageId, slug, title, initiallyRead, returnTo, nextHref, nextTitle }: Props) {
+export function ChapterEnd({
+  pageId,
+  slug,
+  title,
+  initiallyRead,
+  returnTo,
+  nextHref,
+  nextTitle,
+  showNav = true,
+  morphMark = true,
+}: Props) {
   const [read, setRead] = useState(initiallyRead)
   const enhanced = useEnhanced()
   const markRef = useRef<HTMLDivElement>(null)
@@ -82,7 +101,10 @@ export function ChapterEnd({ pageId, slug, title, initiallyRead, returnTo, nextH
             aria-label={read ? `${title}, read` : `Mark ${title} as read`}
             disabled={enhanced}
           >
-            <Mark className="chapter-end__svg" style={{ viewTransitionName: `mark-${slug}` }} />
+            <Mark
+              className="chapter-end__svg"
+              style={morphMark ? { viewTransitionName: `mark-${slug}` } : undefined}
+            />
           </button>
         </form>
       </div>
@@ -90,7 +112,12 @@ export function ChapterEnd({ pageId, slug, title, initiallyRead, returnTo, nextH
         {read ? 'Chapter read.' : enhanced ? 'You have reached the end.' : ''}
       </p>
       {read && (
-        <form method="post" action="/progress/complete" onSubmit={undo} className="chapter-end__undo">
+        <form
+          method="post"
+          action="/progress/complete"
+          onSubmit={undo}
+          className="chapter-end__undo"
+        >
           <input type="hidden" name="pageId" value={pageId} />
           <input type="hidden" name="action" value="uncomplete" />
           <input type="hidden" name="returnTo" value={returnTo} />
@@ -99,18 +126,20 @@ export function ChapterEnd({ pageId, slug, title, initiallyRead, returnTo, nextH
           </button>
         </form>
       )}
-      <nav className="chapter-end__nav" aria-label="Chapter navigation">
-        {/* Plain links, not client navigation, so the cross-document view transition can run. */}
-        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-        <a href="/foundations" className="button-outline">
-          Back to the foundations
-        </a>
-        {nextHref && (
-          <a href={nextHref} className="button-primary">
-            Next: {nextTitle}
+      {showNav && (
+        <nav className="chapter-end__nav" aria-label="Chapter navigation">
+          {/* Plain links, not client navigation, so the cross-document view transition can run. */}
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+          <a href="/foundations" className="button-outline">
+            Back to the foundations
           </a>
-        )}
-      </nav>
+          {nextHref && (
+            <a href={nextHref} className="button-primary">
+              Next: {nextTitle}
+            </a>
+          )}
+        </nav>
+      )}
     </footer>
   )
 }

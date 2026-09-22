@@ -26,6 +26,7 @@ export default async function ChapterPage({ params }: Props) {
   const index = chapters.findIndex((c) => c.slug === slug)
   const next = chapters[index + 1]
 
+  const ported = slug === 'head-heart-and-hands'
   const end = (
     <ChapterEnd
       pageId={pageId}
@@ -35,15 +36,17 @@ export default async function ChapterPage({ params }: Props) {
       returnTo={`/foundations/${slug}`}
       nextHref={next ? `/foundations/${next.slug}` : undefined}
       nextTitle={next?.title}
+      showNav={!ported}
+      morphMark={!ported}
     />
   )
 
-  if (slug === 'head-heart-and-hands') {
+  if (ported) {
     return (
       <>
         {/* The chapter shell is its own scroll container; stop the page behind it scrolling. */}
         <style>{'body { overflow: hidden; }'}</style>
-        <HeadHeartHandsChapter number={String(index + 1).padStart(2, '0')} end={end} />
+        <HeadHeartHandsChapter number={String(index + 1).padStart(2, '0')} slug={slug} end={end} />
       </>
     )
   }
