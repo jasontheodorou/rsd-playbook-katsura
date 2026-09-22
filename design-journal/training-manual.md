@@ -40,3 +40,12 @@ A rule like "the submitter cannot publish" is easy to attach to the publish butt
 
 When a system will move hosts, make the future host's shape the default development environment from day one (a container, a plain database, an object store, a stub for the upstream identity gate) and treat the current host as the special case exercised by CI. Every convenience of the current host then shows up immediately as a difference between "works locally" and "works on the host", when it is cheap to fix, instead of on cutover day. The corollary: any feature that only exists on the current host goes behind a seam selected by an environment variable, and the seam has a working local branch before the hosted one.
 
+## Tooling
+
+### Lesson: a scaffold is a starting point, not a foundation
+
+The official Payload scaffold shipped a lint config that crashed under the Next version it installed, a compose file for the wrong database, a Dockerfile for a different package manager, and a homepage that imported the CMS into the public site. Every generated file was read and either rewritten or deleted before the first commit. Budget for that; do not commit a scaffold as-is and plan to tidy later.
+
+### Technique: a local database without Docker or admin rights
+
+Where Docker cannot be installed, the `embedded-postgres` package downloads real Postgres binaries into the project and starts them on a spare port with one script. Data lives in a gitignored folder. The company-shaped container environment then runs in CI instead of on the laptop, which is where it needs to be trusted anyway.

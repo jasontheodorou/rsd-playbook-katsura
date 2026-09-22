@@ -12,11 +12,11 @@ last-updated: 2026-09-22
 
 ## Current state
 
-Architecture agreed on 2026-09-22 (see `artefacts/2026-09-22-architecture-plan.md` and decisions 001 to 006). No application code yet. The reference build, the-rsd-playbook, is cloned read-only at `.reference/` (gitignored) and will supply content later.
+Architecture agreed on 2026-09-22 (see `artefacts/2026-09-22-architecture-plan.md` and decisions 001 to 007). Build step 1 (foundations) done the same day: Payload 3 on Next 16 skeleton, platform seams, users and media, health and jobs endpoints, first migration, Dockerfile and compose, CI and scheduler workflows. Local dev uses a downloaded Postgres (`npm run db:local`) because Docker cannot be installed here. The reference build is cloned read-only at `.reference/` (gitignored).
 
 ## Active goals
 
-- Build phase 1 (foundations): git init, Next + Payload skeleton, Docker Compose with Postgres and MinIO, Vercel project and Neon, one smoke test.
+- Finish step 1 hosting: GitHub repo, Neon database, Cloudflare R2 bucket, Vercel project (preview deploys off, build runs migrations), scheduler variable and secret.
 - Build phase 2 (publisher spike): pages with drafts and versions, `page_editions` state table, three roles, four-eyes rule, `published_pages` snapshot, public and preview routes, draft-leak test.
 
 ## Key constraints
