@@ -1,5 +1,7 @@
 import Link from 'next/link'
 
+import { TopBarTrail } from './TopBarTrail'
+
 type TopBarProps = {
   /** Optional trail after the wordmark, for example "Explore the foundations". */
   trail?: string
@@ -14,17 +16,21 @@ export function TopBar({ trail }: TopBarProps) {
   return (
     <header className="topbar">
       <div className="container topbar__inner">
-        <Link href="/" className="topbar__wordmark">
-          <span className="topbar__title">The RSD Playbook</span>
-          {trail && (
+        <span className="topbar__wordmark">
+          <Link href="/" className="topbar__title">
+            The RSD Playbook
+          </Link>
+          {trail ? (
             <span className="topbar__trail">
               <span className="topbar__slash" aria-hidden>
                 /
               </span>
               <span className="topbar__trail-text">{trail}</span>
             </span>
+          ) : (
+            <TopBarTrail />
           )}
-        </Link>
+        </span>
         <div className="topbar__actions">
           {/* Placeholder for the reader sign-in that arrives with the access seam (build step 6). */}
           <Link href="/admin" className="button-outline">

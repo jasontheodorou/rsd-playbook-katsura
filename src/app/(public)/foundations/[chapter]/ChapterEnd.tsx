@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react'
 
 import { findChapter } from '../chapters'
 import { useChapterFrame } from './ChapterFrame'
@@ -17,6 +17,8 @@ type Props = {
   showNav?: boolean
   /** Give the mark a view-transition-name so it morphs into its card on return. Off when the whole page morphs. */
   morphMark?: boolean
+  /** Rendered after the status line: the way back, or whatever the chapter wants to end with. */
+  after?: ReactNode
 }
 
 const DWELL_MS = 900
@@ -45,6 +47,7 @@ export function ChapterEnd({
   nextTitle,
   showNav = true,
   morphMark = true,
+  after,
 }: Props) {
   const [read, setRead] = useState(initiallyRead)
   const enhanced = useEnhanced()
@@ -128,6 +131,7 @@ export function ChapterEnd({
           </button>
         </form>
       )}
+      {after}
       {showNav && (
         <nav className="chapter-end__nav" aria-label="Chapter navigation">
           <button

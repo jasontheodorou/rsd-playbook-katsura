@@ -18,102 +18,23 @@
   overflow: hidden;
 }
 
-/* ── Left rail: fixed column with progress line + centred hamburger ──────── */
+/* ── Reading progress: a 2px line on the left edge, nothing else ──────── */
 
-.pilot-rail {
+.pilot-progress {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
-  width: 48px;
-  border-right: 1px solid #E6E3DF;
+  width: 2px;
+  background: #E6E3DF;
   z-index: 20;
   pointer-events: none;
 }
 
-/* Solid accent border running the full height on the far left of the rail. */
-.pilot-vribbon {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 6px;
-  background: var(--pilot-accent-track, rgba(216, 180, 163, 0.28));
-  overflow: hidden;
-}
-
-/* Darker than the control so the filled portion reads clearly against the track. */
-.pilot-vribbon__fill {
+.pilot-progress__fill {
   position: absolute;
   inset: 0;
-  background: var(--pilot-progress, #A9714F);
-}
-
-/* Square hamburger that fills the rail width, sharp corners. Sits over the
-   progress bar and butts against the right divider. Vertically centred. */
-.pilot-hamburger-wrap {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  z-index: 30;
-  height: 48px;
-  margin-top: -24px;
-}
-
-.pilot-hamburger {
-  position: relative;
-  z-index: 30;
-  width: 48px;
-  height: 48px;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: var(--pilot-accent, #D8B4A3);
-  color: #ffffff;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 180ms ease;
-}
-
-.pilot-hamburger:hover { background: var(--pilot-accent-hover, #C69A87); }
-
-.pilot-hamburger:focus-visible {
-  outline: 2px solid #111;
-  outline-offset: 2px;
-}
-
-.pilot-hamburger__lines {
-  position: relative;
-  display: inline-block;
-  width: 20px;
-  height: 14px;
-}
-
-.pilot-hamburger__lines span {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: currentColor;
-  transition: transform 220ms cubic-bezier(0.65, 0, 0.45, 1), opacity 180ms ease, top 220ms cubic-bezier(0.65, 0, 0.45, 1);
-}
-
-.pilot-hamburger__lines span:nth-child(1) { top: 0; }
-.pilot-hamburger__lines span:nth-child(2) { top: 6px; }
-.pilot-hamburger__lines span:nth-child(3) { top: 12px; }
-
-.pilot-hamburger__lines[data-open='true'] span:nth-child(1) {
-  top: 6px;
-  transform: rotate(45deg);
-}
-.pilot-hamburger__lines[data-open='true'] span:nth-child(2) {
-  opacity: 0;
-}
-.pilot-hamburger__lines[data-open='true'] span:nth-child(3) {
-  top: 6px;
-  transform: rotate(-45deg);
+  background: #333333;
 }
 
 /* ── Scroll container ───────────────────────────────────────────────────── */
@@ -126,7 +47,6 @@
   overflow-y: auto;
   overflow-x: clip;
   scroll-behavior: smooth;
-  padding-left: 48px;
 }
 
 .pilot-marker {
@@ -1205,3 +1125,37 @@
 .p1v2__hero--title .p1v2__lede {
   max-width: 60ch;
 }
+
+/* ── The way back, at the end ─────────────────────────────────────────── */
+.back-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+  padding: 14px 20px 14px 16px;
+  border: 1px solid #E6E3DF;
+  border-radius: 999px;
+  background: #ffffff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  color: #333333;
+  cursor: pointer;
+  transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 220ms ease, border-color 220ms ease;
+}
+.back-home:hover {
+  transform: translateY(-2px);
+  border-color: #CCC8C4;
+  box-shadow: 0 12px 28px -8px rgba(33, 61, 89, 0.14), 0 2px 6px rgba(33, 61, 89, 0.06);
+}
+.back-home:focus-visible { outline: 2px solid #213D59; outline-offset: 3px; }
+.back-home__dots { display: inline-flex; gap: 7px; }
+.back-home__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid #8A8583;
+  transition: background-color 300ms ease, border-color 300ms ease;
+}
+.back-home__dot[data-state='read'] { background: #333333; border-color: #333333; }
+.back-home__dot[data-current] { box-shadow: 0 0 0 3px #ffffff, 0 0 0 4.5px #333333; }

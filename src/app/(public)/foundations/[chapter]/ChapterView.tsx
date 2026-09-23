@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { currentCompleted } from '@/learning/reader'
 
 import { chapterPageId, chapters, findChapter } from '../chapters'
+import { BackToFoundations } from './BackToFoundations'
 import { ChapterEnd } from './ChapterEnd'
 import { ChapterFrame } from './ChapterFrame'
 import { HeadHeartHandsChapter } from './hhh/HeadHeartHandsChapter'
@@ -15,7 +16,7 @@ export async function ChapterView({ slug }: Props) {
   if (!chapter) notFound()
 
   const pageId = chapterPageId(slug)
-  const completed = await currentCompleted(pageId)
+  const completed = await currentCompleted('foundations/')
   const index = chapters.findIndex((c) => c.slug === slug)
   const next = chapters[index + 1]
   const ported = slug === 'head-heart-and-hands'
@@ -31,6 +32,15 @@ export async function ChapterView({ slug }: Props) {
       nextTitle={next?.title}
       showNav={!ported}
       morphMark={false}
+      after={
+        ported ? (
+          <BackToFoundations
+            total={chapters.length}
+            current={index}
+            completed={chapters.map((c) => completed.has(chapterPageId(c.slug)))}
+          />
+        ) : undefined
+      }
     />
   )
 

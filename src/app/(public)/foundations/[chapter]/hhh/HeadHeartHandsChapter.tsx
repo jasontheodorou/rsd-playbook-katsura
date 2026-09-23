@@ -3,8 +3,6 @@
 import { motion, useReducedMotion, useScroll } from 'motion/react'
 import { useRef, type ReactNode } from 'react'
 
-import { useChapterFrame } from '../ChapterFrame'
-
 import HeadHeartHandsPattern from './HeadHeartHandsPattern'
 import { Media } from './Media'
 import { QuoteCard } from './QuoteCard'
@@ -12,36 +10,16 @@ import './pathway.css'
 
 /**
  * The Head, Heart and Hands chapter, carried over from the reference build's Pathway 1 (page s9)
- * with its shell: warm paper, left rail with a scroll-progress ribbon, and the square hamburger.
- * Two changes from the original: the hamburger closes the chapter (back to the Foundations grid)
- * instead of opening a page list, and the chapter-read applet (`end`) replaces the Continue footer.
+ * on its warm paper. The rail and hamburger are gone: progress is a hairline at the left edge,
+ * and the way back is at the end of the page (and in the top bar trail, and on Escape).
+ * The chapter-read applet (`end`) replaces the Continue footer.
  * The frame around this component owns the open and close animation.
  */
-// The rail arrives after the page has grown, and is the first thing to go when it closes.
-const RAIL_IN = {
-  x: 0,
-  opacity: 1,
-  transition: {
-    duration: 0.38,
-    ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-    delay: 0.32,
-  },
-}
-const RAIL_OUT = {
-  x: -48,
-  opacity: 0,
-  transition: { duration: 0.24, ease: [0.4, 0, 1, 1] as [number, number, number, number] },
-}
 
 export function HeadHeartHandsChapter({ number, end }: { number: string; end: ReactNode }) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const reduce = useReducedMotion()
-  const { close, leaving } = useChapterFrame()
   const { scrollYProgress } = useScroll({ container: scrollRef })
-
-  const accent = '#D8B4A3'
-  const accentHover = '#C69A87'
-  const accentTrack = 'rgba(216, 180, 163, 0.28)'
 
   const headItems = [
     'Individual needs, capability, motivation and opportunity.',
@@ -66,47 +44,17 @@ export function HeadHeartHandsChapter({ number, end }: { number: string; end: Re
       className="pilot-root"
       style={
         {
-          '--pilot-accent': accent,
-          '--pilot-accent-hover': accentHover,
-          '--pilot-accent-track': accentTrack,
           '--pilot-bg': '#FCFBF8',
         } as React.CSSProperties
       }
     >
-      {/* Square hamburger on the left edge. Here it is the way back to the Foundations grid. */}
-      <motion.div
-        className="pilot-hamburger-wrap"
-        initial={reduce ? false : { x: -48, opacity: 0 }}
-        animate={leaving ? RAIL_OUT : RAIL_IN}
-      >
-        <button
-          type="button"
-          className="pilot-hamburger"
-          aria-label="Back to the foundations"
-          onClick={close}
-        >
-          <span className="pilot-hamburger__lines" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-          </span>
-        </button>
-      </motion.div>
-
-      {/* Left rail: progress ribbon on the left, hairline divider on the right. */}
-      <motion.div
-        className="pilot-rail"
-        aria-hidden="true"
-        initial={reduce ? false : { x: -48, opacity: 0 }}
-        animate={leaving ? RAIL_OUT : RAIL_IN}
-      >
-        <div className="pilot-vribbon">
-          <motion.div
-            className="pilot-vribbon__fill"
-            style={{ scaleY: scrollYProgress, transformOrigin: 'top' }}
-          />
-        </div>
-      </motion.div>
+      {/* Reading progress: a hairline at the left edge that fills top to bottom as you scroll. */}
+      <div className="pilot-progress" aria-hidden="true">
+        <motion.div
+          className="pilot-progress__fill"
+          style={{ scaleY: scrollYProgress, transformOrigin: 'top' }}
+        />
+      </div>
 
       <div ref={scrollRef} className="pilot-scroll">
         <motion.article

@@ -58,6 +58,21 @@ export function ChapterFrame({ slug, children }: Props) {
     if (reduce) finish()
   }
 
+  // Escape, or the "Foundations" trail in the top bar, closes the chapter the same way.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close()
+    }
+    const onEvent = () => close()
+    window.addEventListener('keydown', onKey)
+    window.addEventListener('katsura:close-chapter', onEvent)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      window.removeEventListener('katsura:close-chapter', onEvent)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [leaving, reduce])
+
   const hidden = { scale: 0.32, opacity: 0 }
   const shown = { scale: 1, opacity: 1 }
 
