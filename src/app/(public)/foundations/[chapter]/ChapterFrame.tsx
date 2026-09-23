@@ -5,7 +5,10 @@ import { useRouter } from 'next/navigation'
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 
 /** Lets anything inside the frame (the hamburger, a back link) close it with the exit animation. */
-const FrameContext = createContext<{ close: () => void }>({ close: () => {} })
+const FrameContext = createContext<{ close: () => void; leaving: boolean }>({
+  close: () => {},
+  leaving: false,
+})
 export const useChapterFrame = () => useContext(FrameContext)
 
 // The original build's timing: a chapter grows out of its card, and shrinks back into it.
@@ -59,7 +62,7 @@ export function ChapterFrame({ slug, children }: Props) {
   const shown = { scale: 1, opacity: 1 }
 
   return (
-    <FrameContext.Provider value={{ close }}>
+    <FrameContext.Provider value={{ close, leaving }}>
       <motion.div
         ref={frameRef}
         className="chapter-frame"

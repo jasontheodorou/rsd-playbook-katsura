@@ -17,10 +17,26 @@ import './pathway.css'
  * instead of opening a page list, and the chapter-read applet (`end`) replaces the Continue footer.
  * The frame around this component owns the open and close animation.
  */
+// The rail arrives after the page has grown, and is the first thing to go when it closes.
+const RAIL_IN = {
+  x: 0,
+  opacity: 1,
+  transition: {
+    duration: 0.38,
+    ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+    delay: 0.32,
+  },
+}
+const RAIL_OUT = {
+  x: -48,
+  opacity: 0,
+  transition: { duration: 0.24, ease: [0.4, 0, 1, 1] as [number, number, number, number] },
+}
+
 export function HeadHeartHandsChapter({ number, end }: { number: string; end: ReactNode }) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const reduce = useReducedMotion()
-  const { close } = useChapterFrame()
+  const { close, leaving } = useChapterFrame()
   const { scrollYProgress } = useScroll({ container: scrollRef })
 
   const accent = '#D8B4A3'
@@ -58,7 +74,11 @@ export function HeadHeartHandsChapter({ number, end }: { number: string; end: Re
       }
     >
       {/* Square hamburger on the left edge. Here it is the way back to the Foundations grid. */}
-      <div className="pilot-hamburger-wrap">
+      <motion.div
+        className="pilot-hamburger-wrap"
+        initial={reduce ? false : { x: -48, opacity: 0 }}
+        animate={leaving ? RAIL_OUT : RAIL_IN}
+      >
         <button
           type="button"
           className="pilot-hamburger"
@@ -71,17 +91,22 @@ export function HeadHeartHandsChapter({ number, end }: { number: string; end: Re
             <span />
           </span>
         </button>
-      </div>
+      </motion.div>
 
       {/* Left rail: progress ribbon on the left, hairline divider on the right. */}
-      <div className="pilot-rail" aria-hidden="true">
+      <motion.div
+        className="pilot-rail"
+        aria-hidden="true"
+        initial={reduce ? false : { x: -48, opacity: 0 }}
+        animate={leaving ? RAIL_OUT : RAIL_IN}
+      >
         <div className="pilot-vribbon">
           <motion.div
             className="pilot-vribbon__fill"
             style={{ scaleY: scrollYProgress, transformOrigin: 'top' }}
           />
         </div>
-      </div>
+      </motion.div>
 
       <div ref={scrollRef} className="pilot-scroll">
         <motion.article
