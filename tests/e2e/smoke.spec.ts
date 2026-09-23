@@ -17,3 +17,18 @@ test('jobs endpoint refuses callers without the secret', async ({ request }) => 
   const response = await request.post('/api/jobs/run')
   expect(response.status()).toBe(401)
 })
+
+test('the top bar title is identical on every page', async ({ page }) => {
+  const measure = async (path: string) => {
+    await page.goto(path)
+    return page.locator('.topbar__title').evaluate((el) => {
+      const r = el.getBoundingClientRect()
+      const cs = getComputedStyle(el)
+      return [r.x, r.y, r.height, cs.fontSize, cs.fontWeight, cs.color, cs.fontFamily].join('|')
+    })
+  }
+  const home = await measure('/')
+  for (const path of ['/foundations', '/foundations/head-heart-and-hands', '/foundations/our-methods']) {
+    expect(await measure(path)).toBe(home)
+  }
+})

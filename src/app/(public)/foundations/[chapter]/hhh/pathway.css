@@ -42,10 +42,11 @@
   overflow: hidden;
 }
 
+/* Darker than the control so the filled portion reads clearly against the track. */
 .pilot-vribbon__fill {
   position: absolute;
   inset: 0;
-  background: var(--pilot-accent, #D8B4A3);
+  background: var(--pilot-progress, #A9714F);
 }
 
 /* Square hamburger that fills the rail width, sharp corners. Sits over the
