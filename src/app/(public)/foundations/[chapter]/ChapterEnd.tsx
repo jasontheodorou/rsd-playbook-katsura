@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 
 import { findChapter } from '../chapters'
+import { useChapterFrame } from './ChapterFrame'
 
 type Props = {
   pageId: string
@@ -49,6 +50,7 @@ export function ChapterEnd({
   const enhanced = useEnhanced()
   const markRef = useRef<HTMLDivElement>(null)
   const chapter = findChapter(slug)
+  const frame = useChapterFrame()
 
   useEffect(() => {
     if (read || !markRef.current || typeof IntersectionObserver === 'undefined') return
@@ -128,11 +130,18 @@ export function ChapterEnd({
       )}
       {showNav && (
         <nav className="chapter-end__nav" aria-label="Chapter navigation">
-          {/* Plain links, not client navigation, so the cross-document view transition can run. */}
-          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-          <a href="/foundations" className="button-outline">
+          <button
+            type="button"
+            className="button-outline"
+            onClick={(e) => {
+              if (enhanced) {
+                e.preventDefault()
+                frame.close()
+              }
+            }}
+          >
             Back to the foundations
-          </a>
+          </button>
           {nextHref && (
             <a href={nextHref} className="button-primary">
               Next: {nextTitle}

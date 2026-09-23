@@ -61,3 +61,11 @@ Payload opens a transaction per operation. When an operation throws part-way (he
 ### Pattern: show completion by completing the picture
 
 For a set of things to read, draw each one's mark as an outline and fill it solid when done. The grid becomes its own progress record, needs no ticks or badges, and the reward is the finished picture. Pair the visual with a non-visual cue (a word in the corner, a count in text) so the state never rests on shape or colour alone, and render the resting state on the server so it holds with no JavaScript.
+
+### Lesson: after deleting a Next route, restart the dev server and clear .next
+
+Removing an intercepting route left the dev server answering 404 to client-navigation requests (those carrying the `Next-Url` header) while plain page loads still worked, so links silently fell back to full page loads and every transition looked broken. Nothing in the code was wrong. The tell: `curl` with `-H 'RSC: 1' -H 'Next-Url: /x'` returns 404 while the same URL without those headers returns 200. Kill the server, delete `.next`, start again.
+
+### Pattern: keep the parent view mounted and open children over it
+
+To make a child page grow out of the element that opened it, and shrink back into it, put the parent view in the route segment's layout so it stays mounted, and render each child route in a fixed frame over it. Measure the opener's position on mount for the transform origin, stop the parent scrolling and make it inert while the child is open, and navigate only after the exit animation completes. This gives the single-page-app feel with real URLs and no interception routes.

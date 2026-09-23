@@ -654,3 +654,29 @@ body {
     transition: none !important;
   }
 }
+
+/* ---- Chapter frame: the layer a chapter lives in, below the top bar ---- */
+.chapter-frame {
+  position: fixed;
+  top: 63px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  overflow: hidden;
+  background: var(--bg-page);
+  will-change: transform, opacity;
+}
+
+.chapter-frame {
+  box-shadow: 0 24px 80px rgba(33, 61, 89, 0.18);
+}
+
+/* A placeholder chapter inside the frame scrolls within it. */
+.chapter-frame:has(.chapter--framed) {
+  overflow-y: auto;
+}
+
+.chapter--framed {
+  padding: 48px 16px 64px;
+}

@@ -7,12 +7,8 @@
  */
 
 .pilot-root {
-  position: fixed;
-  top: 63px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 5;
+  position: absolute;
+  inset: 0;
   background: var(--pilot-bg, #FAF8F6);
   transition: background 500ms ease;
   color: #111111;
@@ -1179,19 +1175,4 @@
   margin-top: clamp(2.5rem, 4vw, 3rem);
   align-items: flex-start;
   text-align: left;
-}
-
-/* Hamburger becomes a back control: lines settle into an arrow while leaving. */
-.pilot-hamburger__lines[data-leaving='true'] span:nth-child(1) {
-  top: 3px;
-  width: 12px;
-  transform: rotate(-45deg);
-}
-.pilot-hamburger__lines[data-leaving='true'] span:nth-child(2) {
-  top: 6px;
-}
-.pilot-hamburger__lines[data-leaving='true'] span:nth-child(3) {
-  top: 9px;
-  width: 12px;
-  transform: rotate(45deg);
 }
