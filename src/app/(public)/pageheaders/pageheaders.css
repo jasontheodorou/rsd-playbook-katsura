@@ -50,6 +50,7 @@
 
 .ph__art {
   position: relative;
+  align-self: stretch;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -122,6 +123,54 @@
 .ph-halo { position: relative; width: 100%; max-width: 380px; aspect-ratio: 1; display: grid; place-items: center; }
 .ph-halo__blur { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; filter: blur(28px) saturate(1.1); opacity: 0.55; transform: scale(0.98); }
 .ph-halo__sharp { position: relative; width: 56%; aspect-ratio: 1; object-fit: cover; object-position: 50% 46%; border-radius: 50%; box-shadow: 0 0 0 6px #fcfbf8; }
+
+/* ---- Colour splash ---- */
+.ph-splash { position: absolute; inset: 0; pointer-events: none; }
+.ph-splash > span { position: absolute; border-radius: 50%; display: block; }
+.ph-splash-svg { max-width: none; width: 118%; }
+
+/* S1 corner bleed: sized against the frame, anchored past the corner */
+.ph-splash--corner > span { width: 520px; height: 520px; right: -230px; top: -290px; opacity: 0.92; }
+
+/* S2 ink pools */
+.ph-splash--pools { mix-blend-mode: multiply; }
+.ph-splash--pools > span { opacity: 0.28; }
+.ph-splash--pools > span:nth-child(1) { width: 62%; aspect-ratio: 1; left: 18%; top: -8%; }
+.ph-splash--pools > span:nth-child(2) { width: 58%; aspect-ratio: 1; left: -4%; top: 38%; }
+.ph-splash--pools > span:nth-child(3) { width: 58%; aspect-ratio: 1; left: 46%; top: 40%; }
+
+/* S5 wash */
+.ph-splash__wash { inset: -30% -40% -30% -10%; border-radius: 50%; background: radial-gradient(closest-side, rgba(236, 103, 27, 0.32), rgba(236, 103, 27, 0.12) 55%, rgba(236, 103, 27, 0) 100%); }
+.ph-splash__point { width: 28px; height: 28px; left: 58%; top: 46%; }
+
+/* S7 bloom */
+.ph-splash--bloom > span { animation: ph-drift 18s ease-in-out infinite alternate; }
+.ph-splash--bloom > span:nth-child(1) { width: 72%; aspect-ratio: 1; left: 22%; top: -26%; }
+.ph-splash--bloom > span:nth-child(2) { width: 66%; aspect-ratio: 1; left: -12%; top: 34%; animation-delay: -6s; }
+.ph-splash--bloom > span:nth-child(3) { width: 66%; aspect-ratio: 1; left: 50%; top: 42%; animation-delay: -12s; }
+
+/* S8 quarter */
+.ph-splash__quarter { width: 900px; height: 900px; right: -450px; top: -450px; }
+.ph-splash__hole { width: 150px; height: 150px; right: 70px; top: 90px; background: #fcfbf8; }
+
+/* S10 band */
+.ph-splash--band { overflow: visible; }
+.ph-splash__band { position: absolute; width: 160%; height: 42%; left: -10%; top: 22%; border-radius: 0 !important; transform: rotate(-22deg); background: linear-gradient(90deg, #213d59, #3e7070 60%, #619cba); opacity: 0.95; }
+
+/* S12 block: sized against the frame */
+.ph-splash__block { position: absolute; border-radius: 0 !important; top: -56px; bottom: -56px; left: 14%; right: calc(-1 * clamp(24px, 4vw, 64px)); background: #213d59; }
+.ph-splash__block-dot { position: absolute; width: 56px; height: 56px; left: calc(14% + 40px); top: 24px; background: #ec671b; }
+
+/* S14 aurora */
+.ph-splash--aurora > span { width: 70%; aspect-ratio: 1; filter: blur(46px); opacity: 0.55; animation: ph-drift 20s ease-in-out infinite alternate; }
+.ph-splash--aurora > span:nth-child(1) { left: 30%; top: -30%; }
+.ph-splash--aurora > span:nth-child(2) { left: 55%; top: 20%; animation-delay: -7s; }
+.ph-splash--aurora > span:nth-child(3) { left: 5%; top: 30%; animation-delay: -13s; }
+.ph-splash--aurora > span:nth-child(4) { left: 40%; top: 55%; width: 50%; animation-delay: -3s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ph-splash--bloom > span, .ph-splash--aurora > span { animation: none; }
+}
 
 /* 06 progress rings: the demo fills the ring on a loop to stand in for scrolling */
 .ph-rings { max-width: 340px; }

@@ -556,3 +556,230 @@ export function PhotoScreen() {
     </svg>
   )
 }
+
+/* ---- Colour splash: colour as the visual, still carried by circles, still on this paper. ---- */
+
+/** S1 Corner bleed: one large circle in the chapter colour running off the top-right corner. */
+export function SplashCorner() {
+  return (
+    <div className="ph-splash ph-splash--corner" aria-hidden>
+      <span style={{ background: orange }} />
+    </div>
+  )
+}
+
+/** S2 Ink pools: the three colours as large translucent circles overlapping like ink, multiplied where they meet. */
+export function SplashPools() {
+  return (
+    <div className="ph-splash ph-splash--pools" aria-hidden>
+      <span style={{ background: navy }} />
+      <span style={{ background: orange }} />
+      <span style={{ background: teal }} />
+    </div>
+  )
+}
+
+/** S3 Gradient orb: one large circle, the chapter's two colours blending across it, slightly off the edge. */
+export function SplashGradient() {
+  return (
+    <svg viewBox="0 0 100 100" className="ph-visual ph-splash-svg" aria-hidden>
+      <defs>
+        <linearGradient id="sg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#213d59" />
+          <stop offset="55%" stopColor="#3e7070" />
+          <stop offset="100%" stopColor="#619cba" />
+        </linearGradient>
+      </defs>
+      <circle cx="58" cy="50" r="50" fill="url(#sg)" />
+    </svg>
+  )
+}
+
+/** S4 Confetti: many small circles in the palette, thick near the corner and thinning out. */
+export function SplashConfetti() {
+  const palette = ['#213d59', '#ec671b', '#3e7070', '#619cba', '#f1d46e', '#793f95']
+  // Deterministic scatter, denser towards the top right.
+  const dots = Array.from({ length: 70 }, (_, i) => {
+    const a = (i * 137.508) % 360
+    const rr = Math.sqrt((i + 1) / 70) * 52
+    const x = 68 + Math.cos((a * Math.PI) / 180) * rr * 0.9
+    const y = 34 + Math.sin((a * Math.PI) / 180) * rr * 0.9
+    const r = 1.2 + ((i * 7) % 5) * 0.9
+    return { x, y, r, c: palette[i % palette.length] }
+  }).filter((d) => d.x > 2 && d.x < 118 && d.y > -10 && d.y < 100)
+  return (
+    <svg viewBox="0 0 100 100" className="ph-visual ph-splash-svg" aria-hidden>
+      {dots.map((d, i) => (
+        <circle
+          key={i}
+          cx={d.x.toFixed(1)}
+          cy={d.y.toFixed(1)}
+          r={d.r.toFixed(1)}
+          fill={d.c}
+          fillOpacity={0.9 - (d.r - 1.2) * 0.08}
+        />
+      ))}
+    </svg>
+  )
+}
+
+/** S5 Wash: colour as atmosphere. A soft radial wash across the whole column, one solid point inside it. */
+export function SplashWash() {
+  return (
+    <div className="ph-splash ph-splash--wash" aria-hidden>
+      <span className="ph-splash__wash" />
+      <span className="ph-splash__point" style={{ background: orange }} />
+    </div>
+  )
+}
+
+/** S6 Ripple: one colour in concentric steps of tint, spreading from a point like a drop landing. */
+export function SplashRipple() {
+  const steps = [50, 41, 32, 23, 14, 6]
+  return (
+    <svg viewBox="0 0 100 100" className="ph-visual ph-splash-svg ph-breathe" aria-hidden>
+      {steps.map((r, i) => (
+        <circle key={r} cx="56" cy="50" r={r} fill="#213d59" fillOpacity={0.06 + i * 0.13} />
+      ))}
+    </svg>
+  )
+}
+
+/** S7 Bloom: the three colours at full strength, large, overlapping and running off the edge. The boldest. */
+export function SplashBloom() {
+  return (
+    <div className="ph-splash ph-splash--bloom" aria-hidden>
+      <span style={{ background: navy }} />
+      <span style={{ background: orange }} />
+      <span style={{ background: teal }} />
+    </div>
+  )
+}
+
+/** S8 Quarter: a quarter of a huge circle anchored in the corner, one colour, with the paper showing through a smaller circle. */
+export function SplashQuarter() {
+  return (
+    <div className="ph-splash ph-splash--quarter" aria-hidden>
+      <span className="ph-splash__quarter" style={{ background: teal }} />
+      <span className="ph-splash__hole" />
+    </div>
+  )
+}
+
+/* ---- Beyond circles: colour let off the leash. ---- */
+
+/** S9 Brushstroke: one broad, loose stroke of orange across the column, like a swipe of paint. */
+export function SplashBrush() {
+  return (
+    <svg
+      viewBox="0 0 100 100"
+      className="ph-visual ph-splash-svg"
+      aria-hidden
+      preserveAspectRatio="none"
+    >
+      <path
+        d="M4 62 C 14 40, 30 30, 48 34 S 78 52, 96 38 C 99 50, 90 66, 72 70 S 36 76, 18 84 C 8 88, 0 76, 4 62 Z"
+        fill="#ec671b"
+        fillOpacity="0.9"
+      />
+      <path
+        d="M12 60 C 24 48, 40 44, 56 50 S 80 60, 92 46"
+        fill="none"
+        stroke="#fcfbf8"
+        strokeOpacity="0.35"
+        strokeWidth="1.2"
+      />
+    </svg>
+  )
+}
+
+/** S10 Band: a broad angled band of colour crossing the corner, navy into teal. */
+export function SplashBand() {
+  return (
+    <div className="ph-splash ph-splash--band" aria-hidden>
+      <span className="ph-splash__band" />
+    </div>
+  )
+}
+
+/** S11 Blob: an organic shape, soft-edged, in a gradient of the chapter's colours. */
+export function SplashBlob() {
+  return (
+    <svg viewBox="0 0 100 100" className="ph-visual ph-splash-svg ph-breathe" aria-hidden>
+      <defs>
+        <linearGradient id="sb-g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#ec671b" />
+          <stop offset="100%" stopColor="#793f95" />
+        </linearGradient>
+        <filter id="sb-soft" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="1.2" />
+        </filter>
+      </defs>
+      <path
+        d="M56 6 C 76 4, 96 22, 94 44 S 82 78, 60 90 S 18 84, 10 60 S 22 16, 56 6 Z"
+        fill="url(#sb-g)"
+        fillOpacity="0.92"
+        filter="url(#sb-soft)"
+      />
+    </svg>
+  )
+}
+
+/** S12 Block: a flat block of colour filling the right third of the hero, edge to edge. Editorial, blunt. */
+export function SplashBlock() {
+  return (
+    <div className="ph-splash ph-splash--block" aria-hidden>
+      <span className="ph-splash__block" />
+      <span className="ph-splash__block-dot" />
+    </div>
+  )
+}
+
+/** S13 Stripes: vertical bands of the palette, like a tapestry, fading towards the text. */
+export function SplashStripes() {
+  const cols = [
+    '#213d59',
+    '#3e7070',
+    '#619cba',
+    '#ec671b',
+    '#f1d46e',
+    '#793f95',
+    '#213d59',
+    '#3e7070',
+  ]
+  return (
+    <svg
+      viewBox="0 0 100 100"
+      className="ph-visual ph-splash-svg"
+      aria-hidden
+      preserveAspectRatio="none"
+    >
+      <defs>
+        <linearGradient id="ss-fade" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#fff" stopOpacity="0" />
+          <stop offset="45%" stopColor="#fff" stopOpacity="1" />
+        </linearGradient>
+        <mask id="ss-mask">
+          <rect width="100" height="100" fill="url(#ss-fade)" />
+        </mask>
+      </defs>
+      <g mask="url(#ss-mask)">
+        {cols.map((c, i) => (
+          <rect key={i} x={i * 12.5} y="0" width="9" height="100" fill={c} fillOpacity="0.85" />
+        ))}
+      </g>
+    </svg>
+  )
+}
+
+/** S14 Aurora: several soft gradients layered and blurred in the corner. Colour with no shape at all. */
+export function SplashAurora() {
+  return (
+    <div className="ph-splash ph-splash--aurora" aria-hidden>
+      <span style={{ background: '#ec671b' }} />
+      <span style={{ background: '#793f95' }} />
+      <span style={{ background: '#619cba' }} />
+      <span style={{ background: '#f1d46e' }} />
+    </div>
+  )
+}

@@ -26,6 +26,20 @@ import {
   PhotoSplit,
   PhotoTriad,
   ProgressRings,
+  SplashBloom,
+  SplashConfetti,
+  SplashCorner,
+  SplashGradient,
+  SplashPools,
+  SplashQuarter,
+  SplashRipple,
+  SplashWash,
+  SplashAurora,
+  SplashBand,
+  SplashBlob,
+  SplashBlock,
+  SplashBrush,
+  SplashStripes,
 } from './visuals'
 import './pageheaders.css'
 
@@ -197,6 +211,96 @@ const photoVariations2: Execution[] = [
   },
 ]
 
+const splashes: Execution[] = [
+  {
+    n: 'S1',
+    title: 'Corner bleed',
+    note: 'One large circle in the chapter colour running off the top-right corner. The home page\u2019s device, in this chapter\u2019s colour.',
+    visual: <SplashCorner />,
+  },
+  {
+    n: 'S2',
+    title: 'Ink pools',
+    note: 'The three colours as large translucent circles overlapping like ink, deepening where they meet.',
+    visual: <SplashPools />,
+  },
+  {
+    n: 'S3',
+    title: 'Gradient orb',
+    note: 'One large circle with the chapter\u2019s colours blending across it, sitting slightly off the edge.',
+    visual: <SplashGradient />,
+  },
+  {
+    n: 'S4',
+    title: 'Confetti',
+    note: 'Many small circles in the palette, thick near the corner and thinning out. Celebratory, still all circles.',
+    visual: <SplashConfetti />,
+  },
+  {
+    n: 'S5',
+    title: 'Wash',
+    note: 'Colour as atmosphere: a soft radial wash across the whole column with one solid point inside it. No hard edge anywhere.',
+    visual: <SplashWash />,
+  },
+  {
+    n: 'S6',
+    title: 'Ripple',
+    note: 'One colour in concentric steps of tint, spreading from a point like a drop landing. Breathes slowly.',
+    visual: <SplashRipple />,
+  },
+  {
+    n: 'S7',
+    title: 'Bloom',
+    note: 'The three colours at full strength, large, overlapping and running off the edge. The boldest of the set.',
+    visual: <SplashBloom />,
+  },
+  {
+    n: 'S8',
+    title: 'Quarter',
+    note: 'A quarter of a huge circle anchored in the corner in one colour, with the paper showing through a smaller circle.',
+    visual: <SplashQuarter />,
+  },
+]
+
+const splashesFree: Execution[] = [
+  {
+    n: 'S9',
+    title: 'Brushstroke',
+    note: 'One broad, loose stroke of orange across the column, like a swipe of paint. Hand-made against the geometry.',
+    visual: <SplashBrush />,
+  },
+  {
+    n: 'S10',
+    title: 'Band',
+    note: 'A broad angled band of colour crossing the corner, navy into teal. Direction and energy without a picture.',
+    visual: <SplashBand />,
+  },
+  {
+    n: 'S11',
+    title: 'Blob',
+    note: 'An organic shape with soft edges in a gradient of two chapter colours, breathing slowly.',
+    visual: <SplashBlob />,
+  },
+  {
+    n: 'S12',
+    title: 'Block',
+    note: 'A flat block of colour filling the right third of the hero, edge to edge. Editorial and blunt; the text sits against it.',
+    visual: <SplashBlock />,
+  },
+  {
+    n: 'S13',
+    title: 'Stripes',
+    note: 'Vertical bands of the whole palette, like a tapestry, fading out towards the text.',
+    visual: <SplashStripes />,
+  },
+  {
+    n: 'S14',
+    title: 'Aurora',
+    note: 'Several soft gradients layered and blurred in the corner. Colour with no shape at all.',
+    visual: <SplashAurora />,
+  },
+]
+
 function Section({ e }: { e: Execution }) {
   return (
     <section className="ph__execution" aria-labelledby={`ex-${e.n}`}>
@@ -282,6 +386,32 @@ export default function PageHeadersPage() {
       </header>
 
       {photoVariations2.map((e) => (
+        <Section key={e.n} e={e} />
+      ))}
+
+      <header className="ph__intro ph__intro--sub">
+        <p className="eyebrow">Colour splash</p>
+        <h2 className="ph__title ph__title--sub">Colour as the visual</h2>
+        <p className="ph__blurb">
+          Eight ways to put a splash of colour in the space. Colour still lives in circles, the
+          paper and type stay as they are, and each chapter would use its own mark&rsquo;s colours.
+        </p>
+      </header>
+
+      {splashes.map((e) => (
+        <Section key={e.n} e={e} />
+      ))}
+
+      <header className="ph__intro ph__intro--sub">
+        <p className="eyebrow">Beyond circles</p>
+        <h2 className="ph__title ph__title--sub">Colour let off the leash</h2>
+        <p className="ph__blurb">
+          Six more splashes that leave the circle behind: strokes, bands, blobs, blocks, stripes and
+          light.
+        </p>
+      </header>
+
+      {splashesFree.map((e) => (
         <Section key={e.n} e={e} />
       ))}
     </div>
