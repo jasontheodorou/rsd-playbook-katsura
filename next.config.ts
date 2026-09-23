@@ -8,6 +8,8 @@ const dirname = path.dirname(fileURLToPath(import.meta.url))
 const nextConfig: NextConfig = {
   // Runs the same on Vercel and as a plain Node process in a container.
   output: 'standalone',
+  // Keep the development badge away from the chapter's side control.
+  devIndicators: { position: 'bottom-right' },
   // Image derivatives are made at upload time; no host image service.
   images: { unoptimized: true },
   webpack: (webpackConfig) => {

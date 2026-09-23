@@ -3,6 +3,7 @@
 import { motion, useReducedMotion, useScroll } from 'motion/react'
 import { useRef, type ReactNode } from 'react'
 
+import { useChapterFrame } from '../ChapterFrame'
 import HeadHeartHandsPattern from './HeadHeartHandsPattern'
 import { Media } from './Media'
 import { QuoteCard } from './QuoteCard'
@@ -10,8 +11,8 @@ import './pathway.css'
 
 /**
  * The Head, Heart and Hands chapter, carried over from the reference build's Pathway 1 (page s9)
- * on its warm paper. The rail and hamburger are gone: progress is a hairline at the left edge,
- * and the way back is at the end of the page (and in the top bar trail, and on Escape).
+ * on its warm paper. Navigation is a floating pill at the left: the chapter number, the reading
+ * progress as a fill, and the way back at its foot (also the top bar trail, and Escape).
  * The chapter-read applet (`end`) replaces the Continue footer.
  * The frame around this component owns the open and close animation.
  */
@@ -20,6 +21,7 @@ export function HeadHeartHandsChapter({ number, end }: { number: string; end: Re
   const scrollRef = useRef<HTMLDivElement>(null)
   const reduce = useReducedMotion()
   const { scrollYProgress } = useScroll({ container: scrollRef })
+  const { close, leaving } = useChapterFrame()
 
   const headItems = [
     'Individual needs, capability, motivation and opportunity.',
@@ -48,13 +50,39 @@ export function HeadHeartHandsChapter({ number, end }: { number: string; end: Re
         } as React.CSSProperties
       }
     >
-      {/* Reading progress: a hairline at the left edge that fills top to bottom as you scroll. */}
-      <div className="pilot-progress" aria-hidden="true">
-        <motion.div
-          className="pilot-progress__fill"
-          style={{ scaleY: scrollYProgress, transformOrigin: 'top' }}
+      {/* The floating pill: chapter number, reading progress, and the way back at its foot.
+          Arrives after the page has grown; the first thing to leave on close. */}
+      <motion.nav
+        className="pilot-pill"
+        aria-label="Chapter progress"
+        initial={reduce ? false : { x: -24, opacity: 0 }}
+        animate={
+          leaving
+            ? { x: -24, opacity: 0, transition: { duration: 0.22, ease: [0.4, 0, 1, 1] } }
+            : {
+                x: 0,
+                opacity: 1,
+                transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.3 },
+              }
+        }
+      >
+        <span className="pilot-pill__num" aria-hidden="true">
+          {number}
+        </span>
+        <div className="pilot-pill__track" aria-hidden="true">
+          <motion.div
+            className="pilot-pill__fill"
+            style={{ scaleY: scrollYProgress, transformOrigin: 'top' }}
+          />
+        </div>
+        <button
+          type="button"
+          className="pilot-pill__home"
+          aria-label="Back to the foundations"
+          title="Back to the foundations"
+          onClick={close}
         />
-      </div>
+      </motion.nav>
 
       <div ref={scrollRef} className="pilot-scroll">
         <motion.article
