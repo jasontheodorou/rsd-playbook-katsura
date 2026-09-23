@@ -41,7 +41,12 @@ export function Journey() {
         const r = current ? 11 : 6
         return (
           <g key={i} transform={`translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`}>
-            <circle r={r} fill={current ? 'var(--grey-2)' : 'none'} stroke={current ? 'none' : 'var(--grey-4)'} strokeWidth="0.8" />
+            <circle
+              r={r}
+              fill={current ? 'var(--grey-2)' : 'none'}
+              stroke={current ? 'none' : 'var(--grey-4)'}
+              strokeWidth="0.8"
+            />
             {current && (
               <>
                 <circle cy={-4.5} r="3.6" fill={navy} />
@@ -133,16 +138,20 @@ export function Contents({ items = ['Head', 'Heart', 'Hands'] }: { items?: strin
         </li>
         {items.map((label, i) => (
           <li key={label}>
-            <span className="ph-contents__dot" style={{ background: [navy, orange, teal][i % 3] }} />
+            <span
+              className="ph-contents__dot"
+              style={{ background: [navy, orange, teal][i % 3] }}
+            />
             <span className="ph-contents__label">{label}</span>
-            <span className="ph-contents__meta">{['How we think', 'Why we care', 'How we deliver'][i % 3]}</span>
+            <span className="ph-contents__meta">
+              {['How we think', 'Why we care', 'How we deliver'][i % 3]}
+            </span>
           </li>
         ))}
       </ol>
     </div>
   )
 }
-
 
 /* ---- Variations on 04, the mark taken apart. Same three orbs, quieter each time. ---- */
 
@@ -157,7 +166,15 @@ export function ExplodedOutlines() {
   return (
     <svg viewBox="0 0 100 100" className="ph-visual ph-drift" aria-hidden>
       {orbs.map((o) => (
-        <circle key={o.colour} cx={o.cx} cy={o.cy} r={o.r} fill="none" stroke={o.colour} strokeWidth="0.7" />
+        <circle
+          key={o.colour}
+          cx={o.cx}
+          cy={o.cy}
+          r={o.r}
+          fill="none"
+          stroke={o.colour}
+          strokeWidth="0.7"
+        />
       ))}
     </svg>
   )
@@ -166,7 +183,12 @@ export function ExplodedOutlines() {
 /** 04b Tints: the orbs at a sixth of their strength, overlaps deepening where they meet. */
 export function ExplodedTints() {
   return (
-    <svg viewBox="0 0 100 100" className="ph-visual ph-drift" aria-hidden style={{ mixBlendMode: 'multiply' }}>
+    <svg
+      viewBox="0 0 100 100"
+      className="ph-visual ph-drift"
+      aria-hidden
+      style={{ mixBlendMode: 'multiply' }}
+    >
       {orbs.map((o) => (
         <circle key={o.colour} cx={o.cx} cy={o.cy} r={o.r + 2} fill={o.colour} fillOpacity="0.16" />
       ))}
@@ -248,8 +270,150 @@ export function ExplodedGreyOrange() {
   return (
     <svg viewBox="0 0 100 100" className="ph-visual ph-drift" aria-hidden>
       <circle cx="46" cy="40" r="30" fill="var(--grey-2)" />
-      <circle cx="66" cy="62" r="24" fill="var(--grey-1)" stroke="var(--grey-3)" strokeWidth="0.5" />
+      <circle
+        cx="66"
+        cy="62"
+        r="24"
+        fill="var(--grey-1)"
+        stroke="var(--grey-3)"
+        strokeWidth="0.5"
+      />
       <circle cx="30" cy="70" r="9" fill={orange} />
+    </svg>
+  )
+}
+
+/* ---- Variations on 05, a photograph in the circle. Same photographs, quieter each time. ---- */
+
+const photos = {
+  head: '/photos/head-flipchart.jpg',
+  heart: '/photos/journey-map-group.jpg',
+  hands: '/photos/lego-prototyping.jpg',
+}
+
+/** 05a Duotone: the photograph in navy and paper, so it sits with the type rather than against it. */
+export function PhotoDuotone() {
+  return (
+    <svg viewBox="0 0 100 100" className="ph-visual" aria-hidden>
+      <defs>
+        <clipPath id="pd-clip">
+          <circle cx="50" cy="50" r="46" />
+        </clipPath>
+        <filter id="pd-mono">
+          <feColorMatrix type="saturate" values="0" />
+        </filter>
+      </defs>
+      <circle cx="50" cy="50" r="46" fill={navy} />
+      <image
+        href={photos.head}
+        width="100"
+        height="100"
+        preserveAspectRatio="xMidYMid slice"
+        clipPath="url(#pd-clip)"
+        filter="url(#pd-mono)"
+        style={{ mixBlendMode: 'screen', opacity: 0.9 }}
+      />
+    </svg>
+  )
+}
+
+/** 05b Three photographs: the mark's three orbs, each a photograph. Head, heart and hands, literally. */
+export function PhotoTriad() {
+  const orbSet = [
+    { src: photos.head, cx: 50, cy: 31, r: 23 },
+    { src: photos.heart, cx: 31, cy: 65, r: 21 },
+    { src: photos.hands, cx: 69, cy: 65, r: 21 },
+  ]
+  return (
+    <svg viewBox="0 0 100 100" className="ph-visual ph-drift" aria-hidden>
+      <defs>
+        {orbSet.map((o, i) => (
+          <clipPath key={i} id={`pt-${i}`}>
+            <circle cx={o.cx} cy={o.cy} r={o.r} />
+          </clipPath>
+        ))}
+      </defs>
+      {orbSet.map((o, i) => (
+        <g key={i}>
+          <circle cx={o.cx} cy={o.cy} r={o.r + 1.2} fill="#fcfbf8" />
+          <image
+            href={o.src}
+            x={o.cx - o.r}
+            y={o.cy - o.r}
+            width={o.r * 2}
+            height={o.r * 2}
+            preserveAspectRatio="xMidYMid slice"
+            clipPath={`url(#pt-${i})`}
+          />
+        </g>
+      ))}
+    </svg>
+  )
+}
+
+/** 05c Fade: the photograph inside the circle, dissolving into the paper towards its edge. */
+export function PhotoFade() {
+  return (
+    <svg viewBox="0 0 100 100" className="ph-visual" aria-hidden>
+      <defs>
+        <radialGradient id="pf-fade">
+          <stop offset="45%" stopColor="#fff" stopOpacity="1" />
+          <stop offset="100%" stopColor="#fff" stopOpacity="0" />
+        </radialGradient>
+        <mask id="pf-mask">
+          <circle cx="50" cy="50" r="48" fill="url(#pf-fade)" />
+        </mask>
+      </defs>
+      <image
+        href={photos.head}
+        width="100"
+        height="100"
+        preserveAspectRatio="xMidYMid slice"
+        mask="url(#pf-mask)"
+        style={{ opacity: 0.85 }}
+      />
+    </svg>
+  )
+}
+
+/** 05d Off the edge: one very large circle, mostly beyond the page, a slice of photograph showing. */
+export function PhotoOffEdge() {
+  return (
+    <div className="ph-visual ph-offedge" aria-hidden>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={photos.heart} alt="" />
+    </div>
+  )
+}
+
+/** 05e Monochrome with one orange point: the photograph in grey, and the brand's one allowed colour beside it. */
+export function PhotoMono() {
+  return (
+    <div className="ph-visual ph-mono" aria-hidden>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={photos.head} alt="" />
+      <span className="ph-mono__dot" style={{ background: orange }} />
+    </div>
+  )
+}
+
+/** 05f Split: half photograph, half flat colour, one circle. An echo of the What we do mark. */
+export function PhotoSplit() {
+  return (
+    <svg viewBox="0 0 100 100" className="ph-visual" aria-hidden>
+      <defs>
+        <clipPath id="ps-left">
+          <path d="M50 4 A46 46 0 0 0 50 96 Z" />
+        </clipPath>
+      </defs>
+      <path d="M50 4 A46 46 0 0 1 50 96 Z" fill={teal} />
+      <image
+        href={photos.hands}
+        width="100"
+        height="100"
+        preserveAspectRatio="xMidYMid slice"
+        clipPath="url(#ps-left)"
+      />
     </svg>
   )
 }

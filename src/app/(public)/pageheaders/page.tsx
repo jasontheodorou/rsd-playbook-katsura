@@ -13,6 +13,12 @@ import {
   MarkLarge,
   Numeral,
   PhotoCircle,
+  PhotoDuotone,
+  PhotoFade,
+  PhotoMono,
+  PhotoOffEdge,
+  PhotoSplit,
+  PhotoTriad,
   ProgressRings,
 } from './visuals'
 import './pageheaders.css'
@@ -107,6 +113,45 @@ const variations: Execution[] = [
   },
 ]
 
+const photoVariations: Execution[] = [
+  {
+    n: '05a',
+    title: 'Duotone',
+    note: 'The photograph in navy and paper only, so it sits with the type rather than against it.',
+    visual: <PhotoDuotone />,
+  },
+  {
+    n: '05b',
+    title: 'Three photographs',
+    note: 'The mark\u2019s three orbs, each a photograph. Head, heart and hands, literally, drifting very slowly.',
+    visual: <PhotoTriad />,
+  },
+  {
+    n: '05c',
+    title: 'Fade',
+    note: 'The photograph inside the circle, dissolving into the paper towards its edge. No ring, no outline.',
+    visual: <PhotoFade />,
+  },
+  {
+    n: '05d',
+    title: 'Off the edge',
+    note: 'One very large circle, mostly beyond the page, with only a slice of photograph showing. The home page\u2019s orange circle, made of people.',
+    visual: <PhotoOffEdge />,
+  },
+  {
+    n: '05e',
+    title: 'Monochrome, one orange point',
+    note: 'The photograph in grey and the brand\u2019s one allowed colour as a small circle beside it.',
+    visual: <PhotoMono />,
+  },
+  {
+    n: '05f',
+    title: 'Split',
+    note: 'Half photograph, half flat colour, one circle. An echo of the What we do mark on the grid.',
+    visual: <PhotoSplit />,
+  },
+]
+
 function Section({ e }: { e: Execution }) {
   return (
     <section className="ph__execution" aria-labelledby={`ex-${e.n}`}>
@@ -170,6 +215,19 @@ export default function PageHeadersPage() {
       </header>
 
       {variations.map((e) => (
+        <Section key={e.n} e={e} />
+      ))}
+
+      <header className="ph__intro ph__intro--sub">
+        <p className="eyebrow">Variations on 05</p>
+        <h2 className="ph__title ph__title--sub">A photograph in the circle, but quieter</h2>
+        <p className="ph__blurb">
+          Six subtler treatments of the same idea: the chapter&rsquo;s photographs held inside the
+          brand&rsquo;s one shape. Less picture each time, or the picture held more lightly.
+        </p>
+      </header>
+
+      {photoVariations.map((e) => (
         <Section key={e.n} e={e} />
       ))}
     </div>

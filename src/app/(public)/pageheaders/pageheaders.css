@@ -99,6 +99,25 @@
 .ph-photo__ring { position: absolute; inset: -14px; border-radius: 50%; border: 1px solid var(--grey-3); }
 .ph-photo__dot { position: absolute; right: 6%; top: 8%; width: 28px; height: 28px; border-radius: 50%; box-shadow: 0 0 0 4px #fcfbf8; }
 
+/* 05d off the edge: the art column lets the circle run out of the frame */
+.ph-offedge {
+  position: absolute;
+  right: -34%;
+  top: 50%;
+  width: 150%;
+  max-width: none;
+  aspect-ratio: 1;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  overflow: hidden;
+}
+.ph-offedge img { width: 100%; height: 100%; object-fit: cover; object-position: 30% 50%; display: block; opacity: 0.92; }
+
+/* 05e monochrome */
+.ph-mono { position: relative; width: 100%; max-width: 340px; aspect-ratio: 1; }
+.ph-mono img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 52% 52%; border-radius: 50%; filter: grayscale(1) contrast(0.95); opacity: 0.9; }
+.ph-mono__dot { position: absolute; left: -6%; bottom: 14%; width: 44px; height: 44px; border-radius: 50%; }
+
 /* 06 progress rings: the demo fills the ring on a loop to stand in for scrolling */
 .ph-rings { max-width: 340px; }
 .ph-rings__progress { animation: ph-fill 6s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
