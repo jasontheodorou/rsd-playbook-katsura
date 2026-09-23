@@ -16,7 +16,8 @@ Architecture agreed on 2026-09-22 (see `artefacts/2026-09-22-architecture-plan.m
 
 ## Active goals
 
-- Finish step 1 hosting: GitHub repo, Neon database, Cloudflare R2 bucket, Vercel project (preview deploys off, build runs migrations), scheduler variable and secret.
+- Code is public at github.com/jasontheodorou/rsd-playbook-katsura (CI workflows parked in `.github-pending/` until the push token has the workflow permission).
+- Finish step 1 hosting: Neon database, Cloudflare R2 bucket, Vercel project (preview deploys off, build runs migrations), scheduler variable and secret.
 - Build phase 2 (publisher spike): pages with drafts and versions, `page_editions` state table, three roles, four-eyes rule, `published_pages` snapshot, public and preview routes, draft-leak test.
 
 ## Key constraints
