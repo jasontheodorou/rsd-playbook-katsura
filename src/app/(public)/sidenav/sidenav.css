@@ -132,3 +132,33 @@
 @media (prefers-reduced-motion: reduce) {
   .snp * { animation: none !important; }
 }
+
+
+/* ---- The foot of the pill ---- */
+.snp__intro--sub { margin-top: 24px; padding-top: 48px; border-top: 1px solid var(--border); }
+.snp__title--sub { font-size: 32px; }
+.snp__feet { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 24px; }
+.snp__foot-option { display: flex; flex-direction: column; gap: 14px; }
+.snp__frame--short { height: 420px; }
+.snp__page--faint { left: 96px; top: 48px; right: 40px; }
+.snp__headline--sm { font-size: 2.25rem; margin-bottom: 16px; }
+.snp__label--tight { grid-template-columns: 32px 1fr; }
+.snp__name--sm { font-size: 18px; }
+@media (max-width: 56.25rem) { .snp__feet { grid-template-columns: 1fr; } }
+
+.sn__foot { padding: 0; border: 0; background: none; cursor: pointer; display: grid; place-items: center; color: var(--tc-deep); }
+.sn__foot--bar { width: 14px; height: 3px; border-radius: 2px; background: var(--tc-deep); }
+.sn__foot--diamond { width: 10px; height: 10px; background: var(--tc-deep); transform: rotate(45deg); border-radius: 1px; }
+.sn__foot--word { font-family: inherit; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.sn--pill[data-foot='tab'] .sn__pill-track { border-radius: 999px 999px 0 0; }
+.sn__foot--tab { width: 10px; height: 36px; margin-top: -12px; border-radius: 0 0 999px 999px; background: var(--tc-deep); }
+.sn__foot--wedge { width: 0; height: 0; border-style: solid; border-width: 6px 8px 6px 0; border-color: transparent var(--tc-deep) transparent transparent; }
+.sn__foot--cross { position: relative; width: 12px; height: 12px; }
+.sn__foot--cross span { position: absolute; left: 0; right: 0; top: 5.5px; height: 1.2px; background: var(--tc-deep); }
+.sn__foot--cross span:first-child { transform: rotate(45deg); }
+.sn__foot--cross span:last-child { transform: rotate(-45deg); }
+.sn__foot--ticks { display: flex; flex-direction: column; gap: 3px; }
+.sn__foot--ticks span { display: block; width: 12px; height: 1.5px; background: var(--tc); }
+.sn__foot--ticks span[data-current] { background: var(--tc-deep); width: 16px; }
+.sn__foot--twobars { display: flex; flex-direction: column; gap: 4px; }
+.sn__foot--twobars span { display: block; width: 14px; height: 2px; border-radius: 1px; background: var(--tc-deep); }
