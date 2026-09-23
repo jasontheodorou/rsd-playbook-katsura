@@ -1,0 +1,124 @@
+/* The review page: one section per execution, each a mock of the chapter hero. */
+.ph {
+  width: 100%;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+
+.ph__intro { max-width: 720px; }
+.ph__title { margin: 8px 0 16px; font-size: 42px; line-height: 1.2; font-weight: 700; }
+.ph__blurb { margin: 0; font-size: 18px; line-height: 1.6; color: var(--text-muted); }
+
+.ph__execution { display: flex; flex-direction: column; gap: 16px; }
+.ph__label { display: grid; grid-template-columns: 40px 1fr; gap: 0 16px; align-items: baseline; max-width: 760px; }
+.ph__num { font-size: 13px; font-weight: 700; letter-spacing: 0.14em; color: var(--grey-4); }
+.ph__name { margin: 0; font-size: 22px; font-weight: 700; }
+.ph__note { grid-column: 2; margin: 4px 0 0; font-size: 15px; line-height: 1.55; color: var(--text-muted); }
+
+/* The frame stands in for the chapter page: same paper, same hero grid as the ported page. */
+.ph__frame {
+  background: #fcfbf8;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.ph__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: 48px;
+  align-items: center;
+  min-height: 460px;
+  padding: 56px clamp(24px, 4vw, 64px);
+}
+
+.ph__text { display: flex; flex-direction: column; }
+.ph__text .pilot-marker { margin-bottom: 32px; }
+.ph__headline {
+  margin: 0 0 20px;
+  font-weight: 800;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  color: #111;
+  max-width: 18ch;
+}
+.ph__lede { margin: 0 0 16px; max-width: 65ch; font-size: 1.0625rem; line-height: 1.6; color: #3a3a3e; }
+.ph__lede:last-child { margin: 0; }
+
+.ph__art {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 340px;
+}
+
+.ph-visual { display: block; width: 100%; max-width: 380px; height: auto; }
+.ph-visual--mark { max-width: 340px; }
+
+/* 03 numeral */
+.ph-numeral { position: relative; display: grid; place-items: center; width: 100%; max-width: 380px; aspect-ratio: 1; }
+.ph-numeral__disc { position: absolute; width: 62%; aspect-ratio: 1; border-radius: 50%; background: var(--grey-2); transform: translate(14%, 10%); }
+.ph-numeral__text {
+  position: relative;
+  font-size: clamp(160px, 22vw, 260px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: var(--grey-3);
+  mix-blend-mode: multiply;
+}
+
+/* 04 exploded orbs */
+.ph-exploded { position: relative; width: 100%; max-width: 380px; aspect-ratio: 1; }
+.ph-exploded__orb { position: absolute; border-radius: 50%; opacity: 0.92; animation: ph-drift 14s ease-in-out infinite alternate; }
+.ph-exploded__orb--a { width: 50%; height: 50%; left: 25%; top: 2%; }
+.ph-exploded__orb--b { width: 46%; height: 46%; left: 6%; top: 44%; animation-delay: -5s; }
+.ph-exploded__orb--c { width: 46%; height: 46%; left: 50%; top: 44%; animation-delay: -9s; }
+@keyframes ph-drift {
+  from { transform: translate(0, 0); }
+  to { transform: translate(3%, -3%); }
+}
+
+/* 05 photo in a circle */
+.ph-photo { position: relative; width: 100%; max-width: 360px; aspect-ratio: 1; }
+.ph-photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 52% 52%; border-radius: 50%; }
+.ph-photo__ring { position: absolute; inset: -14px; border-radius: 50%; border: 1px solid var(--grey-3); }
+.ph-photo__dot { position: absolute; right: 6%; top: 8%; width: 28px; height: 28px; border-radius: 50%; box-shadow: 0 0 0 4px #fcfbf8; }
+
+/* 06 progress rings: the demo fills the ring on a loop to stand in for scrolling */
+.ph-rings { max-width: 340px; }
+.ph-rings__progress { animation: ph-fill 6s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+@keyframes ph-fill {
+  0% { stroke-dashoffset: 276.46; }
+  70% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 0; }
+}
+
+/* 07 contents as a path */
+.ph-contents { position: relative; width: 100%; max-width: 360px; padding-left: 8px; }
+.ph-contents ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 28px; position: relative; }
+.ph-contents__line { position: absolute; left: 43px; top: 40px; bottom: 12px; width: 1px; background: var(--grey-3); }
+.ph-contents li { position: relative; display: grid; grid-template-columns: 72px 1fr; column-gap: 20px; align-items: center; }
+.ph-contents__mark svg { display: block; }
+.ph-contents__dot { grid-column: 1; justify-self: center; width: 14px; height: 14px; border-radius: 50%; box-shadow: 0 0 0 5px #fcfbf8; }
+.ph-contents__label { grid-column: 2; font-size: 20px; font-weight: 700; line-height: 1.2; }
+.ph-contents__meta { grid-column: 2; font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+@media (max-width: 56.25rem) {
+  .ph__hero { grid-template-columns: 1fr; min-height: 0; }
+  .ph__art { min-height: 260px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ph-exploded__orb, .ph-rings__progress { animation: none; }
+  .ph-rings__progress { stroke-dashoffset: 110; }
+}
+
+/* Marker, copied from the chapter stylesheet so this page stands alone. */
+.ph .pilot-marker { display: inline-flex; align-items: center; gap: 14px; font-weight: 700; font-size: 13px; letter-spacing: 0.22em; text-transform: uppercase; color: #ec671b; }
+.ph .pilot-marker__num { padding: 6px 12px; border: 1.5px solid #ec671b; border-radius: 6px; }
+.ph .pilot-marker__rule { display: block; width: 56px; height: 1.5px; background: #ec671b; opacity: 0.7; }
