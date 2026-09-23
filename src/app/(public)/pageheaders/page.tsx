@@ -422,6 +422,94 @@ const typeExecutions: TypeExecution[] = [
   },
 ]
 
+const titleOnly: TypeExecution[] = [
+  {
+    n: 'J1',
+    title: 'Colossal',
+    note: 'The title alone at its largest, running off the right edge so the letters are cut. You read it anyway.',
+    hero: <p className="jt jt--colossal">Head, heart and hands.</p>,
+  },
+  {
+    n: 'J2',
+    title: 'Vertical',
+    note: 'The title turned on its side and set along the right edge, reading upwards. The header becomes a spine.',
+    hero: (
+      <div className="jt jt--vertical">
+        <p>Head, heart and hands.</p>
+      </div>
+    ),
+  },
+  {
+    n: 'J3',
+    title: 'Staircase',
+    note: 'Three lines, each stepping in further than the last. The rhythm of the phrase made visible.',
+    hero: (
+      <p className="jt jt--stairs">
+        <span>Head,</span>
+        <span>heart and</span>
+        <span>hands.</span>
+      </p>
+    ),
+  },
+  {
+    n: 'J4',
+    title: 'Justified',
+    note: 'Three lines, each letter-spaced to exactly the same width, so the title becomes a block. Architectural.',
+    hero: (
+      <p className="jt jt--justified">
+        <span>Head,</span>
+        <span>heart and</span>
+        <span>hands.</span>
+      </p>
+    ),
+  },
+  {
+    n: 'J5',
+    title: 'The orange full stop',
+    note: 'The title at display size, and the final full stop is the playbook\u2019s orange circle. One brand mark, doing grammar.',
+    hero: (
+      <p className="jt jt--stop">
+        Head, heart and hands
+        <span className="jt__dot" aria-hidden />
+      </p>
+    ),
+  },
+  {
+    n: 'J6',
+    title: 'Knockout',
+    note: 'A navy block across the whole header with the title cut out of it in paper. The only header that is dark.',
+    hero: (
+      <div className="jt jt--knockout">
+        <p>Head, heart and hands.</p>
+      </div>
+    ),
+  },
+  {
+    n: 'J7',
+    title: 'The long underline',
+    note: 'The title with the playbook\u2019s orange underline scaled up to a thick rule that runs off the right edge of the page.',
+    hero: (
+      <div className="jt jt--rule">
+        <p>Head, heart and hands.</p>
+        <span className="jt__rule" aria-hidden />
+      </div>
+    ),
+  },
+  {
+    n: 'J8',
+    title: 'Echo',
+    note: 'The title once, solid, and again beneath it in outline, stepped down and to the right like a shadow that has not caught up.',
+    hero: (
+      <div className="jt jt--echo">
+        <p className="jt__echo" aria-hidden>
+          Head, heart and hands.
+        </p>
+        <p>Head, heart and hands.</p>
+      </div>
+    ),
+  },
+]
+
 function Section({ e }: { e: Execution }) {
   return (
     <section className="ph__execution" aria-labelledby={`ex-${e.n}`}>
@@ -543,6 +631,29 @@ export default function PageHeadersPage() {
           Six headers where the words do the work. All Open Sans, all on the same paper.
         </p>
       </header>
+
+      <header className="ph__intro ph__intro--sub">
+        <p className="eyebrow">Just the title</p>
+        <h2 className="ph__title ph__title--sub">Nothing but the words</h2>
+        <p className="ph__blurb">
+          Eight headers made from the title alone. No marker, no opening text, no picture.
+        </p>
+      </header>
+
+      {titleOnly.map((e) => (
+        <section key={e.n} className="ph__execution" aria-labelledby={`ex-${e.n}`}>
+          <div className="ph__label">
+            <span className="ph__num">{e.n}</span>
+            <h2 id={`ex-${e.n}`} className="ph__name">
+              {e.title}
+            </h2>
+            <p className="ph__note">{e.note}</p>
+          </div>
+          <div className="ph__frame">
+            <div className="ph__hero ph__hero--type ph__hero--title">{e.hero}</div>
+          </div>
+        </section>
+      ))}
 
       {typeExecutions.map((e) => (
         <section key={e.n} className="ph__execution" aria-labelledby={`ex-${e.n}`}>

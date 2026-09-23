@@ -261,3 +261,47 @@
   .ty__statement { grid-column: 1; }
 }
 @media (prefers-reduced-motion: reduce) { .ty__track span { animation: none; } }
+
+
+/* ---- Just the title ---- */
+.ph__hero--title { min-height: 360px; display: flex; align-items: center; overflow: hidden; position: relative; }
+.jt { margin: 0; width: 100%; font-weight: 800; letter-spacing: -0.035em; line-height: 0.95; color: #111; }
+
+/* J1 colossal */
+.jt--colossal { font-size: clamp(6rem, 15vw, 12.5rem); white-space: nowrap; line-height: 0.9; }
+
+/* J2 vertical */
+.jt--vertical { display: flex; justify-content: flex-end; align-self: stretch; }
+.jt--vertical p { margin: 0; writing-mode: vertical-rl; transform: rotate(180deg); font-size: clamp(2.5rem, 4.6vw, 3.75rem); line-height: 1; letter-spacing: -0.02em; }
+
+/* J3 stairs */
+.jt--stairs { display: flex; flex-direction: column; font-size: clamp(3.5rem, 7vw, 6rem); }
+.jt--stairs span:nth-child(2) { padding-left: 0.9em; }
+.jt--stairs span:nth-child(3) { padding-left: 2.2em; }
+
+/* J4 justified: each line spaced out to the same width */
+.jt--justified { display: flex; flex-direction: column; max-width: 720px; font-size: clamp(3rem, 6vw, 5.25rem); }
+.jt--justified span { display: flex; justify-content: space-between; }
+.jt--justified span::after { content: ''; }
+.jt--justified span { letter-spacing: 0.02em; }
+.jt--justified span:nth-child(1) { letter-spacing: 0.32em; }
+.jt--justified span:nth-child(3) { letter-spacing: 0.22em; }
+
+/* J5 the orange full stop */
+.jt--stop { font-size: clamp(3.5rem, 7.4vw, 6.5rem); }
+.jt__dot { display: inline-block; width: 0.22em; height: 0.22em; margin-left: 0.08em; border-radius: 50%; background: var(--orange); vertical-align: baseline; }
+
+/* J6 knockout */
+.jt--knockout { align-self: stretch; margin: -56px calc(-1 * clamp(24px, 4vw, 64px)); padding: 56px clamp(24px, 4vw, 64px); background: var(--navy); display: flex; align-items: center; }
+.jt--knockout p { margin: 0; color: #fcfbf8; font-size: clamp(3.5rem, 7.4vw, 6.5rem); max-width: 12ch; }
+
+/* J7 long underline */
+.jt--rule { position: relative; }
+.jt--rule p { margin: 0 0 0.12em; font-size: clamp(3.5rem, 7.4vw, 6.5rem); }
+.jt__rule { display: block; height: 0.16em; font-size: clamp(3.5rem, 7.4vw, 6.5rem); width: 140%; background: var(--orange); }
+
+/* J8 echo */
+.jt--echo { position: relative; font-size: clamp(3.5rem, 7.4vw, 6.5rem); }
+.jt--echo p { margin: 0; position: relative; max-width: 12ch; }
+.jt__echo { position: absolute !important; left: 0.18em; top: 0.16em; color: transparent !important; -webkit-text-stroke: 1px var(--grey-3); z-index: 0; }
+.jt--echo p:last-child { z-index: 1; }
