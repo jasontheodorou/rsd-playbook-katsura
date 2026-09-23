@@ -142,3 +142,114 @@ export function Contents({ items = ['Head', 'Heart', 'Hands'] }: { items?: strin
     </div>
   )
 }
+
+
+/* ---- Variations on 04, the mark taken apart. Same three orbs, quieter each time. ---- */
+
+const orbs = [
+  { colour: navy, cx: 50, cy: 30, r: 24 },
+  { colour: orange, cx: 30, cy: 66, r: 22 },
+  { colour: teal, cx: 70, cy: 66, r: 22 },
+]
+
+/** 04a Outlines: the orbs as hairlines in their own colours, overlaps left to the eye. */
+export function ExplodedOutlines() {
+  return (
+    <svg viewBox="0 0 100 100" className="ph-visual ph-drift" aria-hidden>
+      {orbs.map((o) => (
+        <circle key={o.colour} cx={o.cx} cy={o.cy} r={o.r} fill="none" stroke={o.colour} strokeWidth="0.7" />
+      ))}
+    </svg>
+  )
+}
+
+/** 04b Tints: the orbs at a sixth of their strength, overlaps deepening where they meet. */
+export function ExplodedTints() {
+  return (
+    <svg viewBox="0 0 100 100" className="ph-visual ph-drift" aria-hidden style={{ mixBlendMode: 'multiply' }}>
+      {orbs.map((o) => (
+        <circle key={o.colour} cx={o.cx} cy={o.cy} r={o.r + 2} fill={o.colour} fillOpacity="0.16" />
+      ))}
+    </svg>
+  )
+}
+
+/** 04c Glow: the orbs as soft discs that fade to nothing at the edge, like light rather than paint. */
+export function ExplodedGlow() {
+  return (
+    <svg viewBox="0 0 100 100" className="ph-visual ph-drift" aria-hidden>
+      <defs>
+        {orbs.map((o, i) => (
+          <radialGradient key={i} id={`glow-${i}`}>
+            <stop offset="0%" stopColor={o.colour} stopOpacity="0.55" />
+            <stop offset="55%" stopColor={o.colour} stopOpacity="0.22" />
+            <stop offset="100%" stopColor={o.colour} stopOpacity="0" />
+          </radialGradient>
+        ))}
+      </defs>
+      {orbs.map((o, i) => (
+        <circle key={i} cx={o.cx} cy={o.cy} r={o.r + 8} fill={`url(#glow-${i})`} />
+      ))}
+    </svg>
+  )
+}
+
+/** 04d Halftone: the orbs as fields of tiny dots, a texture more than a shape. */
+export function ExplodedHalftone() {
+  return (
+    <svg viewBox="0 0 100 100" className="ph-visual" aria-hidden>
+      <defs>
+        {orbs.map((o, i) => (
+          <pattern key={i} id={`dots-${i}`} width="3.2" height="3.2" patternUnits="userSpaceOnUse">
+            <circle cx="1.6" cy="1.6" r="0.75" fill={o.colour} fillOpacity="0.7" />
+          </pattern>
+        ))}
+        <radialGradient id="dots-fade">
+          <stop offset="60%" stopColor="#fff" stopOpacity="1" />
+          <stop offset="100%" stopColor="#fff" stopOpacity="0" />
+        </radialGradient>
+        <mask id="dots-mask">
+          <rect width="100" height="100" fill="url(#dots-fade)" />
+        </mask>
+      </defs>
+      <g mask="url(#dots-mask)">
+        {orbs.map((o, i) => (
+          <circle key={i} cx={o.cx} cy={o.cy} r={o.r + 3} fill={`url(#dots-${i})`} />
+        ))}
+      </g>
+    </svg>
+  )
+}
+
+/** 04e Rings: each orb as a set of thin concentric rings, breathing very slowly. */
+export function ExplodedRings() {
+  return (
+    <svg viewBox="0 0 100 100" className="ph-visual ph-breathe" aria-hidden>
+      {orbs.map((o) =>
+        [1, 0.72, 0.44].map((k, j) => (
+          <circle
+            key={`${o.colour}-${j}`}
+            cx={o.cx}
+            cy={o.cy}
+            r={o.r * k}
+            fill="none"
+            stroke={o.colour}
+            strokeWidth="0.5"
+            strokeOpacity={0.9 - j * 0.25}
+          />
+        )),
+      )}
+    </svg>
+  )
+}
+
+/** 04f Grey, with one orange: two orbs in the paper's own greys, the smallest in orange. The brand's rule, kept to the letter. */
+export function ExplodedGreyOrange() {
+  return (
+    <svg viewBox="0 0 100 100" className="ph-visual ph-drift" aria-hidden>
+      <circle cx="46" cy="40" r="30" fill="var(--grey-2)" />
+      <circle cx="66" cy="62" r="24" fill="var(--grey-1)" stroke="var(--grey-3)" strokeWidth="0.5" />
+      <circle cx="30" cy="70" r="9" fill={orange} />
+    </svg>
+  )
+}

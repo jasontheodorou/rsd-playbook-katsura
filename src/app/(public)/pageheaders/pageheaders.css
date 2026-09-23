@@ -72,6 +72,16 @@
   mix-blend-mode: multiply;
 }
 
+.ph__intro--sub { margin-top: 24px; padding-top: 48px; border-top: 1px solid var(--border); }
+.ph__title--sub { font-size: 32px; }
+
+.ph-drift { animation: ph-drift 16s ease-in-out infinite alternate; }
+.ph-breathe { animation: ph-breathe 9s ease-in-out infinite alternate; transform-origin: 50% 50%; }
+@keyframes ph-breathe {
+  from { transform: scale(1); }
+  to { transform: scale(1.025); }
+}
+
 /* 04 exploded orbs */
 .ph-exploded { position: relative; width: 100%; max-width: 380px; aspect-ratio: 1; }
 .ph-exploded__orb { position: absolute; border-radius: 50%; opacity: 0.92; animation: ph-drift 14s ease-in-out infinite alternate; }
@@ -114,7 +124,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ph-exploded__orb, .ph-rings__progress { animation: none; }
+  .ph-exploded__orb, .ph-rings__progress, .ph-drift, .ph-breathe { animation: none; }
   .ph-rings__progress { stroke-dashoffset: 110; }
 }
 
