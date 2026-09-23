@@ -292,7 +292,7 @@
 .jt__dot { display: inline-block; width: 0.22em; height: 0.22em; margin-left: 0.08em; border-radius: 50%; background: var(--orange); vertical-align: baseline; }
 
 /* J6 knockout */
-.jt--knockout { align-self: stretch; margin: -56px calc(-1 * clamp(24px, 4vw, 64px)); padding: 56px clamp(24px, 4vw, 64px); background: var(--navy); display: flex; align-items: center; }
+.jt--knockout { align-self: stretch; width: calc(100% + 2 * clamp(24px, 4vw, 64px)); margin: -56px calc(-1 * clamp(24px, 4vw, 64px)); padding: 56px clamp(24px, 4vw, 64px); background: var(--navy); display: flex; align-items: center; }
 .jt--knockout p { margin: 0; color: #fcfbf8; font-size: clamp(3.5rem, 7.4vw, 6.5rem); max-width: 12ch; }
 
 /* J7 long underline */

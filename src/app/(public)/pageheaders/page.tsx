@@ -632,6 +632,21 @@ export default function PageHeadersPage() {
         </p>
       </header>
 
+      {typeExecutions.map((e) => (
+        <section key={e.n} className="ph__execution" aria-labelledby={`ex-${e.n}`}>
+          <div className="ph__label">
+            <span className="ph__num">{e.n}</span>
+            <h2 id={`ex-${e.n}`} className="ph__name">
+              {e.title}
+            </h2>
+            <p className="ph__note">{e.note}</p>
+          </div>
+          <div className="ph__frame">
+            <div className="ph__hero ph__hero--type">{e.hero}</div>
+          </div>
+        </section>
+      ))}
+
       <header className="ph__intro ph__intro--sub">
         <p className="eyebrow">Just the title</p>
         <h2 className="ph__title ph__title--sub">Nothing but the words</h2>
@@ -651,21 +666,6 @@ export default function PageHeadersPage() {
           </div>
           <div className="ph__frame">
             <div className="ph__hero ph__hero--type ph__hero--title">{e.hero}</div>
-          </div>
-        </section>
-      ))}
-
-      {typeExecutions.map((e) => (
-        <section key={e.n} className="ph__execution" aria-labelledby={`ex-${e.n}`}>
-          <div className="ph__label">
-            <span className="ph__num">{e.n}</span>
-            <h2 id={`ex-${e.n}`} className="ph__name">
-              {e.title}
-            </h2>
-            <p className="ph__note">{e.note}</p>
-          </div>
-          <div className="ph__frame">
-            <div className="ph__hero ph__hero--type">{e.hero}</div>
           </div>
         </section>
       ))}
