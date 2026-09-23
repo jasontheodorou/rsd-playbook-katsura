@@ -1177,3 +1177,31 @@
   align-items: flex-start;
   text-align: left;
 }
+
+/* ── Title-led hero (J5): no illustration, the headline at display size, the full stop an orange circle ── */
+.p1v2__hero--title {
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.p1v2__headline--display {
+  max-width: 14ch;
+  font-size: clamp(3rem, 7.4vw, 6.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  margin-bottom: var(--sp-8);
+}
+
+.p1v2__stop {
+  display: inline-block;
+  width: 0.22em;
+  height: 0.22em;
+  margin-left: 0.08em;
+  border-radius: 50%;
+  background: #ec671b;
+  vertical-align: baseline;
+}
+
+.p1v2__hero--title .p1v2__lede {
+  max-width: 60ch;
+}

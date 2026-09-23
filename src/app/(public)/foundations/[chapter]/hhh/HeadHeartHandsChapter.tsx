@@ -115,14 +115,17 @@ export function HeadHeartHandsChapter({ number, end }: { number: string; end: Re
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: [0.65, 0, 0.45, 1], delay: 0.1 }}
         >
-          <section className="p1v2__hero">
+          <section className="p1v2__hero p1v2__hero--title">
             <div className="p1v2__hero-text">
               <span className="pilot-marker p1v2__marker">
                 <span className="pilot-marker__num">{number}</span>
                 <span className="pilot-marker__rule" aria-hidden="true" />
                 <span>Our philosophy</span>
               </span>
-              <h1 className="p1v2__headline">Head, heart and hands.</h1>
+              <h1 className="p1v2__headline p1v2__headline--display">
+                Head, heart and hands
+                <span className="p1v2__stop" aria-hidden="true" />
+              </h1>
               <p className="p1v2__lede">
                 Our Head, Heart, Hands philosophy brings together clear thinking, genuine care and
                 practical action.
@@ -131,11 +134,6 @@ export function HeadHeartHandsChapter({ number, end }: { number: string; end: Re
                 It helps organisations build better cultures and create services that make a real
                 difference to people&rsquo;s lives.
               </p>
-            </div>
-            <div className="p1v2__hero-art">
-              <picture>
-                <img src="/illustrations/head_heart_hands.png" alt="" />
-              </picture>
             </div>
           </section>
 

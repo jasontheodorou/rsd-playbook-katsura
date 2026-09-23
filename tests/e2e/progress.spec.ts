@@ -29,7 +29,7 @@ test('reaching the end of a chapter with JavaScript fills the mark', async ({ pa
 
 test('the Head, Heart and Hands hamburger returns to the foundations grid', async ({ page }) => {
   await page.goto('/foundations/head-heart-and-hands')
-  await expect(page.locator('.p1v2__headline')).toHaveText('Head, heart and hands.')
+  await expect(page.locator('.p1v2__headline')).toHaveText('Head, heart and hands')
   await page.getByRole('button', { name: 'Back to the foundations' }).click()
   await page.waitForURL(/\/foundations$/)
   await expect(page.locator('.chapter-frame')).toHaveCount(0)
