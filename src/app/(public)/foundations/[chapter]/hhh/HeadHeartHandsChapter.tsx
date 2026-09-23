@@ -12,7 +12,7 @@ import './pathway.css'
 /**
  * The Head, Heart and Hands chapter, carried over from the reference build's Pathway 1 (page s9)
  * on its warm paper. Navigation is a floating pill at the left: the chapter number, the reading
- * progress as a fill, and the way back at its foot (also the top bar trail, and Escape).
+ * progress as a fill. The way back is the top bar trail ("Foundations") and Escape.
  * The chapter-read applet (`end`) replaces the Continue footer.
  * The frame around this component owns the open and close animation.
  */
@@ -21,7 +21,7 @@ export function HeadHeartHandsChapter({ number, end }: { number: string; end: Re
   const scrollRef = useRef<HTMLDivElement>(null)
   const reduce = useReducedMotion()
   const { scrollYProgress } = useScroll({ container: scrollRef })
-  const { close, leaving } = useChapterFrame()
+  const { leaving } = useChapterFrame()
 
   const headItems = [
     'Individual needs, capability, motivation and opportunity.',
@@ -50,8 +50,8 @@ export function HeadHeartHandsChapter({ number, end }: { number: string; end: Re
         } as React.CSSProperties
       }
     >
-      {/* The floating pill: chapter number, reading progress, and the way back at its foot.
-          Arrives after the page has grown; the first thing to leave on close. */}
+      {/* The floating pill: chapter number and reading progress, nothing at the foot.
+          The way back is the top bar trail and Escape. Arrives after the page has grown; leaves first. */}
       <motion.nav
         className="pilot-pill"
         aria-label="Chapter progress"
@@ -75,13 +75,6 @@ export function HeadHeartHandsChapter({ number, end }: { number: string; end: Re
             style={{ scaleY: scrollYProgress, transformOrigin: 'top' }}
           />
         </div>
-        <button
-          type="button"
-          className="pilot-pill__home"
-          aria-label="Back to the foundations"
-          title="Back to the foundations"
-          onClick={close}
-        />
       </motion.nav>
 
       <div ref={scrollRef} className="pilot-scroll">
