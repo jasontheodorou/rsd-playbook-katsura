@@ -417,3 +417,142 @@ export function PhotoSplit() {
     </svg>
   )
 }
+
+/* ---- Six more on 05 ---- */
+
+/** 05g Offset ring: a modest photograph with one large hairline circle set behind and to the side. */
+export function PhotoOffsetRing() {
+  return (
+    <svg viewBox="0 0 100 100" className="ph-visual" aria-hidden>
+      <defs>
+        <clipPath id="por-clip">
+          <circle cx="44" cy="54" r="30" />
+        </clipPath>
+      </defs>
+      <circle cx="60" cy="42" r="38" fill="none" stroke="var(--grey-3)" strokeWidth="0.6" />
+      <image
+        href={photos.head}
+        x="14"
+        y="24"
+        width="60"
+        height="60"
+        preserveAspectRatio="xMidYMid slice"
+        clipPath="url(#por-clip)"
+      />
+    </svg>
+  )
+}
+
+/** 05h Eclipse: a flat colour circle passing in front of the photograph, leaving a crescent of it. */
+export function PhotoEclipse() {
+  return (
+    <svg viewBox="0 0 100 100" className="ph-visual ph-drift" aria-hidden>
+      <defs>
+        <clipPath id="pe-clip">
+          <circle cx="42" cy="50" r="40" />
+        </clipPath>
+      </defs>
+      <image
+        href={photos.heart}
+        x="2"
+        y="10"
+        width="80"
+        height="80"
+        preserveAspectRatio="xMidYMid slice"
+        clipPath="url(#pe-clip)"
+      />
+      <circle cx="66" cy="50" r="40" fill="#fcfbf8" />
+      <circle cx="66" cy="50" r="40" fill={teal} fillOpacity="0.92" />
+    </svg>
+  )
+}
+
+/** 05i Small, on a disc: a little photograph resting on a large pale disc. Mostly paper. */
+export function PhotoSmallOnDisc() {
+  return (
+    <svg viewBox="0 0 100 100" className="ph-visual" aria-hidden>
+      <defs>
+        <clipPath id="psd-clip">
+          <circle cx="58" cy="60" r="17" />
+        </clipPath>
+      </defs>
+      <circle cx="50" cy="50" r="46" fill="var(--grey-1)" />
+      <image
+        href={photos.hands}
+        x="41"
+        y="43"
+        width="34"
+        height="34"
+        preserveAspectRatio="xMidYMid slice"
+        clipPath="url(#psd-clip)"
+      />
+      <circle cx="33" cy="36" r="5" fill={orange} />
+    </svg>
+  )
+}
+
+/** 05j Horizon: only the lower half of the circle carries the photograph, under a hairline horizon. */
+export function PhotoHorizon() {
+  return (
+    <svg viewBox="0 0 100 100" className="ph-visual" aria-hidden>
+      <defs>
+        <clipPath id="phz-clip">
+          <path d="M4 50 A46 46 0 0 0 96 50 Z" />
+        </clipPath>
+      </defs>
+      <path d="M4 50 A46 46 0 0 1 96 50 Z" fill="none" stroke="var(--grey-3)" strokeWidth="0.5" />
+      <image
+        href={photos.head}
+        x="4"
+        y="4"
+        width="92"
+        height="92"
+        preserveAspectRatio="xMidYMid slice"
+        clipPath="url(#phz-clip)"
+      />
+      <line x1="4" y1="50" x2="96" y2="50" stroke="var(--grey-7)" strokeWidth="0.6" />
+    </svg>
+  )
+}
+
+/** 05k Halo: a sharp small photograph inside a large, softly blurred version of itself. */
+export function PhotoHalo() {
+  return (
+    <div className="ph-visual ph-halo" aria-hidden>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img className="ph-halo__blur" src={photos.heart} alt="" />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img className="ph-halo__sharp" src={photos.heart} alt="" />
+    </div>
+  )
+}
+
+/** 05l Screen: the photograph seen through a fine dot screen, so it reads as print rather than photo. */
+export function PhotoScreen() {
+  return (
+    <svg viewBox="0 0 100 100" className="ph-visual" aria-hidden>
+      <defs>
+        <clipPath id="psc-clip">
+          <circle cx="50" cy="50" r="46" />
+        </clipPath>
+        <pattern id="psc-dots" width="2.4" height="2.4" patternUnits="userSpaceOnUse">
+          <circle cx="1.2" cy="1.2" r="0.72" fill="#fcfbf8" />
+        </pattern>
+        <filter id="psc-mono">
+          <feColorMatrix type="saturate" values="0" />
+        </filter>
+      </defs>
+      <g clipPath="url(#psc-clip)">
+        <image
+          href={photos.head}
+          width="100"
+          height="100"
+          preserveAspectRatio="xMidYMid slice"
+          filter="url(#psc-mono)"
+          style={{ opacity: 0.8 }}
+        />
+        <rect width="100" height="100" fill="url(#psc-dots)" />
+      </g>
+    </svg>
+  )
+}

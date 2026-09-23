@@ -118,6 +118,11 @@
 .ph-mono img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 52% 52%; border-radius: 50%; filter: grayscale(1) contrast(0.95); opacity: 0.9; }
 .ph-mono__dot { position: absolute; left: -6%; bottom: 14%; width: 44px; height: 44px; border-radius: 50%; }
 
+/* 05k halo */
+.ph-halo { position: relative; width: 100%; max-width: 380px; aspect-ratio: 1; display: grid; place-items: center; }
+.ph-halo__blur { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; filter: blur(28px) saturate(1.1); opacity: 0.55; transform: scale(0.98); }
+.ph-halo__sharp { position: relative; width: 56%; aspect-ratio: 1; object-fit: cover; object-position: 50% 46%; border-radius: 50%; box-shadow: 0 0 0 6px #fcfbf8; }
+
 /* 06 progress rings: the demo fills the ring on a loop to stand in for scrolling */
 .ph-rings { max-width: 340px; }
 .ph-rings__progress { animation: ph-fill 6s cubic-bezier(0.4, 0, 0.2, 1) infinite; }

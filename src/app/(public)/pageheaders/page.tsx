@@ -14,9 +14,15 @@ import {
   Numeral,
   PhotoCircle,
   PhotoDuotone,
+  PhotoEclipse,
   PhotoFade,
+  PhotoHalo,
+  PhotoHorizon,
   PhotoMono,
   PhotoOffEdge,
+  PhotoOffsetRing,
+  PhotoScreen,
+  PhotoSmallOnDisc,
   PhotoSplit,
   PhotoTriad,
   ProgressRings,
@@ -152,6 +158,45 @@ const photoVariations: Execution[] = [
   },
 ]
 
+const photoVariations2: Execution[] = [
+  {
+    n: '05g',
+    title: 'Offset ring',
+    note: 'A modest photograph with one large hairline circle set behind and to the side. Two circles, one filled.',
+    visual: <PhotoOffsetRing />,
+  },
+  {
+    n: '05h',
+    title: 'Eclipse',
+    note: 'A flat teal circle passing in front of the photograph, leaving a crescent of it. Drifts very slowly.',
+    visual: <PhotoEclipse />,
+  },
+  {
+    n: '05i',
+    title: 'Small, on a disc',
+    note: 'A little photograph resting low on a large pale disc, with one orange point. Mostly paper.',
+    visual: <PhotoSmallOnDisc />,
+  },
+  {
+    n: '05j',
+    title: 'Horizon',
+    note: 'Only the lower half of the circle carries the photograph, under a hairline horizon. The upper half is an outline.',
+    visual: <PhotoHorizon />,
+  },
+  {
+    n: '05k',
+    title: 'Halo',
+    note: 'A sharp small photograph inside a large, softly blurred version of itself. Colour without detail around the edge.',
+    visual: <PhotoHalo />,
+  },
+  {
+    n: '05l',
+    title: 'Screen',
+    note: 'The photograph seen through a fine dot screen in grey, so it reads as print rather than as a photo.',
+    visual: <PhotoScreen />,
+  },
+]
+
 function Section({ e }: { e: Execution }) {
   return (
     <section className="ph__execution" aria-labelledby={`ex-${e.n}`}>
@@ -228,6 +273,15 @@ export default function PageHeadersPage() {
       </header>
 
       {photoVariations.map((e) => (
+        <Section key={e.n} e={e} />
+      ))}
+
+      <header className="ph__intro ph__intro--sub">
+        <p className="eyebrow">Six more on 05</p>
+        <h2 className="ph__title ph__title--sub">The photograph, held differently</h2>
+      </header>
+
+      {photoVariations2.map((e) => (
         <Section key={e.n} e={e} />
       ))}
     </div>
