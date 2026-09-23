@@ -24,8 +24,7 @@ test('the top bar title is identical on every page', async ({ page }) => {
     return page.locator('.topbar__title').evaluate((el) => {
       const r = el.getBoundingClientRect()
       const cs = getComputedStyle(el)
-      const round = (n: number) => Math.round(n * 10) / 10
-      return [round(r.x), round(r.y), round(r.height), cs.fontSize, cs.fontWeight, cs.color, cs.fontFamily].join('|')
+      return [Math.round(r.x * 10), Math.round(r.y * 10), Math.round(r.height * 10), cs.fontSize, cs.fontWeight, cs.color, cs.fontFamily].join('|')
     })
   }
   const home = await measure('/')
