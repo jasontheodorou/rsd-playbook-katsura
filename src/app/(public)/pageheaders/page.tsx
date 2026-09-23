@@ -301,6 +301,127 @@ const splashesFree: Execution[] = [
   },
 ]
 
+type TypeExecution = { n: string; title: string; note: string; hero: ReactNode }
+
+const marker = (
+  <span className="pilot-marker">
+    <span className="pilot-marker__num">04</span>
+    <span className="pilot-marker__rule" aria-hidden="true" />
+    <span>Our philosophy</span>
+  </span>
+)
+const lede1 =
+  'Our Head, Heart, Hands philosophy brings together clear thinking, genuine care and practical action.'
+const lede2 =
+  'It helps organisations build better cultures and create services that make a real difference to people\u2019s lives.'
+
+const typeExecutions: TypeExecution[] = [
+  {
+    n: 'T1',
+    title: 'Full width',
+    note: 'The headline runs the whole width at display size. The opening text follows in two columns beneath. No picture; the words are the picture.',
+    hero: (
+      <div className="ty ty--full">
+        {marker}
+        <p className="ty__display">Head, heart and hands.</p>
+        <div className="ty__cols">
+          <p className="ph__lede">{lede1}</p>
+          <p className="ph__lede">{lede2}</p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    n: 'T2',
+    title: 'Numeral behind',
+    note: 'The chapter number at enormous size, very pale, with the headline set across it. Wayfinding and drama from one glyph pair.',
+    hero: (
+      <div className="ty ty--numeral">
+        <span className="ty__ghost" aria-hidden>
+          04
+        </span>
+        <div className="ty__over">
+          {marker}
+          <p className="ty__display ty__display--md">Head, heart and hands.</p>
+          <p className="ph__lede">{lede1}</p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    n: 'T3',
+    title: 'Three words',
+    note: 'Head, Heart and Hands each on their own line, huge, each in its colour from the mark. The three orbs, as type.',
+    hero: (
+      <div className="ty ty--stack">
+        <div>
+          {marker}
+          <p className="ty__stackword" style={{ color: 'var(--navy)' }}>
+            Head.
+          </p>
+          <p className="ty__stackword" style={{ color: 'var(--orange)' }}>
+            Heart.
+          </p>
+          <p className="ty__stackword" style={{ color: 'var(--teal)' }}>
+            Hands.
+          </p>
+        </div>
+        <div className="ty__aside">
+          <p className="ph__lede">{lede1}</p>
+          <p className="ph__lede">{lede2}</p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    n: 'T4',
+    title: 'Outline',
+    note: 'The headline in huge outlined letters with one word filled solid. The playbook\u2019s underlined accent word, taken further.',
+    hero: (
+      <div className="ty ty--full">
+        {marker}
+        <p className="ty__display ty__display--outline">
+          Head, <span className="ty__solid">heart</span> and hands.
+        </p>
+        <p className="ph__lede ty__lede-wide">{lede1}</p>
+      </div>
+    ),
+  },
+  {
+    n: 'T5',
+    title: 'Headline and statement',
+    note: 'The headline on the left, a hairline, and the chapter\u2019s one-line statement set large in grey on the right. Type on both sides, nothing else.',
+    hero: (
+      <div className="ty ty--split">
+        <div>
+          {marker}
+          <p className="ty__display ty__display--md">Head, heart and hands.</p>
+          <p className="ph__lede">{lede1}</p>
+        </div>
+        <p className="ty__statement">Think clearly, care deeply, deliver together.</p>
+      </div>
+    ),
+  },
+  {
+    n: 'T6',
+    title: 'Running line',
+    note: 'The headline repeated as one very large, very pale line drifting slowly behind, with the real headline in front. Kinetic and quiet.',
+    hero: (
+      <div className="ty ty--marquee">
+        <div className="ty__track" aria-hidden>
+          <span>Head, heart and hands. Head, heart and hands. Head, heart and hands. </span>
+          <span>Head, heart and hands. Head, heart and hands. Head, heart and hands. </span>
+        </div>
+        <div className="ty__over">
+          {marker}
+          <p className="ty__display ty__display--md">Head, heart and hands.</p>
+          <p className="ph__lede">{lede1}</p>
+        </div>
+      </div>
+    ),
+  },
+]
+
 function Section({ e }: { e: Execution }) {
   return (
     <section className="ph__execution" aria-labelledby={`ex-${e.n}`}>
@@ -413,6 +534,29 @@ export default function PageHeadersPage() {
 
       {splashesFree.map((e) => (
         <Section key={e.n} e={e} />
+      ))}
+
+      <header className="ph__intro ph__intro--sub">
+        <p className="eyebrow">Typography</p>
+        <h2 className="ph__title ph__title--sub">Bigger titles, type as the visual</h2>
+        <p className="ph__blurb">
+          Six headers where the words do the work. All Open Sans, all on the same paper.
+        </p>
+      </header>
+
+      {typeExecutions.map((e) => (
+        <section key={e.n} className="ph__execution" aria-labelledby={`ex-${e.n}`}>
+          <div className="ph__label">
+            <span className="ph__num">{e.n}</span>
+            <h2 id={`ex-${e.n}`} className="ph__name">
+              {e.title}
+            </h2>
+            <p className="ph__note">{e.note}</p>
+          </div>
+          <div className="ph__frame">
+            <div className="ph__hero ph__hero--type">{e.hero}</div>
+          </div>
+        </section>
       ))}
     </div>
   )

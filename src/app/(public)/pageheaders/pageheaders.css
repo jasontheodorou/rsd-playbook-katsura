@@ -205,3 +205,59 @@
 .ph .pilot-marker { display: inline-flex; align-items: center; gap: 14px; font-weight: 700; font-size: 13px; letter-spacing: 0.22em; text-transform: uppercase; color: #ec671b; }
 .ph .pilot-marker__num { padding: 6px 12px; border: 1.5px solid #ec671b; border-radius: 6px; }
 .ph .pilot-marker__rule { display: block; width: 56px; height: 1.5px; background: #ec671b; opacity: 0.7; }
+
+
+/* ---- Typography executions ---- */
+.ph__hero--type { display: block; }
+.ty { position: relative; width: 100%; }
+.ty .pilot-marker { margin-bottom: 28px; }
+.ty__display {
+  margin: 0 0 28px;
+  font-weight: 800;
+  font-size: clamp(3.5rem, 8.2vw, 7rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  color: #111;
+}
+.ty__display--md { font-size: clamp(2.75rem, 5.6vw, 4.75rem); line-height: 1.02; }
+.ty__cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; max-width: 900px; }
+.ty__cols .ph__lede { margin: 0; }
+.ty__lede-wide { max-width: 60ch; }
+
+/* T2 numeral */
+.ty--numeral { min-height: 380px; display: flex; align-items: center; }
+.ty__ghost {
+  position: absolute; right: -2%; top: 50%; transform: translateY(-52%);
+  font-size: clamp(280px, 34vw, 440px); font-weight: 800; line-height: 1; letter-spacing: -0.08em; color: var(--grey-2);
+  user-select: none;
+}
+.ty__over { position: relative; max-width: 640px; }
+
+/* T3 stacked words */
+.ty--stack { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px; align-items: end; }
+.ty__stackword { margin: 0; font-weight: 800; font-size: clamp(3.5rem, 7.6vw, 6.5rem); line-height: 0.92; letter-spacing: -0.035em; }
+.ty__aside .ph__lede { margin: 0 0 16px; }
+.ty__aside .ph__lede:last-child { margin: 0; }
+
+/* T4 outline */
+.ty__display--outline { color: transparent; -webkit-text-stroke: 1.5px #111; }
+.ty__solid { color: var(--orange); -webkit-text-stroke: 0; }
+
+/* T5 split */
+.ty--split { display: grid; grid-template-columns: minmax(0, 7fr) 1px minmax(0, 5fr); gap: 0 48px; align-items: center; }
+.ty--split::before { content: ''; grid-column: 2; align-self: stretch; background: var(--grey-3); }
+.ty--split > div { grid-column: 1; }
+.ty__statement { grid-column: 3; margin: 0; font-weight: 700; font-size: clamp(1.75rem, 3vw, 2.5rem); line-height: 1.15; letter-spacing: -0.02em; color: var(--grey-4); max-width: 14ch; }
+
+/* T6 running line */
+.ty--marquee { min-height: 380px; display: flex; align-items: center; overflow: hidden; }
+.ty__track { position: absolute; left: 0; top: 50%; transform: translateY(-54%); display: flex; white-space: nowrap; font-size: clamp(120px, 15vw, 200px); font-weight: 800; letter-spacing: -0.04em; color: var(--grey-2); user-select: none; }
+.ty__track span { animation: ty-run 60s linear infinite; padding-right: 0.5em; }
+@keyframes ty-run { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+
+@media (max-width: 56.25rem) {
+  .ty__cols, .ty--stack, .ty--split { grid-template-columns: 1fr; }
+  .ty--split::before { display: none; }
+  .ty__statement { grid-column: 1; }
+}
+@media (prefers-reduced-motion: reduce) { .ty__track span { animation: none; } }
