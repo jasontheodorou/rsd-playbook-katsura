@@ -25,6 +25,12 @@
   --border: var(--grey-2);
   --focus: var(--navy);
 
-  --container: 1140px;
+  /* One grid for the top bar and every page: a container that grows with the window up to 1600px,
+     outer gutters that grow with it, and 12 columns with a fixed gap. The top bar's wordmark sits on
+     column 1's left edge and its account control on column 12's right edge, so everything below can
+     snap to the same lines. */
+  --container: 1600px;
+  --gutter: clamp(20px, 4vw, 64px);
+  --grid-gap: clamp(16px, 2vw, 32px);
   --shadow-header: 0 1px 2px rgba(33, 61, 89, 0.04);
 }

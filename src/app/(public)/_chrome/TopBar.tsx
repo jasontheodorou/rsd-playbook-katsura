@@ -1,5 +1,6 @@
 import Link from 'next/link'
 
+import { AccountMenu } from './AccountMenu'
 import { TopBarTrail } from './TopBarTrail'
 
 type TopBarProps = {
@@ -10,7 +11,7 @@ type TopBarProps = {
 /**
  * Sticky top bar, carried over from the reference build's TopBar: white surface, hairline
  * border, wordmark, optional trail. Identical on every page; nothing else may restyle it. Server-rendered, no JavaScript needed.
- * Sign-in controls return with the reader-access seam (build step 6).
+ * The account control holds a placeholder until reader accounts arrive (build step 6).
  */
 export function TopBar({ trail }: TopBarProps) {
   return (
@@ -32,10 +33,7 @@ export function TopBar({ trail }: TopBarProps) {
           )}
         </span>
         <div className="topbar__actions">
-          {/* Placeholder for the reader sign-in that arrives with the access seam (build step 6). */}
-          <Link href="/admin" className="button-outline">
-            Sign in
-          </Link>
+          <AccountMenu />
         </div>
       </div>
     </header>

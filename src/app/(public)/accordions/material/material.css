@@ -1,0 +1,434 @@
+/*
+ * Material rails: Material Design 3 (expressive) in the warm palette, inside the Who we are frame.
+ * Rows keep the 11 content columns from accordions.css: the leading element on column 1 (page 2),
+ * text on column 2 (page 3), the trailing control ending on column 11 (page 12). Contained styles
+ * inset only their leading and trailing elements by 24px, so the text never leaves its grid line.
+ */
+
+.md {
+  /* A warm M3 tonal scheme built from the page's paper and the brand orange. */
+  --md-surface: #fcfbf8;
+  --md-container-low: #f7f3ee;
+  --md-container: #f2ede6;
+  --md-container-high: #ece6dd;
+  --md-secondary-container: #fbe3d2;
+  --md-on-secondary-container: #6b2f0b;
+  --md-primary: #b8551a;
+  --md-on-surface: #111;
+  --md-on-surface-variant: #55524e;
+  --md-outline: #9a928a;
+  --md-outline-variant: #e2dcd3;
+
+  --md-elev-1: 0 1px 2px rgba(60, 40, 20, 0.1), 0 1px 3px 1px rgba(60, 40, 20, 0.06);
+  --md-elev-2: 0 1px 2px rgba(60, 40, 20, 0.1), 0 2px 6px 2px rgba(60, 40, 20, 0.07);
+  --md-elev-3: 0 4px 8px 3px rgba(60, 40, 20, 0.07), 0 1px 3px rgba(60, 40, 20, 0.1);
+
+  /* M3 motion: emphasised easing, and an expressive spring with a little overshoot. */
+  --md-emphasised: cubic-bezier(0.2, 0, 0, 1);
+  --md-spring: cubic-bezier(0.42, 1.67, 0.21, 0.9);
+
+  --inset: 0px;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  color: var(--md-on-surface);
+}
+
+.md__row {
+  position: relative;
+  isolation: isolate;
+}
+
+.md__summary {
+  position: relative;
+  overflow: hidden;
+  min-height: 72px;
+  padding-block: 16px;
+  border-radius: inherit;
+}
+
+/* State layer: a tint that shows on hover, focus and press, as M3 does. */
+.md__summary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--md-on-surface);
+  opacity: 0;
+  transition: opacity 150ms linear;
+  pointer-events: none;
+}
+.md__summary:hover::after {
+  opacity: 0.05;
+}
+.md__summary:focus-visible::after,
+.md__summary:active::after {
+  opacity: 0.1;
+}
+
+/* Leading: a tonal container holding the number, or a small marker on the thread. */
+.md__lead {
+  grid-column: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-left: var(--inset);
+  border-radius: 12px;
+  background: var(--md-container-high);
+  color: var(--md-on-surface-variant);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition:
+    background 300ms var(--md-emphasised),
+    color 300ms var(--md-emphasised),
+    border-radius 350ms var(--md-spring);
+}
+.md__row[open] .md__lead {
+  background: var(--md-primary);
+  color: #fff;
+  border-radius: 20px;
+}
+
+.md__dot {
+  grid-column: 1;
+  position: relative;
+  z-index: 1;
+  width: 12px;
+  height: 12px;
+  margin-left: calc(var(--inset) + 14px);
+  border-radius: 4px;
+  background: var(--md-outline-variant);
+  transition:
+    width 400ms var(--md-spring),
+    background 300ms var(--md-emphasised),
+    border-radius 400ms var(--md-spring);
+}
+.md__row[open] .md__dot {
+  background: var(--md-primary);
+}
+
+.md__text {
+  grid-column: 2 / 5;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.md__headline {
+  font-size: clamp(1.1875rem, 0.9rem + 0.45vw, 1.5rem);
+  font-weight: 700;
+}
+
+.md__supporting {
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--md-on-surface-variant);
+}
+
+.md__preview {
+  grid-column: 5 / 10;
+  color: var(--md-on-surface-variant);
+}
+.md__row[open] .md__preview {
+  opacity: 0;
+}
+
+.md__trail {
+  grid-column: 11;
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-right: var(--inset);
+  border-radius: 20px;
+  color: var(--md-on-surface-variant);
+  transition:
+    transform 350ms var(--md-emphasised),
+    background 300ms var(--md-emphasised),
+    border-radius 350ms var(--md-spring);
+}
+.md__trail svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.md__row[open] .md__trail {
+  transform: rotate(180deg);
+}
+
+.md .acc__copy {
+  padding-top: 8px;
+  padding-bottom: 32px;
+}
+
+/* The thread, through the leading elements. */
+.md::before {
+  content: '';
+  position: absolute;
+  top: 36px;
+  bottom: 36px;
+  left: calc(var(--inset) + 19.5px);
+  width: 1px;
+  background: var(--md-outline-variant);
+  z-index: 0;
+}
+
+/* ── 1. Tonal list ── */
+
+.md--1 .md__row {
+  border-radius: 16px;
+  transition: background 300ms var(--md-emphasised);
+}
+.md--1 .md__row[open] {
+  background: var(--md-secondary-container);
+}
+.md--1 .md__row[open] .md__lead {
+  background: #fff;
+  color: var(--md-on-secondary-container);
+}
+.md--1 .md__row[open] .acc__copy p {
+  color: var(--md-on-secondary-container);
+}
+
+/* ── 2. Outlined cards ── */
+
+.md--2 {
+  --inset: 20px;
+  gap: 8px;
+}
+.md--2::before,
+.md--3::before,
+.md--4::before,
+.md--9::before {
+  display: none;
+}
+.md--2 .md__row {
+  border: 1px solid var(--md-outline-variant);
+  border-radius: 12px;
+  transition:
+    background 300ms var(--md-emphasised),
+    border-color 300ms var(--md-emphasised),
+    box-shadow 300ms var(--md-emphasised);
+}
+.md--2 .md__row[open] {
+  border-color: transparent;
+  background: var(--md-container);
+  box-shadow: var(--md-elev-1);
+}
+
+/* ── 3. Elevated cards ── */
+
+.md--3 {
+  --inset: 20px;
+  gap: 12px;
+}
+.md--3 .md__row {
+  border-radius: 12px;
+  background: var(--md-container-low);
+  box-shadow: var(--md-elev-1);
+  transition:
+    box-shadow 350ms var(--md-emphasised),
+    border-radius 450ms var(--md-spring);
+}
+.md--3 .md__row[open] {
+  border-radius: 28px;
+  box-shadow: var(--md-elev-3);
+}
+
+/* ── 4. Connected list ── */
+
+.md--4 {
+  --inset: 20px;
+  gap: 2px;
+}
+.md--4 .md__row {
+  border-radius: 4px;
+  background: var(--md-container);
+  transition:
+    border-radius 450ms var(--md-spring),
+    margin 450ms var(--md-spring),
+    background 300ms var(--md-emphasised);
+}
+.md--4 .md__row:first-child {
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+}
+.md--4 .md__row:last-child {
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+}
+.md--4 .md__row[open] {
+  margin-block: 10px;
+  border-radius: 24px;
+  background: var(--md-secondary-container);
+}
+.md--4 .md__row[open]:first-child {
+  margin-top: 0;
+}
+.md--4 .md__row[open] .md__lead {
+  background: var(--md-primary);
+}
+
+/* ── 5. Shape-morph marker ── */
+
+.md--5 .md__dot {
+  height: 14px;
+}
+.md--5 .md__row[open] .md__dot {
+  width: 36px;
+  margin-left: calc(var(--inset) + 2px);
+  border-radius: 7px;
+}
+
+/* ── 6 and 7. Two-line list ── */
+
+.md--6 .md__text,
+.md--7 .md__text {
+  grid-column: 2 / 10;
+}
+.md--6 .md__row + .md__row::before,
+.md--7 .md__row + .md__row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: calc((100% - 10 * var(--grid-gap)) / 11 + var(--grid-gap));
+  height: 1px;
+  background: var(--md-outline-variant);
+}
+.md--6 .md__summary,
+.md--7 .md__summary {
+  min-height: 88px;
+}
+.md--7 .md__row {
+  border-radius: 16px;
+}
+
+.md-ripple {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  background: rgba(236, 103, 27, 0.18);
+  transform: scale(0);
+  animation: md-ripple 550ms var(--md-emphasised) forwards;
+  pointer-events: none;
+}
+
+@keyframes md-ripple {
+  60% {
+    opacity: 1;
+  }
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+/* ── 8. Wavy progress ── */
+
+.md--8 .md__row[open]::before {
+  content: '';
+  position: absolute;
+  top: 44px;
+  bottom: 24px;
+  left: calc(var(--inset) + 14px);
+  width: 12px;
+  z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='20' viewBox='0 0 12 20'%3E%3Cpath d='M6 0 C 11 5, 11 5, 6 10 S 1 15, 6 20' fill='none' stroke='%23b8551a' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: repeat-y;
+  background-size: 12px 20px;
+  animation: md-wave 1.2s linear infinite;
+  -webkit-mask: linear-gradient(to bottom, #000 80%, transparent);
+  mask: linear-gradient(to bottom, #000 80%, transparent);
+}
+.md--8 .md__row[open]::after {
+  content: '';
+  position: absolute;
+  top: 44px;
+  bottom: 24px;
+  left: calc(var(--inset) + 16px);
+  width: 8px;
+  background: var(--md-surface);
+  z-index: 0;
+}
+
+@keyframes md-wave {
+  to {
+    background-position: 0 20px;
+  }
+}
+
+/* ── 9. Container transform ── */
+
+.md--9 {
+  --inset: 20px;
+  gap: 4px;
+}
+.md--9 .md__row {
+  border-radius: 12px;
+  transition:
+    background 450ms var(--md-emphasised),
+    box-shadow 450ms var(--md-emphasised),
+    border-radius 450ms var(--md-emphasised),
+    margin 450ms var(--md-emphasised);
+}
+.md--9 .md__row[open] {
+  margin-block: 12px;
+  border-radius: 28px;
+  background: var(--md-container-low);
+  box-shadow: var(--md-elev-2);
+}
+.md--9 .md__headline {
+  transition: font-size 450ms var(--md-emphasised);
+}
+.md--9 .md__row[open] .md__headline {
+  font-size: clamp(1.625rem, 1rem + 1.2vw, 2.25rem);
+  font-weight: 800;
+}
+.md--9 .md__row[open] .md__summary {
+  padding-top: 28px;
+}
+
+/* ── 10. Tonal icon button ── */
+
+.md--10 .md__trail {
+  background: var(--md-container-high);
+  color: var(--md-on-surface);
+}
+.md--10 .md__row[open] .md__trail {
+  border-radius: 12px;
+  background: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .md *,
+  .md__row {
+    transition: none !important;
+  }
+  .md--8 .md__row[open]::before,
+  .md-ripple {
+    animation: none;
+  }
+}
+
+@media (max-width: 63.9375rem) {
+  .md__text {
+    grid-column: auto !important;
+  }
+  .md::before,
+  .md--8 .md__row[open]::before,
+  .md--8 .md__row[open]::after {
+    display: none;
+  }
+}

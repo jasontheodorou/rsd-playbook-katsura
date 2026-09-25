@@ -1,0 +1,24 @@
+/* Photograph with plane: 2:1, plane offset by exactly one grid gap, pale blue. */
+
+.pwp {
+  position: relative;
+  margin: 0;
+  padding: 0 var(--grid-gap) var(--grid-gap) 0;
+}
+
+.pwp__plane {
+  position: absolute;
+  top: var(--grid-gap);
+  left: var(--grid-gap);
+  right: 0;
+  bottom: 0;
+  background: #cbd9da;
+}
+
+.pwp__img {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  object-fit: cover;
+}

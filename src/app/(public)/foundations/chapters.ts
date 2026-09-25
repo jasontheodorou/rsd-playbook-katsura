@@ -17,7 +17,7 @@ export type Chapter = {
 
 /** The six Foundations themes, in reading order. Static until the read model carries sections. */
 export const chapters: Chapter[] = [
-  { slug: 'what-we-do', title: 'What we do', Mark: WhatWeDoMark },
+  { slug: 'who-we-are', title: 'Who we are', Mark: WhatWeDoMark },
   { slug: 'why-we-do-it', title: 'Why we do it', Mark: WhyWeDoItMark },
   { slug: 'our-difference', title: 'Our difference', Mark: OurDifferenceMark },
   { slug: 'head-heart-and-hands', title: 'Head, heart and hands', Mark: HeadHeartHandsMark },

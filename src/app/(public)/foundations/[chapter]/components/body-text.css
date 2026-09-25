@@ -1,0 +1,35 @@
+/*
+ * Body text. Sized one clear step below the statement (about 22px at 1440px against the
+ * statement's 27px) and scaled with the window the same way, so on wide screens it fills its
+ * columns rather than leaving them empty. The measure is set in ems: about 65 to 70 characters a
+ * line at every size.
+ *
+ * Line boxes are trimmed to cap height and baseline, so the 32px between paragraphs is the gap
+ * the eye sees, and it is larger than the space between lines inside a paragraph.
+ */
+
+.body-text {
+  --body-size: clamp(1.125rem, 0.62rem + 0.78vw, 1.625rem);
+
+  max-width: 34em;
+  font-size: var(--body-size);
+}
+
+.body-text > * {
+  margin: 0;
+  font-size: inherit;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #2a2a2e;
+  text-box: trim-both cap alphabetic;
+}
+
+.body-text > * + * {
+  margin-top: 32px;
+}
+
+@media (max-width: 40rem) {
+  .body-text > * + * {
+    margin-top: 24px;
+  }
+}

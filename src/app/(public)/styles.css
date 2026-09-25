@@ -51,7 +51,7 @@ body {
   width: 100%;
   max-width: var(--container);
   margin-inline: auto;
-  padding-inline: 16px;
+  padding-inline: var(--gutter);
 }
 
 /* ---- Top bar ---- */
@@ -139,6 +139,121 @@ body {
   gap: 12px;
 }
 
+/* ---- Your account: label, ambient circle, menu ---- */
+.account {
+  position: relative;
+}
+
+.account__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.account__label {
+  white-space: nowrap;
+}
+
+/* Phones: the circle alone, with its label kept for screen readers. */
+@media (max-width: 40rem) {
+  .account__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+.account__trigger:hover .account__label {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.account__trigger:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* No reader yet, so the circle carries a slow drift of the brand's quiet colours. */
+.account__orb {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #efe9e2;
+  box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.08);
+}
+
+.account__orb::before {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  background: conic-gradient(from 0deg, #f1d46e, #d8b4a3, #cbd9da, #619cba, #f1d46e);
+  filter: blur(6px);
+  opacity: 0.85;
+  animation: account-drift 14s linear infinite;
+}
+
+@keyframes account-drift {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .account__orb::before {
+    animation: none;
+  }
+}
+
+.account__menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  z-index: 20;
+  width: 240px;
+  padding: 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 12px 32px rgba(33, 61, 89, 0.14);
+}
+
+.account__heading {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.account__note {
+  margin: 8px 0 16px;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.account__item {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  text-underline-offset: 3px;
+}
+
 /* Outline pill button, matching the reference's Mantine outline/dark/xs/radius-xl button. */
 .button-outline {
   display: inline-flex;
@@ -184,7 +299,9 @@ body {
 /* ---- Page shell and background ---- */
 .page-shell {
   position: relative;
-  overflow: hidden;
+  /* clip, not hidden: it trims the home page's circle without becoming a scroll container, so
+     sticky elements inside pages still pin to the window. */
+  overflow: clip;
   min-height: calc(100svh - 63px);
   display: flex;
   flex-direction: column;
@@ -417,6 +534,11 @@ body {
   list-style: none;
   margin: 0;
   padding: 0;
+  /* The grid keeps its designed size (the old 1140px container, less gutters) and centres under the
+     intro when the page container is wider. */
+  width: 100%;
+  max-width: 1108px;
+  margin-inline: auto;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
@@ -638,9 +760,63 @@ body {
   color: var(--text-muted);
 }
 
+/* Once read: two equal buttons side by side, one crisp block. Same height, type and corner radius;
+   the filled one is the way on, the outlined one the quieter undo. */
+.chapter-end__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
 .chapter-end__undo {
-  margin: -8px 0 0;
-  font-size: 13px;
+  display: contents;
+}
+
+.chapter-end__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 44px;
+  min-width: 152px;
+  padding: 0 22px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 150ms ease,
+    border-color 150ms ease;
+}
+
+.chapter-end__action--primary {
+  background: #111;
+  color: #fff;
+}
+
+.chapter-end__action--primary:hover {
+  background: #2a2a2e;
+}
+
+.chapter-end__action--secondary {
+  border-color: #cdc5ba;
+  background: transparent;
+  color: #111;
+}
+
+.chapter-end__action--secondary:hover {
+  border-color: #9a928a;
+}
+
+.chapter-end__action:focus-visible {
+  outline: 3px solid #ec671b;
+  outline-offset: 3px;
 }
 
 .chapter-end__nav {

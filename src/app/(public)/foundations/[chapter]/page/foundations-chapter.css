@@ -1,0 +1,222 @@
+/*
+ * The Foundations chapter page: the gold standard (Who we are, 25 September 2026).
+ *
+ * Horizontal. The page uses .container (the top bar's width and gutters) as 12 columns with
+ * --grid-gap. Column 1 is the rail, directly under the wordmark. Columns 2 to 12 hold the content
+ * as an 11-column subgrid, so content ends on the account control's line. Text (the statement and
+ * body text) spans columns 2 to 9; every other block spans columns 2 to 12.
+ *
+ * Vertical. Every gap is visible distance (text from cap height to baseline, anything painted by
+ * its edge) and has one owner, the margin-top of the element below:
+ *   top of page to title   96    title to statement   48
+ *   block to block         64    (the same above and below every block, --gap-block)
+ *   paragraph to paragraph 32    (inside body text)
+ *   last block to end      64    (the block gap, like every other block)
+ * Tablet: 56 block gap. Phone: 48 block gap, 24 title to statement.
+ */
+
+.fc {
+  --title-size: clamp(3rem, 1rem + 5.2vw, 7.5rem);
+  --statement-size: clamp(1.25rem, 0.7rem + 1.1vw, 2.125rem);
+  --top: 96px;
+  --gap-title-statement: 48px;
+  --gap-block: 64px;
+  --gap-end: var(--gap-block);
+  --bottom: 128px;
+  /* The image trio's photographs sit this far inside their cells; the trio's margins allow for it
+     so the photographs, not the cells, sit one block gap from their neighbours. */
+  --trio-pad: 48px;
+
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: clip;
+  background: #fcfbf8;
+  color: #111;
+}
+
+.fc__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  align-items: start;
+  padding-block: var(--top) var(--bottom);
+}
+
+/* ── Rail: column 1, pinned while the page scrolls ── */
+
+.fc__rail {
+  grid-column: 1;
+  position: sticky;
+  top: var(--top);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 48px;
+  height: calc(100svh - 64px - var(--top) - 48px);
+}
+
+.fc__number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 32px;
+  border: 1.5px solid #ec671b;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-indent: 0.14em;
+  color: #ec671b;
+}
+
+.fc__track {
+  flex: 1;
+  width: 8px;
+  border-radius: 999px;
+  background: rgba(216, 180, 163, 0.28);
+  overflow: hidden;
+}
+
+.fc__fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  background: #d8b4a3;
+  transform-origin: top;
+}
+
+/* ── Content: columns 2 to 12 ── */
+
+.fc__main {
+  grid-column: 2 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+}
+
+.fc__main > *,
+.fc__hero > * {
+  margin: 0;
+}
+
+.fc__hero,
+.fc__end,
+.fc__block {
+  grid-column: 1 / -1;
+}
+
+/* Text keeps to columns 2 to 9. */
+.fc__block--text {
+  grid-column: 1 / 9;
+}
+
+.fc__title {
+  font-size: var(--title-size);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-box: trim-both cap alphabetic;
+}
+
+/* The page's one circle: an orange full stop after the title. */
+.fc__stop {
+  display: inline-block;
+  width: 0.2em;
+  height: 0.2em;
+  margin-left: 0.06em;
+  border-radius: 50%;
+  background: #ec671b;
+}
+
+/* The statement: one weight; the first sentence in ink, the rest in grey. Its measure is in ems,
+   so it keeps the same shape as the type scales. */
+.fc__statement {
+  margin-top: var(--gap-title-statement);
+  max-width: 28.6em;
+  font-size: var(--statement-size);
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  color: #8a847e;
+  text-box: trim-both cap alphabetic;
+}
+
+.fc__statement-lead {
+  color: #111;
+}
+
+/* A set line break in the statement holds on wide screens only. */
+@media (max-width: 56.25rem) {
+  .fc__break {
+    display: none;
+  }
+}
+
+/* ── Spacing: one block gap above every block; the chapter end a section gap below the last ── */
+
+.fc__block {
+  margin-top: var(--gap-block);
+}
+
+.fc__end {
+  margin-top: var(--gap-end);
+}
+
+/* The trio's cells pad their photographs; its margins take the padding back on both sides. */
+.fc__block--trio {
+  margin-top: calc(var(--gap-block) - var(--trio-pad));
+  margin-bottom: calc(-1 * var(--trio-pad));
+}
+
+.fc__end .chapter-end {
+  margin: 0;
+  padding-top: 0;
+  border-top: 0;
+  align-items: flex-start;
+  text-align: left;
+}
+
+/* ── Below 1024px: one column. The rail's number sits above the title; the track is dropped. ── */
+
+@media (max-width: 63.9375rem) {
+  .fc {
+    --top: 48px;
+    --gap-title-statement: 32px;
+    --gap-block: 56px;
+    --bottom: 96px;
+  }
+
+  .fc__grid,
+  .fc__main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fc__rail,
+  .fc__main,
+  .fc__block,
+  .fc__block--text {
+    grid-column: 1;
+  }
+
+  .fc__rail {
+    position: static;
+    height: auto;
+    margin-bottom: 32px;
+  }
+
+  .fc__track {
+    display: none;
+  }
+}
+
+@media (max-width: 40rem) {
+  .fc {
+    --gap-title-statement: 24px;
+    --gap-block: 48px;
+    --bottom: 80px;
+    --trio-pad: 32px;
+  }
+}

@@ -6,6 +6,8 @@ import { chapterPageId, chapters, findChapter } from '../chapters'
 import { ChapterEnd } from './ChapterEnd'
 import { ChapterFrame } from './ChapterFrame'
 import { HeadHeartHandsChapter } from './hhh/HeadHeartHandsChapter'
+import { CHAPTER_CONTENT } from './content'
+import { FoundationsChapter } from './page/FoundationsChapter'
 
 type Props = { slug: string }
 
@@ -18,7 +20,9 @@ export async function ChapterView({ slug }: Props) {
   const completed = await currentCompleted(pageId)
   const index = chapters.findIndex((c) => c.slug === slug)
   const next = chapters[index + 1]
-  const ported = slug === 'head-heart-and-hands'
+  const content = CHAPTER_CONTENT[slug]
+  const ported = slug === 'head-heart-and-hands' || Boolean(content)
+  const number = String(index + 1).padStart(2, '0')
 
   const end = (
     <ChapterEnd
@@ -36,11 +40,13 @@ export async function ChapterView({ slug }: Props) {
 
   return (
     <ChapterFrame slug={slug}>
-      {ported ? (
-        <HeadHeartHandsChapter number={String(index + 1).padStart(2, '0')} end={end} />
+      {content ? (
+        <FoundationsChapter number={number} end={end} content={content} />
+      ) : ported ? (
+        <HeadHeartHandsChapter number={number} end={end} />
       ) : (
         <article className="chapter chapter--framed">
-          <p className="eyebrow">Chapter {String(index + 1).padStart(2, '0')}</p>
+          <p className="eyebrow">Chapter {number}</p>
           <h1 className="chapter__title">{chapter.title}</h1>
           <p className="chapter__lede">
             Placeholder text. The real chapter arrives with the publisher. This copy exists only so

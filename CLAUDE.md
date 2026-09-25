@@ -6,6 +6,12 @@ Terse responses. No trailing summaries. Match scope to what was asked.
 
 This is the `katsura` project. It runs on `localhost:3019`. The project directory is `/Users/jason.theodorou/projects/katsura`. Its design journal lives at `/Users/jason.theodorou/projects/katsura/design-journal/`.
 
+## Design rules — always loaded
+
+How pages in this build are designed and checked: the shared 12-column grid, the spacing scale, the approved patterns, Jason's taste, and the measure-before-reporting workflow. Follow them on every design task.
+
+@docs/DESIGN-RULES.md
+
 ## Live during the session — do these without being asked
 
 - Extend today's logbook at `/Users/jason.theodorou/projects/katsura/design-journal/logbook/YYYY-MM-DD.md` as we work. Prose, chronological, blow-by-blow.

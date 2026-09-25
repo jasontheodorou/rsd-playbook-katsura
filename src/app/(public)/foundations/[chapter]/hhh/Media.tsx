@@ -1,4 +1,5 @@
-export type MediaShape = '16-9' | '21-9' | 'square' | 'landscape' | 'portrait' | 'portrait-tall' | 'circle'
+export type MediaShape =
+  '16-9' | '21-9' | 'square' | 'landscape' | 'portrait' | 'portrait-tall' | 'circle'
 
 /** Image slot with a fixed aspect shape. Ported from the reference build's Layouts.tsx, without the placeholder fallback. */
 export function Media({ shape, src, alt = '' }: { shape: MediaShape; src: string; alt?: string }) {

@@ -1,0 +1,200 @@
+/*
+ * Colour section options, on the site grid: the page sits inside the layout's .container, so
+ * column 1 starts on the wordmark's line and column 12 ends on the account control's.
+ */
+
+.opt {
+  width: 100%;
+  align-self: flex-start;
+}
+
+.opt-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+}
+
+/* ── Intro ── */
+
+.opt-intro__title {
+  grid-column: 2 / -1;
+  margin: 0;
+  font-size: clamp(2.5rem, 1rem + 3vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #111;
+  text-box: trim-both cap alphabetic;
+}
+
+.opt-intro__lede {
+  grid-column: 2 / 10;
+  margin: 32px 0 0;
+  max-width: 34em;
+  font-size: clamp(1.125rem, 0.62rem + 0.78vw, 1.625rem);
+  line-height: 1.6;
+  color: #55524e;
+  text-box: trim-both cap alphabetic;
+}
+
+/* ── Stacking cards ── */
+
+.opt-demo {
+  margin-top: 96px;
+}
+
+.stack {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+}
+
+/* Room for the last card to reach its pinned place, so every edge steps by the same 16px. A
+   spacer, not padding: a sticky card can only travel inside its container's content box. */
+.stack::after {
+  content: '';
+  grid-column: 1 / -1;
+  height: 64px;
+}
+
+/* Every card is the same width (columns 1 to 12) and the same height, one step darker than the
+   last in the page's warm paper, with a hairline edge and a soft lift so it reads over the page. */
+.stack__card {
+  position: sticky;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  min-height: calc(100vh - 63px - 48px - 32px);
+  padding-block: 96px;
+  border: 1px solid rgba(17, 17, 17, 0.07);
+  border-radius: 24px;
+  box-shadow: 0 -8px 24px rgba(33, 61, 89, 0.05);
+  overflow: hidden;
+  color: #111;
+}
+
+.stack__card + .stack__card {
+  margin-top: 48px;
+}
+
+.stack__card--1 {
+  background: #f5f1ea;
+}
+.stack__card--2 {
+  background: #efe9e0;
+}
+.stack__card--3 {
+  background: #e9e2d7;
+}
+
+.stack__content {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: start;
+}
+
+.stack__shade {
+  position: absolute;
+  inset: 0;
+  background: #1b150e;
+  pointer-events: none;
+}
+
+/* Inside: text on columns 2 to 6 beside media on 7 to 11; or text alone on 2 to 9. One column of
+   margin is left inside each side of the card. */
+.stack__text {
+  grid-column: 2 / 7;
+}
+.stack__text--wide {
+  grid-column: 2 / 10;
+}
+
+.stack__eyebrow {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a847e;
+  text-box: trim-both cap alphabetic;
+}
+
+.stack__title {
+  margin: 32px 0 0;
+  font-size: clamp(2rem, 1rem + 2vw, 3.25rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  text-box: trim-both cap alphabetic;
+}
+
+.stack__text .body-text {
+  margin-top: 40px;
+}
+
+.stack__media {
+  grid-column: 7 / 12;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.stack__slots {
+  grid-column: 7 / 12;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--grid-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stack__slot {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 160px;
+  padding: 24px;
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.stack__slot-n {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #ec671b;
+}
+
+.stack__slot-text {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #8a847e;
+}
+
+@media (max-width: 63.9375rem) {
+  .opt-grid,
+  .stack,
+  .stack__card,
+  .stack__content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .opt-grid > *,
+  .stack__card,
+  .stack__text,
+  .stack__media,
+  .stack__slots {
+    grid-column: 1 / -1 !important;
+  }
+  .stack__card {
+    padding: 48px 24px;
+  }
+  .stack__media,
+  .stack__slots {
+    margin-top: 40px;
+  }
+}

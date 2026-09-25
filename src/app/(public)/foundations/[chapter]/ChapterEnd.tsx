@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react'
 
 import { findChapter } from '../chapters'
@@ -23,6 +24,16 @@ type Props = {
 
 const DWELL_MS = 900
 
+/** The nearest ancestor that scrolls (a chapter scrolls inside its frame), or the page itself. */
+function scrollParent(el: HTMLElement): HTMLElement {
+  for (let n = el.parentElement; n; n = n.parentElement) {
+    const { overflowY } = getComputedStyle(n)
+    if ((overflowY === 'auto' || overflowY === 'scroll') && n.scrollHeight > n.clientHeight)
+      return n
+  }
+  return document.scrollingElement as HTMLElement
+}
+
 const noop = () => () => {}
 /** False during server render and hydration, true once JavaScript is running. */
 const useEnhanced = () =>
@@ -36,6 +47,7 @@ const useEnhanced = () =>
  * The end of a chapter: its own mark, outlined. Server-rendered as a plain form so it works
  * without JavaScript ("Mark as read"). With JavaScript, reaching the mark and resting on it for
  * about a second records the completion in the background and fills the mark where it stands.
+ * "Mark as unread" pauses that until the reader has scrolled at least halfway back up the page.
  */
 export function ChapterEnd({
   pageId,
@@ -50,13 +62,28 @@ export function ChapterEnd({
   after,
 }: Props) {
   const [read, setRead] = useState(initiallyRead)
+  // After "Mark as unread", resting on the mark must not complete the chapter again straight away.
+  // Completion re-arms once the reader has scrolled at least halfway back up the page.
+  const [armed, setArmed] = useState(true)
   const enhanced = useEnhanced()
   const markRef = useRef<HTMLDivElement>(null)
   const chapter = findChapter(slug)
   const frame = useChapterFrame()
 
   useEffect(() => {
-    if (read || !markRef.current || typeof IntersectionObserver === 'undefined') return
+    if (armed || !markRef.current) return
+    const scroller = scrollParent(markRef.current)
+    const target: HTMLElement | Window = scroller === document.scrollingElement ? window : scroller
+    const onScroll = () => {
+      const max = scroller.scrollHeight - scroller.clientHeight
+      if (scroller.scrollTop <= max / 2) setArmed(true)
+    }
+    target.addEventListener('scroll', onScroll, { passive: true })
+    return () => target.removeEventListener('scroll', onScroll)
+  }, [armed])
+
+  useEffect(() => {
+    if (read || !armed || !markRef.current || typeof IntersectionObserver === 'undefined') return
     let timer: ReturnType<typeof setTimeout> | undefined
     let done = false
     const complete = async () => {
@@ -81,13 +108,16 @@ export function ChapterEnd({
       observer.disconnect()
       if (timer) clearTimeout(timer)
     }
-  }, [read, pageId])
+  }, [read, armed, pageId])
 
   const undo = async (event: React.FormEvent<HTMLFormElement>) => {
     if (!enhanced) return
     event.preventDefault()
     const ok = await post(pageId, 'uncomplete')
-    if (ok) setRead(false)
+    if (ok) {
+      setArmed(false)
+      setRead(false)
+    }
   }
 
   if (!chapter) return null
@@ -117,19 +147,35 @@ export function ChapterEnd({
         {read ? 'Chapter read.' : enhanced ? 'You have reached the end.' : ''}
       </p>
       {read && (
-        <form
-          method="post"
-          action="/progress/complete"
-          onSubmit={undo}
-          className="chapter-end__undo"
-        >
-          <input type="hidden" name="pageId" value={pageId} />
-          <input type="hidden" name="action" value="uncomplete" />
-          <input type="hidden" name="returnTo" value={returnTo} />
-          <button type="submit" className="link-button">
-            Mark as unread
-          </button>
-        </form>
+        // One block of two equal buttons: back to the Foundations menu (filled), or mark unread.
+        <div className="chapter-end__actions">
+          <Link
+            href="/foundations"
+            scroll={false}
+            className="chapter-end__action chapter-end__action--primary"
+            onClick={(e) => {
+              if (enhanced) {
+                e.preventDefault()
+                frame.close()
+              }
+            }}
+          >
+            Back to menu
+          </Link>
+          <form
+            method="post"
+            action="/progress/complete"
+            onSubmit={undo}
+            className="chapter-end__undo"
+          >
+            <input type="hidden" name="pageId" value={pageId} />
+            <input type="hidden" name="action" value="uncomplete" />
+            <input type="hidden" name="returnTo" value={returnTo} />
+            <button type="submit" className="chapter-end__action chapter-end__action--secondary">
+              Mark unread
+            </button>
+          </form>
+        </div>
       )}
       {after}
       {showNav && (

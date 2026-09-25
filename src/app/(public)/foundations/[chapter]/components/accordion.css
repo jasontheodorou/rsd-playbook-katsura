@@ -1,0 +1,225 @@
+/*
+ * Foundations accordion, "quiet outline". Rows use the page's 11 content columns: the marker on
+ * column 1 (page column 2), the title and text from column 2 (page column 3), the button ending
+ * on column 11 (page column 12, the account control's line). Text is set like the body text.
+ */
+
+.qacc {
+  --qacc-line: #e2dcd3;
+  --qacc-sand: #ece6dd;
+  --qacc-marker: #9a928a;
+  --qacc-muted: #55524e;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #111;
+}
+
+/* No thread: with each row on its own tint, a line through the markers would only show in the
+   4px gaps between rows. */
+
+/* Each row sits on a faint warm tint, 4px from the next, so the set reads as something to open
+   rather than static text. The open row deepens a step. */
+.qacc__row {
+  position: relative;
+  isolation: isolate;
+  interpolate-size: allow-keywords;
+  border-radius: 12px;
+  background: #f7f4ef;
+  transition: background 300ms cubic-bezier(0.2, 0, 0, 1);
+}
+.qacc__row[open] {
+  background: #f2ede6;
+}
+
+.qacc__summary,
+.qacc__body {
+  display: grid;
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+}
+
+.qacc__summary {
+  position: relative;
+  overflow: hidden;
+  border-radius: inherit;
+  align-items: center;
+  min-height: 72px;
+  padding-block: 16px;
+  list-style: none;
+  cursor: pointer;
+}
+.qacc__summary::-webkit-details-marker {
+  display: none;
+}
+
+/* A faint state layer on hover and press. */
+.qacc__summary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #111;
+  opacity: 0;
+  transition: opacity 150ms linear;
+  pointer-events: none;
+}
+.qacc__summary:hover::after {
+  opacity: 0.03;
+}
+.qacc__summary:active::after {
+  opacity: 0.08;
+}
+.qacc__summary:focus-visible {
+  outline: 3px solid #ec671b;
+  outline-offset: -3px;
+}
+
+.qacc__marker {
+  grid-column: 1;
+  position: relative;
+  z-index: 1;
+  width: 12px;
+  height: 12px;
+  margin-left: 14px;
+  border-radius: 4px;
+  background: var(--qacc-line);
+  transition: background 300ms cubic-bezier(0.2, 0, 0, 1);
+}
+.qacc__row[open] .qacc__marker {
+  background: var(--qacc-marker);
+}
+
+.qacc__title {
+  grid-column: 2 / 5;
+  font-size: clamp(1.1875rem, 0.9rem + 0.45vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+/* Without a preview line, the title takes the preview's columns too. */
+.qacc__summary:not(:has(.qacc__preview)) .qacc__title {
+  grid-column: 2 / 10;
+}
+
+.qacc__preview {
+  grid-column: 5 / 10;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--qacc-muted);
+  transition: opacity 180ms ease;
+}
+.qacc__row[open] .qacc__preview {
+  opacity: 0;
+}
+
+/* The quiet outline button: a hairline at rest, sand and squarer corners when open. */
+.qacc__button {
+  grid-column: 11;
+  justify-self: end;
+  margin-right: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  box-shadow: inset 0 0 0 1px var(--qacc-line);
+  color: var(--qacc-muted);
+  transition:
+    transform 350ms cubic-bezier(0.2, 0, 0, 1),
+    background 300ms cubic-bezier(0.2, 0, 0, 1),
+    box-shadow 300ms cubic-bezier(0.2, 0, 0, 1),
+    border-radius 350ms cubic-bezier(0.42, 1.67, 0.21, 0.9);
+}
+.qacc__button svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.qacc__row[open] .qacc__button {
+  transform: rotate(180deg);
+  border-radius: 10px;
+  background: #fcfbf8;
+  box-shadow: none;
+  color: #111;
+}
+
+/* Text: the body text's size and measure. */
+.qacc__copy {
+  grid-column: 2 / 9;
+  padding: 8px 0 32px;
+}
+.qacc__copy > * {
+  margin: 0;
+  max-width: 34em;
+  font-size: clamp(1.125rem, 0.62rem + 0.78vw, 1.625rem);
+  line-height: 1.6;
+  color: #2a2a2e;
+  text-box: trim-both cap alphabetic;
+}
+.qacc__copy > * + * {
+  margin-top: 24px;
+}
+
+/* Height opens over 220ms; the text fades in after. */
+.qacc__row::details-content {
+  block-size: 0;
+  overflow: clip;
+  transition:
+    block-size 220ms ease,
+    content-visibility 220ms allow-discrete;
+}
+.qacc__row[open]::details-content {
+  block-size: auto;
+}
+.qacc__row[open] .qacc__copy {
+  animation: qacc-fade 220ms ease 120ms both;
+}
+@keyframes qacc-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qacc *,
+  .qacc__row::details-content {
+    transition: none !important;
+  }
+  .qacc__row[open] .qacc__copy {
+    animation: none;
+  }
+}
+
+/* Below 1024px: marker, title and button on one line; the preview is dropped. */
+@media (max-width: 63.9375rem) {
+  .qacc__summary {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    column-gap: 16px;
+  }
+  .qacc__summary > * {
+    grid-column: auto !important;
+  }
+  .qacc__preview {
+    display: none;
+  }
+  .qacc__marker {
+    margin-left: 0;
+  }
+  .qacc__body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .qacc__copy {
+    grid-column: 1;
+  }
+}

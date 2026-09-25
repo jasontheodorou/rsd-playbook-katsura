@@ -1,0 +1,118 @@
+/*
+ * Tonal icon button, restrained. Builds on material.css option 10 (.md--10). Each version removes
+ * one thing: colour, size, the preview, the shape morph or the thread.
+ */
+
+/* Shared: the state layer is fainter, and the button is 32px unless a version says otherwise. */
+.tb .md__summary:hover::after {
+  opacity: 0.03;
+}
+.tb .md__trail {
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+}
+.tb .md__trail svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ── 1. Quiet outline ── */
+
+.tb--1 .md__trail {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--md-outline-variant);
+}
+.tb--1 .md__row[open] .md__trail {
+  border-radius: 10px;
+  background: var(--md-container-high);
+  box-shadow: none;
+  color: var(--md-on-surface);
+}
+.tb--1 .md__row[open] .md__dot {
+  background: var(--md-outline);
+}
+
+/* ── 2. Ink only ── */
+
+.tb--2 .md__trail {
+  background: var(--md-container);
+}
+.tb--2 .md__row[open] .md__trail {
+  border-radius: 10px;
+  background: var(--md-on-surface);
+  color: #fff;
+}
+.tb--2 .md__row[open] .md__dot {
+  background: var(--md-on-surface);
+}
+
+/* ── 3. Single accent: no preview, one warm colour ── */
+
+.tb--3 .md__text {
+  grid-column: 2 / 10;
+}
+.tb--3 .md__row[open] .md__dot {
+  background: var(--md-outline);
+}
+
+/* ── 4. Plus and minus: one shape, only the tone changes ── */
+
+.tb--4 .md__trail,
+.tb--4 .md__row[open] .md__trail {
+  border-radius: 10px;
+  transform: none;
+}
+.tb--4 .md__trail {
+  background: var(--md-container);
+}
+.tb--4 .md__row[open] .md__trail {
+  background: var(--md-secondary-container);
+}
+.tb__plus {
+  grid-column: auto;
+  width: 14px;
+  height: 14px;
+}
+.tb__plus::before,
+.tb__plus::after {
+  top: 6px;
+  width: 14px;
+}
+.md__row[open] .tb__plus::after {
+  transform: rotate(0deg);
+}
+
+/* ── 5. Button only: no markers, a hairline between rows, a faint line beside open text ── */
+
+.tb--5::before {
+  display: none;
+}
+.tb--5 .md__text {
+  grid-column: 1 / 10;
+}
+.tb--5 .md__row {
+  border-top: 1px solid var(--md-outline-variant);
+}
+.tb--5 .md__row:last-child {
+  border-bottom: 1px solid var(--md-outline-variant);
+}
+/* The line sits in the gap before column 2, so the text itself stays on the grid line. */
+.tb--5 .acc__copy {
+  position: relative;
+  grid-column: 1 / 8;
+}
+.tb--5 .acc__copy::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 32px;
+  left: calc(var(--grid-gap) / -2);
+  width: 1px;
+  background: var(--md-outline-variant);
+}
+
+/* The open panel clips its overflow for the height animation; let the line in the gap show. */
+.tb--5 .md__row::details-content {
+  overflow-clip-margin: 24px;
+}

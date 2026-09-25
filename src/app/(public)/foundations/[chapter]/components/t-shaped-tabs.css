@@ -1,0 +1,249 @@
+/*
+ * T-shaped tabs. A card across a Foundations page's 11 content columns (page columns 2 to 12). The
+ * tab bar runs along its top; inside, the photograph takes content columns 2 to 4 and the text
+ * columns 6 to 10 (page columns 3 to 5, and 7 to 11), leaving a column of margin inside each side.
+ * The card's edge is drawn with an inset shadow, so its width is exactly the 11 columns.
+ */
+
+.tst {
+  /* Quiet, like the accordion: paper, hairlines, sand for the chosen tab, grey markers. */
+  --tst-line: #e2dcd3;
+  --tst-sand: #ece6dd;
+  --tst-marker: #9a928a;
+
+  border-radius: 24px;
+  box-shadow: inset 0 0 0 1px var(--tst-line);
+  background: transparent;
+  overflow: hidden;
+  color: #111;
+}
+
+/* ── Tab bar: pill tabs on a faint warm tint (no rule beneath) ── */
+
+.tst__bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 12px;
+  background: #f5f1ea;
+}
+
+.tst__tab {
+  position: relative;
+  appearance: none;
+  margin: 0;
+  padding: 10px 20px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: #55524e;
+  cursor: pointer;
+  transition: color 200ms ease;
+}
+
+.tst__tab:hover {
+  color: #111;
+}
+
+.tst__tab[aria-selected='true'] {
+  color: #111;
+  font-weight: 700;
+}
+
+.tst__tab:focus-visible {
+  outline: 3px solid #ec671b;
+  outline-offset: 2px;
+}
+
+.tst__pill {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: 999px;
+  background: var(--tst-sand);
+}
+
+.tst__label {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Stage: every panel in one grid cell, so its height is the tallest panel's ── */
+
+.tst__stage {
+  display: grid;
+}
+
+.tst__stage > * {
+  grid-area: 1 / 1;
+}
+
+.tst__reserve {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ── Panel ── */
+
+.tst__panel {
+  display: grid;
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  align-items: start;
+  padding-block: 56px;
+}
+
+.tst__photo {
+  grid-column: 2 / 5;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.tst__copy {
+  grid-column: 6 / 11;
+}
+
+.tst__intro {
+  margin: 0;
+  font-size: clamp(1.125rem, 0.62rem + 0.78vw, 1.625rem);
+  line-height: 1.6;
+  color: #2a2a2e;
+  text-box: trim-both cap alphabetic;
+}
+
+.tst__methods {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 32px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tst__methods li {
+  position: relative;
+  padding-left: 22px;
+  font-size: clamp(1.0625rem, 0.8rem + 0.4vw, 1.25rem);
+  line-height: 1.55;
+  color: #2a2a2e;
+}
+
+/* Small square grey markers, as on the accordion. */
+.tst__methods li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 6px;
+  height: 6px;
+  border-radius: 1.5px;
+  background: var(--tst-marker);
+}
+
+.tst__methods strong {
+  font-weight: 700;
+  color: #111;
+}
+
+/* The extra section some roles carry, as an inline details element. */
+.tst__more {
+  margin-top: 32px;
+  interpolate-size: allow-keywords;
+}
+
+.tst__more-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: clamp(1.0625rem, 0.8rem + 0.4vw, 1.25rem);
+  font-weight: 700;
+  color: #213d59;
+  list-style: none;
+  cursor: pointer;
+}
+
+.tst__more-summary::-webkit-details-marker {
+  display: none;
+}
+
+.tst__more-summary::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(-45deg);
+  transition: transform 200ms ease;
+}
+
+.tst__more[open] .tst__more-summary::before {
+  transform: translateY(-4px) rotate(45deg);
+}
+
+.tst__more-summary:focus-visible {
+  outline: 3px solid #ec671b;
+  outline-offset: 4px;
+}
+
+.tst__methods--more {
+  margin-top: 20px;
+}
+
+.tst__more::details-content {
+  block-size: 0;
+  overflow: clip;
+  transition:
+    block-size 220ms ease,
+    content-visibility 220ms allow-discrete;
+}
+
+.tst__more[open]::details-content {
+  block-size: auto;
+}
+
+/* ── Without JavaScript: each role in turn, under its heading ── */
+
+.tst--static {
+  padding-top: 8px;
+}
+
+.tst__static-heading {
+  margin: 48px 0 0;
+  padding-inline: calc((100% - 10 * var(--grid-gap)) / 11 + var(--grid-gap));
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tst__tab,
+  .tst__more-summary::before,
+  .tst__more::details-content {
+    transition: none;
+  }
+}
+
+/* ── Below 1024px: the photograph above the text ── */
+
+@media (max-width: 63.9375rem) {
+  .tst__panel {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 32px;
+    padding: 32px 24px;
+  }
+  .tst__photo,
+  .tst__copy {
+    grid-column: 1;
+  }
+  .tst__photo {
+    max-width: 320px;
+  }
+  .tst__static-heading {
+    padding-inline: 24px;
+  }
+}

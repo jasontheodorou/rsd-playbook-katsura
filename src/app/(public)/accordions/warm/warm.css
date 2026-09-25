@@ -1,0 +1,221 @@
+/*
+ * Warm and light, modern. Builds on rail.css (thread on column 2, markers centred on it).
+ * Colours: warm line #e2dcd3, sand #cdbfae, orange #ec671b and its soft tints.
+ */
+
+/* ── 1. Focus ── */
+
+/* The thread fades out at its ends rather than stopping hard. */
+.warm--1::before {
+  width: 2px;
+  left: calc(var(--thread-x) - 1px);
+  background: linear-gradient(to bottom, transparent, #e2dcd3 12%, #e2dcd3 88%, transparent);
+}
+
+.warm--1 .srail__node {
+  border: 1.5px solid #d6cabb;
+  background: #fcfbf8;
+  box-shadow: 0 1px 2px rgba(60, 40, 20, 0.08);
+}
+
+.warm--1 .srail__row[open] .srail__node {
+  border-color: transparent;
+  background: linear-gradient(135deg, #f7b98f, #ec671b);
+  box-shadow:
+    0 0 0 6px rgba(236, 103, 27, 0.12),
+    0 4px 12px rgba(236, 103, 27, 0.25);
+}
+
+.warm--1 .acc__title,
+.warm--1 .acc__preview {
+  transition:
+    opacity 320ms ease,
+    translate 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* When one section is open, the rest step back. */
+.warm--1:has(.srail__row[open]) .srail__row:not([open]) .acc__title,
+.warm--1:has(.srail__row[open]) .srail__row:not([open]) .acc__preview,
+.warm--1:has(.srail__row[open]) .srail__row:not([open]) .srail__node {
+  opacity: 0.4;
+}
+
+.warm--1 .srail__row:not([open]):hover .acc__title,
+.warm--1 .srail__row:not([open]):hover .srail__node {
+  opacity: 1;
+}
+
+/* ── 2. Reading thread: the open section's thread fills as its text scrolls past ── */
+
+.warm--2::before {
+  width: 2px;
+  left: calc(var(--thread-x) - 1px);
+  background: #ece6dd;
+}
+
+.warm--2 .srail__node {
+  border: 1.5px solid #d6cabb;
+  background: #fcfbf8;
+}
+
+.warm--2 .srail__row[open] .srail__node {
+  border-color: #ec671b;
+  background: #ec671b;
+}
+
+.warm--2 .srail__row[open]::after {
+  content: '';
+  position: absolute;
+  top: 36px;
+  bottom: 24px;
+  left: calc(var(--thread-x) - 1px);
+  width: 2px;
+  border-radius: 999px;
+  background: linear-gradient(to bottom, #ec671b, #f7b98f);
+  transform-origin: top;
+  animation: warm-read linear both;
+  animation-timeline: view();
+  animation-range: cover 10% cover 70%;
+}
+
+/* A capsule rides the tip of the fill. */
+.warm--2 .srail__row[open] .acc__body::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--thread-x) - 4px);
+  width: 8px;
+  height: 16px;
+  border-radius: 999px;
+  background: #ec671b;
+  box-shadow: 0 0 0 4px rgba(236, 103, 27, 0.14);
+  animation: warm-tip linear both;
+  animation-timeline: view();
+  animation-range: cover 10% cover 70%;
+}
+
+.warm--2 .srail__row[open] .acc__body {
+  position: relative;
+}
+
+@keyframes warm-read {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes warm-tip {
+  from {
+    top: -8px;
+  }
+  to {
+    top: calc(100% - 32px);
+  }
+}
+
+/* Browsers without scroll-driven animation show the section's thread already filled. */
+@supports not (animation-timeline: view()) {
+  .warm--2 .srail__row[open]::after {
+    animation: none;
+  }
+  .warm--2 .srail__row[open] .acc__body::before {
+    display: none;
+  }
+}
+
+/* ── 3. Number chips ── */
+
+.warm--3 {
+  --thread-x: 24px;
+}
+
+.warm--3::before {
+  background: #ece6dd;
+}
+
+.warm--3 .srail__node {
+  justify-content: flex-start;
+  gap: 6px;
+  width: 48px;
+  height: 26px;
+  margin-left: calc(var(--thread-x) - 24px);
+  padding: 0 10px;
+  overflow: hidden;
+  border: 1px solid #e2dcd3;
+  border-radius: 999px;
+  background: #fcfbf8;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #8a847e;
+  white-space: nowrap;
+  transition:
+    width 420ms cubic-bezier(0.16, 1, 0.3, 1),
+    background 260ms ease,
+    color 260ms ease,
+    border-color 260ms ease;
+}
+
+.warm__chip-label {
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.warm--3 .srail__row[open] .srail__node {
+  width: 104px;
+  border-color: #f4c3a1;
+  background: #fde9dc;
+  color: #b8551a;
+}
+
+.warm--3 .srail__row[open] .warm__chip-label {
+  opacity: 1;
+  transition-delay: 160ms;
+}
+
+/* The widened chip still fits inside column 2, so the title never moves off its grid line. */
+
+/* Dividers that fade out at their ends. */
+.warm--3 .srail__row + .srail__row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: calc(var(--thread-x) + 40px);
+  right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #e2dcd3 15%, #e2dcd3 85%, transparent);
+}
+
+/* Text sharpens into focus as it appears. */
+.warm--3 .srail__row[open] .acc__copy {
+  animation: warm-sharpen 420ms ease 120ms both;
+}
+
+@keyframes warm-sharpen {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .warm .acc__title,
+  .warm .acc__preview,
+  .warm .srail__node,
+  .warm__chip-label {
+    transition: none;
+  }
+  .warm--2 .srail__row[open]::after,
+  .warm--3 .srail__row[open] .acc__copy {
+    animation: none;
+  }
+  .warm--2 .srail__row[open] .acc__body::before {
+    display: none;
+  }
+}

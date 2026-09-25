@@ -1,0 +1,198 @@
+/*
+ * Progress rail, softened. Shared anatomy: a thread on column 2 (content column 1), a marker per
+ * section centred on it, the title on column 3, a grey preview beside it, and the text below on
+ * columns 3 to 9 at body size. Every marker is centred on the same 24px line.
+ */
+
+.srail {
+  --thread-x: 12px;
+  --ink-soft: #8a847e;
+
+  position: relative;
+}
+
+.srail__row {
+  position: relative;
+}
+
+.srail .acc__summary {
+  padding-block: 24px;
+}
+
+.srail .acc__title {
+  grid-column: 2 / 5;
+}
+
+.srail .acc__preview {
+  grid-column: 5 / 11;
+}
+
+.srail__node {
+  grid-column: 1;
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: calc(var(--thread-x) - 6px);
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  transition:
+    background 260ms ease,
+    border-color 260ms ease,
+    box-shadow 260ms ease,
+    height 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.srail__row[open] .acc__preview {
+  opacity: 0;
+}
+
+/* The thread, behind the markers. */
+.srail::before {
+  content: '';
+  position: absolute;
+  top: 30px;
+  bottom: 30px;
+  left: calc(var(--thread-x) - 0.5px);
+  width: 1px;
+  background: #e2dcd3;
+}
+
+/* ── A. Warm and light ── */
+
+.srail--a .srail__node {
+  border: 1.5px solid #cdbfae;
+  background: #fcfbf8;
+}
+.srail--a .srail__row[open] .srail__node {
+  border-color: #ec671b;
+  background: #f6c6a6;
+}
+
+/* ── B. Stretching marker: the bar grows down the open section ── */
+
+.srail--b .srail__node {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  margin: 0;
+  width: 8px;
+  height: 20px;
+  margin-left: calc(var(--thread-x) - 4px);
+  border-radius: 999px;
+  background: #d8cbb9;
+}
+.srail--b .srail__row[open] .srail__node {
+  height: calc(100% - 60px);
+  background: #ec671b;
+  opacity: 0.85;
+}
+.srail--b .acc__title {
+  grid-column: 2 / 5;
+}
+
+/* ── C. Soft panel ── */
+
+.srail--c::before {
+  background: #ece6dd;
+}
+/* The panel starts 24px before the title (column 3), so the marker stays outside it on the thread. */
+.srail--c .srail__row {
+  isolation: isolate;
+}
+.srail--c .srail__row::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0 0 0 calc((100% - 10 * var(--grid-gap)) / 11 + var(--grid-gap) - 24px);
+  border-radius: 20px;
+  background: #f3eee6;
+  opacity: 0;
+  transition: opacity 260ms ease;
+}
+.srail--c .srail__row[open]::after {
+  opacity: 1;
+}
+.srail--c .srail__node {
+  width: 10px;
+  height: 10px;
+  margin-left: calc(var(--thread-x) - 5px);
+  border-radius: 50%;
+  background: #d8cbb9;
+}
+.srail--c .srail__row[open] .srail__node {
+  background: #ec671b;
+  box-shadow: 0 0 0 6px rgba(236, 103, 27, 0.14);
+}
+.srail--c .acc__preview {
+  grid-column: 5 / 10;
+}
+
+/* ── D. Numbered markers ── */
+
+.srail--d {
+  --thread-x: 20px;
+}
+.srail--d .srail__node {
+  width: 40px;
+  height: 28px;
+  margin-left: calc(var(--thread-x) - 20px);
+  border: 1px solid #e2dcd3;
+  border-radius: 8px;
+  background: #fcfbf8;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+}
+.srail--d .srail__row[open] .srail__node {
+  border-color: #f1d46e;
+  background: #faf0c8;
+  color: #111;
+}
+
+/* ── E. Filling thread: each row draws its own stretch of thread, warm up to the open section ── */
+
+.srail--e::before {
+  display: none;
+}
+.srail--e .srail__row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--thread-x) - 1px);
+  width: 2px;
+  background: #e8e2d9;
+  transition: background 320ms ease;
+}
+.srail--e .srail__row:first-child::before {
+  top: 30px;
+}
+.srail--e .srail__row:last-child::before {
+  bottom: calc(100% - 42px);
+}
+.srail--e .srail__row:has(~ .srail__row[open])::before,
+.srail--e .srail__row[open]::before {
+  background: #f0a877;
+}
+.srail--e .srail__node {
+  border: 2px solid #e8e2d9;
+  background: #fcfbf8;
+  border-radius: 4px;
+}
+.srail--e .srail__row:has(~ .srail__row[open]) .srail__node,
+.srail--e .srail__row[open] .srail__node {
+  border-color: #ec671b;
+  background: #ec671b;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .srail__node,
+  .srail--c .srail__row::after,
+  .srail--e .srail__row::before {
+    transition: none;
+  }
+}

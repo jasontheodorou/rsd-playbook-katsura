@@ -9,10 +9,14 @@
 .pilot-root {
   position: absolute;
   inset: 0;
-  background: var(--pilot-bg, #FAF8F6);
+  background: var(--pilot-bg, #faf8f6);
   transition: background 500ms ease;
   color: #111111;
-  font-family: 'Open Sans', -apple-system, 'Segoe UI', sans-serif;
+  font-family:
+    'Open Sans',
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -37,7 +41,7 @@
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.14em;
-  color: #A9714F;
+  color: #a9714f;
 }
 
 .pilot-pill__track {
@@ -52,7 +56,7 @@
   width: 100%;
   height: 100%;
   border-radius: 999px;
-  background: #D8B4A3;
+  background: #d8b4a3;
 }
 
 /* ── Scroll container ───────────────────────────────────────────────────── */
@@ -85,7 +89,7 @@
   margin: 0 0 0.85rem;
   font-size: clamp(0.95rem, 1.05vw, 1.05rem);
   line-height: 1.65;
-  color: #3A3A3E;
+  color: #3a3a3e;
   max-width: 38rem;
 }
 
@@ -111,12 +115,12 @@
   font-size: 13px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #EC671B;
+  color: #ec671b;
 }
 
 .pilot-marker__num {
   padding: 6px 12px;
-  border: 1.5px solid #EC671B;
+  border: 1.5px solid #ec671b;
   border-radius: 6px;
 }
 
@@ -124,7 +128,7 @@
   display: block;
   width: 56px;
   height: 1.5px;
-  background: #EC671B;
+  background: #ec671b;
   opacity: 0.7;
 }
 
@@ -151,7 +155,7 @@
   --sp-20: 80px;
 
   /* Width system — three roles */
-  --w-body:  800px;      /* body working region (== photograph max) */
+  --w-body: 800px; /* body working region (== photograph max) */
   --w-photo: 800px;
   --w-panel: 720px;
 
@@ -162,7 +166,11 @@
   padding-block: clamp(48px, 7vw, 96px) clamp(56px, 8vw, 80px);
 
   color: #111111;
-  font-family: 'Open Sans', -apple-system, 'Segoe UI', sans-serif;
+  font-family:
+    'Open Sans',
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
 }
 
 /* ── Hero ────────────────────────────────────────────────────────────
@@ -182,10 +190,12 @@
   flex-direction: column;
 }
 
-.p1v2__marker { margin: 0 0 var(--sp-8); }             /* marker → headline: 32 */
+.p1v2__marker {
+  margin: 0 0 var(--sp-8);
+} /* marker → headline: 32 */
 
 .p1v2__headline {
-  margin: 0 0 var(--sp-5);                              /* headline → first para: 20 */
+  margin: 0 0 var(--sp-5); /* headline → first para: 20 */
   font-weight: 800;
   font-size: clamp(2rem, 4.6vw, 3.25rem);
   line-height: 1.1;
@@ -195,13 +205,15 @@
 }
 
 .p1v2__lede {
-  margin: 0 0 var(--sp-4);                              /* para → para: 16 */
-  max-width: 65ch;                                       /* reading measure */
+  margin: 0 0 var(--sp-4); /* para → para: 16 */
+  max-width: 65ch; /* reading measure */
   font-size: 1.0625rem;
   line-height: 1.6;
-  color: #3A3A3E;
+  color: #3a3a3e;
 }
-.p1v2__lede:last-child { margin: 0; }
+.p1v2__lede:last-child {
+  margin: 0;
+}
 
 .p1v2__hero-art {
   display: flex;
@@ -223,7 +235,7 @@
 
 .p1v2__body {
   max-width: var(--w-body);
-  margin-top: var(--sp-4);                              /* illustration → prose 1: 16 (matches para-to-para) */
+  margin-top: var(--sp-4); /* illustration → prose 1: 16 (matches para-to-para) */
 }
 
 .p1v2__body .p1v2__prose {
@@ -231,13 +243,13 @@
   max-width: 65ch;
   font-size: 1.0625rem;
   line-height: 1.6;
-  color: #2A2A2E;
+  color: #2a2a2e;
 }
 
 /* Adjacent prose paragraphs — proximity within one thought. Owner:
    the second paragraph. Prior siblings keep margin: 0. */
 .p1v2__body .p1v2__prose + .p1v2__prose {
-  margin-block-start: var(--sp-4);                       /* 16 */
+  margin-block-start: var(--sp-4); /* 16 */
 }
 
 /* ── Subhead ─────────────────────────────────────────────────────────
@@ -245,7 +257,7 @@
    ink not display weight). Introduces the block(s) that follow. */
 .p1v2__subhead {
   margin: 0;
-  font-size: clamp(1.375rem, 2.4vw, 1.75rem);            /* 22 → 28px */
+  font-size: clamp(1.375rem, 2.4vw, 1.75rem); /* 22 → 28px */
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: -0.01em;
@@ -255,28 +267,30 @@
 
 /* Subhead sits tightly above the content it introduces (16px below),
    with heavy-block-style space above so it reads as a new section. */
-.p1v2__body :is(
-  .p1v2__prose,
-  .p1v2__media,
-  .p1v2__cinema,
-  .p1v2__paired,
-  .p1v2__card,
-  .p1v2__pullquote,
-  .p1v2__triad,
-  .p1v2__reveal,
-  .p1v2__qcard,
-  .gdc,
-  .ly-panel,
-  .p1v2__tabs,
-  .p1v2__participation,
-  .north-star-pattern,
-  .hhh-pattern
-) + .p1v2__subhead {
-  margin-block-start: clamp(2.5rem, 4vw, 3rem);          /* 40 → 48 */
+.p1v2__body
+  :is(
+    .p1v2__prose,
+    .p1v2__media,
+    .p1v2__cinema,
+    .p1v2__paired,
+    .p1v2__card,
+    .p1v2__pullquote,
+    .p1v2__triad,
+    .p1v2__reveal,
+    .p1v2__qcard,
+    .gdc,
+    .ly-panel,
+    .p1v2__tabs,
+    .p1v2__participation,
+    .north-star-pattern,
+    .hhh-pattern
+  )
+  + .p1v2__subhead {
+  margin-block-start: clamp(2.5rem, 4vw, 3rem); /* 40 → 48 */
 }
 
 .p1v2__body .p1v2__subhead + :is(.p1v2__prose, .p1v2__card) {
-  margin-block-start: var(--sp-4);                       /* 16 — tight to its section */
+  margin-block-start: var(--sp-4); /* 16 — tight to its section */
 }
 
 /* Object-position override — shifts the crop of a square-framed photo
@@ -289,7 +303,7 @@
 /* Lighter sand tint for the specialists panel on V2s8. Layouts-gallery
    default (#EDE1D2) reads too dark against Pathway 1's cream page bg. */
 .p1v2__body .ly-panel--sand {
-  background: #F5EFE3;
+  background: #f5efe3;
 }
 
 /* V2s8 specialists — the tabbed practice pattern that replaced the tinted
@@ -311,14 +325,16 @@
   max-width: var(--w-body);
 }
 
-.p1v2__body .p1v2__participation .ly-panel__eyebrow { margin-bottom: 10px; }
+.p1v2__body .p1v2__participation .ly-panel__eyebrow {
+  margin-bottom: 10px;
+}
 
 .p1v2__body .p1v2__participation-lede {
   margin: 0 0 clamp(0.75rem, 1.6vw, 1.25rem);
   max-width: 52ch;
   font-size: 0.9375rem;
   line-height: 1.55;
-  color: #6E6A65;
+  color: #6e6a65;
 }
 
 /* Strip the demo page's card treatment: no background, no box — just the
@@ -333,14 +349,14 @@
 
 .p1v2__participation .spw-strip__title {
   font-size: clamp(1.0625rem, 1.6vw, 1.1875rem);
-  color: #1F1F23;
+  color: #1f1f23;
 }
 
 .p1v2__participation .spw-strip__body {
   max-width: 64ch;
   font-size: 1rem;
   line-height: 1.6;
-  color: #3A3A3E;
+  color: #3a3a3e;
 }
 
 /* ── Body boundary adjacencies (one owner per boundary) ─────────────
@@ -349,76 +365,82 @@
    individually, so nothing collapses against these values.
    At 1440: prose→heavy = 48, heavy→prose = 64, heavy→heavy = 56. */
 
-.p1v2__body .p1v2__prose + :is(
-  .p1v2__media,
-  .p1v2__cinema,
-  .p1v2__paired,
-  .p1v2__card,
-  .p1v2__pullquote,
-  .p1v2__triad,
-  .p1v2__reveal,
-  .p1v2__qcard,
-  .gdc,
-  .ly-panel,
-  .p1v2__tabs,
-  .p1v2__participation,
-  .north-star-pattern,
-  .hhh-pattern
-) {
-  margin-block-start: clamp(2.5rem, 4vw, 3rem);          /* 40 → 48 @1440 */
+.p1v2__body
+  .p1v2__prose
+  + :is(
+    .p1v2__media,
+    .p1v2__cinema,
+    .p1v2__paired,
+    .p1v2__card,
+    .p1v2__pullquote,
+    .p1v2__triad,
+    .p1v2__reveal,
+    .p1v2__qcard,
+    .gdc,
+    .ly-panel,
+    .p1v2__tabs,
+    .p1v2__participation,
+    .north-star-pattern,
+    .hhh-pattern
+  ) {
+  margin-block-start: clamp(2.5rem, 4vw, 3rem); /* 40 → 48 @1440 */
 }
 
-.p1v2__body :is(
-  .p1v2__media,
-  .p1v2__cinema,
-  .p1v2__paired,
-  .p1v2__card,
-  .p1v2__pullquote,
-  .p1v2__triad,
-  .p1v2__reveal,
-  .p1v2__qcard,
-  .gdc,
-  .ly-panel,
-  .p1v2__tabs,
-  .p1v2__participation,
-  .north-star-pattern,
-  .hhh-pattern
-) + .p1v2__prose {
-  margin-block-start: clamp(2.5rem, 4vw, 3rem);          /* 40 → 48 @1440 (symmetric with prose→heavy) */
+.p1v2__body
+  :is(
+    .p1v2__media,
+    .p1v2__cinema,
+    .p1v2__paired,
+    .p1v2__card,
+    .p1v2__pullquote,
+    .p1v2__triad,
+    .p1v2__reveal,
+    .p1v2__qcard,
+    .gdc,
+    .ly-panel,
+    .p1v2__tabs,
+    .p1v2__participation,
+    .north-star-pattern,
+    .hhh-pattern
+  )
+  + .p1v2__prose {
+  margin-block-start: clamp(2.5rem, 4vw, 3rem); /* 40 → 48 @1440 (symmetric with prose→heavy) */
 }
 
-.p1v2__body :is(
-  .p1v2__media,
-  .p1v2__cinema,
-  .p1v2__paired,
-  .p1v2__card,
-  .p1v2__pullquote,
-  .p1v2__triad,
-  .p1v2__reveal,
-  .p1v2__qcard,
-  .gdc,
-  .ly-panel,
-  .p1v2__tabs,
-  .p1v2__participation,
-  .north-star-pattern,
-  .hhh-pattern
-) + :is(
-  .p1v2__media,
-  .p1v2__cinema,
-  .p1v2__paired,
-  .p1v2__card,
-  .p1v2__pullquote,
-  .p1v2__triad,
-  .p1v2__reveal,
-  .p1v2__qcard,
-  .gdc,
-  .ly-panel,
-  .p1v2__tabs,
-  .p1v2__participation,
-  .north-star-pattern,
-  .hhh-pattern
-) {
-  margin-block-start: clamp(2.75rem, 4.5vw, 3.5rem);     /* 44 → 56 @1440 */
+.p1v2__body
+  :is(
+    .p1v2__media,
+    .p1v2__cinema,
+    .p1v2__paired,
+    .p1v2__card,
+    .p1v2__pullquote,
+    .p1v2__triad,
+    .p1v2__reveal,
+    .p1v2__qcard,
+    .gdc,
+    .ly-panel,
+    .p1v2__tabs,
+    .p1v2__participation,
+    .north-star-pattern,
+    .hhh-pattern
+  )
+  + :is(
+    .p1v2__media,
+    .p1v2__cinema,
+    .p1v2__paired,
+    .p1v2__card,
+    .p1v2__pullquote,
+    .p1v2__triad,
+    .p1v2__reveal,
+    .p1v2__qcard,
+    .gdc,
+    .ly-panel,
+    .p1v2__tabs,
+    .p1v2__participation,
+    .north-star-pattern,
+    .hhh-pattern
+  ) {
+  margin-block-start: clamp(2.75rem, 4.5vw, 3.5rem); /* 44 → 56 @1440 */
 }
 
 /* Photograph. Boundaries owned by adjacency rules below, not by the
@@ -429,7 +451,7 @@
   max-width: var(--w-photo);
   aspect-ratio: 16 / 9;
   overflow: clip;
-  background: #F0EDE7;
+  background: #f0ede7;
 }
 .p1v2__media img {
   width: 100%;
@@ -447,13 +469,13 @@
      children own every boundary in one place. */
   margin: 0;
   max-width: var(--w-panel);
-  padding: var(--sp-8);                                  /* 32 desktop */
-  border: 1px solid #E6E3DF;
-  background: #FFFFFF;
+  padding: var(--sp-8); /* 32 desktop */
+  border: 1px solid #e6e3df;
+  background: #ffffff;
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--sp-5);                                      /* label → list: 20 */
+  gap: var(--sp-5); /* label → list: 20 */
 }
 .p1v2__card::before {
   content: '';
@@ -462,14 +484,14 @@
   left: -1px;
   width: 48px;
   height: 4px;
-  background: #EC671B;
+  background: #ec671b;
 }
 .p1v2__card-label {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: #EC671B;
+  color: #ec671b;
 }
 .p1v2__card-list {
   list-style: none;
@@ -477,14 +499,14 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--sp-3);                                      /* bullet → bullet: 12 */
+  gap: var(--sp-3); /* bullet → bullet: 12 */
 }
 .p1v2__card-list li {
   position: relative;
-  padding-left: 1.25rem;                                 /* hanging indent for wrapped text */
+  padding-left: 1.25rem; /* hanging indent for wrapped text */
   font-size: 1rem;
   line-height: 1.55;
-  color: #2A2A2E;
+  color: #2a2a2e;
 }
 .p1v2__card-list li::before {
   content: '';
@@ -494,7 +516,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #EC671B;
+  background: #ec671b;
 }
 
 /* ── Wide cinematic media (21:9) ────────────────────────────────────
@@ -534,23 +556,25 @@
    Wrapper padding leaves the plane's containing block untouched and does
    not affect the media (aspect-ratio driven), so the visible composition
    is byte-identical — only the outer box grows. */
-.p1v2__paired:has(.ly-layered--br,
-                  .ly-layered--bl,
-                  .ly-layered__plane--br,
-                  .ly-layered__plane--bl),
-.p1v2__cinema:has(.ly-layered--br,
-                  .ly-layered--bl,
-                  .ly-layered__plane--br,
-                  .ly-layered__plane--bl) { padding-block-end: 22px; }
+.p1v2__paired:has(.ly-layered--br, .ly-layered--bl, .ly-layered__plane--br, .ly-layered__plane--bl),
+.p1v2__cinema:has(
+  .ly-layered--br,
+  .ly-layered--bl,
+  .ly-layered__plane--br,
+  .ly-layered__plane--bl
+) {
+  padding-block-end: 22px;
+}
 
-.p1v2__paired:has(.ly-layered--tl,
-                  .ly-layered--tr,
-                  .ly-layered__plane--tl,
-                  .ly-layered__plane--tr),
-.p1v2__cinema:has(.ly-layered--tl,
-                  .ly-layered--tr,
-                  .ly-layered__plane--tl,
-                  .ly-layered__plane--tr) { padding-block-start: 22px; }
+.p1v2__paired:has(.ly-layered--tl, .ly-layered--tr, .ly-layered__plane--tl, .ly-layered__plane--tr),
+.p1v2__cinema:has(
+  .ly-layered--tl,
+  .ly-layered--tr,
+  .ly-layered__plane--tl,
+  .ly-layered__plane--tr
+) {
+  padding-block-start: 22px;
+}
 
 /* ── HHH triad ───────────────────────────────────────────────────────
    For s9 "Head, Heart, Hands" — a term/definition list with a rule
@@ -574,13 +598,13 @@
   font-weight: 800;
   font-size: clamp(1.5rem, 2.8vw, 2rem);
   letter-spacing: -0.015em;
-  color: #EC671B;
+  color: #ec671b;
   min-width: 4.5em;
 }
 .p1v2__triad-def {
   font-size: 1.0625rem;
   line-height: 1.55;
-  color: #2A2A2E;
+  color: #2a2a2e;
 }
 @media (max-width: 40rem) {
   .p1v2__triad li {
@@ -588,7 +612,9 @@
     gap: 0.35rem;
     align-items: flex-start;
   }
-  .p1v2__triad-term { min-width: 0; }
+  .p1v2__triad-term {
+    min-width: 0;
+  }
 }
 
 /* ── Pull-quote ──────────────────────────────────────────────────────
@@ -600,7 +626,7 @@
 
 .p1v2__pullquote {
   margin: 0;
-  max-width: var(--w-panel);                              /* 720 */
+  max-width: var(--w-panel); /* 720 */
   padding: 0;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
@@ -612,7 +638,7 @@
   font-size: clamp(4.5rem, 10vw, 8rem);
   line-height: 0.7;
   font-weight: 700;
-  color: #EC671B;
+  color: #ec671b;
   user-select: none;
   margin-top: -0.05em;
 }
@@ -635,7 +661,7 @@
    (var(--w-body) = 800). Divider rule removed — CTA is anchored by
    its right-edge alignment and the existing spacing rhythm. */
 .p1v2__foot {
-  margin-top: clamp(2.5rem, 4vw, 3rem);                  /* content → CTA: 40 → 48 (matches heavy-block rhythm) */
+  margin-top: clamp(2.5rem, 4vw, 3rem); /* content → CTA: 40 → 48 (matches heavy-block rhythm) */
   max-width: var(--w-body);
   display: flex;
   justify-content: flex-end;
@@ -644,7 +670,9 @@
 /* For pages without a photograph, the widest body element is the
    panel (or pull-quote at panel width). Align the closing row to
    that edge so the CTA sits on the visible right-hand alignment. */
-.p1v2__foot--no-photo { max-width: var(--w-panel); }
+.p1v2__foot--no-photo {
+  max-width: var(--w-panel);
+}
 
 /* ── Responsive ──────────────────────────────────────────────────────
    Body remains single-flow at every width. Only the hero switches
@@ -652,13 +680,15 @@
    compress gradually. Mobile gutters at ≥20px. */
 
 @media (max-width: 1023px) {
-  .p1v2__hero { gap: 32px; }
+  .p1v2__hero {
+    gap: 32px;
+  }
 }
 
 @media (max-width: 56.25rem) {
   .p1v2__hero {
     grid-template-columns: 1fr;
-    gap: var(--sp-12);                                   /* intro text → illustration stacked: 48 */
+    gap: var(--sp-12); /* intro text → illustration stacked: 48 */
   }
   /* Cap the img wrapper on stacked so the tight-viewBox source keeps
      approximately the visible artwork size of the pre-refinement pass.
@@ -670,8 +700,12 @@
     max-width: clamp(180px, 30vw, 230px);
     max-height: none;
   }
-  .p1v2__body { margin-top: var(--sp-4); }               /* illustration → prose 1: 16 (matches para-to-para) */
-  .p1v2__foot { margin-top: var(--sp-8); }               /* content → CTA: 32 stacked */
+  .p1v2__body {
+    margin-top: var(--sp-4);
+  } /* illustration → prose 1: 16 (matches para-to-para) */
+  .p1v2__foot {
+    margin-top: var(--sp-8);
+  } /* content → CTA: 32 stacked */
 }
 
 @media (max-width: 40rem) {
@@ -679,13 +713,19 @@
     padding-inline: clamp(20px, 5vw, 24px);
     padding-block: clamp(40px, 6vw, 56px) clamp(48px, 7vw, 64px);
   }
-  .p1v2__marker { margin-bottom: var(--sp-7); }          /* 28 */
-  .p1v2__card { padding: var(--sp-6); }                  /* 24 mobile */
+  .p1v2__marker {
+    margin-bottom: var(--sp-7);
+  } /* 28 */
+  .p1v2__card {
+    padding: var(--sp-6);
+  } /* 24 mobile */
   /* CTA fills the closing row on narrow mobile so it doesn't float
      against a lot of empty space to its left. */
-  .p1v2__next { width: 100%; min-width: 0; }
+  .p1v2__next {
+    width: 100%;
+    min-width: 0;
+  }
 }
-
 
 /* ── Layered media, from Layouts.css ── */
 
@@ -708,30 +748,74 @@
 }
 
 /* Offset directions — applied to the FIRST plane via container modifier */
-.ly-layered--tl > .ly-layered__plane:first-of-type { top: -22px; left: -22px; }
-.ly-layered--tr > .ly-layered__plane:first-of-type { top: -22px; right: -22px; }
-.ly-layered--br > .ly-layered__plane:first-of-type { bottom: -22px; right: -22px; }
-.ly-layered--bl > .ly-layered__plane:first-of-type { bottom: -22px; left: -22px; }
+.ly-layered--tl > .ly-layered__plane:first-of-type {
+  top: -22px;
+  left: -22px;
+}
+.ly-layered--tr > .ly-layered__plane:first-of-type {
+  top: -22px;
+  right: -22px;
+}
+.ly-layered--br > .ly-layered__plane:first-of-type {
+  bottom: -22px;
+  right: -22px;
+}
+.ly-layered--bl > .ly-layered__plane:first-of-type {
+  bottom: -22px;
+  left: -22px;
+}
 
 /* Additional plane offsets via per-plane modifier (for double-plane layouts) */
-.ly-layered__plane--tl { top: -22px; left: -22px; }
-.ly-layered__plane--tr { top: -22px; right: -22px; }
-.ly-layered__plane--br { bottom: -22px; right: -22px; }
-.ly-layered__plane--bl { bottom: -22px; left: -22px; }
+.ly-layered__plane--tl {
+  top: -22px;
+  left: -22px;
+}
+.ly-layered__plane--tr {
+  top: -22px;
+  right: -22px;
+}
+.ly-layered__plane--br {
+  bottom: -22px;
+  right: -22px;
+}
+.ly-layered__plane--bl {
+  bottom: -22px;
+  left: -22px;
+}
 
 /* Container-level accent colour applies to the first plane */
-.ly-layered--blue       > .ly-layered__plane:first-of-type { background: #619CBA; }
-.ly-layered--warmgrey   > .ly-layered__plane:first-of-type { background: #CCC8C4; }
-.ly-layered--terracotta > .ly-layered__plane:first-of-type { background: #D8B4A3; }
-.ly-layered--yellow     > .ly-layered__plane:first-of-type { background: #F1D46E; }
-.ly-layered--paleblue   > .ly-layered__plane:first-of-type { background: #CBD9DA; }
+.ly-layered--blue > .ly-layered__plane:first-of-type {
+  background: #619cba;
+}
+.ly-layered--warmgrey > .ly-layered__plane:first-of-type {
+  background: #ccc8c4;
+}
+.ly-layered--terracotta > .ly-layered__plane:first-of-type {
+  background: #d8b4a3;
+}
+.ly-layered--yellow > .ly-layered__plane:first-of-type {
+  background: #f1d46e;
+}
+.ly-layered--paleblue > .ly-layered__plane:first-of-type {
+  background: #cbd9da;
+}
 
 /* Per-plane colour modifiers (for double-plane layouts) */
-.ly-layered__plane--blue       { background: #619CBA; }
-.ly-layered__plane--warmgrey   { background: #CCC8C4; }
-.ly-layered__plane--terracotta { background: #D8B4A3; }
-.ly-layered__plane--yellow     { background: #F1D46E; }
-.ly-layered__plane--paleblue   { background: #CBD9DA; }
+.ly-layered__plane--blue {
+  background: #619cba;
+}
+.ly-layered__plane--warmgrey {
+  background: #ccc8c4;
+}
+.ly-layered__plane--terracotta {
+  background: #d8b4a3;
+}
+.ly-layered__plane--yellow {
+  background: #f1d46e;
+}
+.ly-layered__plane--paleblue {
+  background: #cbd9da;
+}
 
 /* Rotated plane — casual "pinned" feel (L50) */
 .ly-layered--rotate > .ly-layered__plane:first-of-type {
@@ -761,13 +845,14 @@
 
 /* L56 · Split-colour diagonal plane */
 .ly-layered--split > .ly-layered__plane:first-of-type {
-  background: linear-gradient(135deg, #619CBA 0%, #619CBA 50%, #D8B4A3 50%, #D8B4A3 100%);
+  background: linear-gradient(135deg, #619cba 0%, #619cba 50%, #d8b4a3 50%, #d8b4a3 100%);
 }
-
 
 /* ── 16:9 placeholder ──────────────────────────────────────────────────── */
 
-.ly-placeholder--16-9 { aspect-ratio: 16 / 9; }
+.ly-placeholder--16-9 {
+  aspect-ratio: 16 / 9;
+}
 
 /* ── Boxout (accent-filled panel) ──────────────────────────────────────── */
 
@@ -779,11 +864,26 @@
   justify-content: center;
 }
 
-.ly-boxout--yellow      { background: #F1D46E; color: #111; }
-.ly-boxout--terracotta  { background: #D8B4A3; color: #111; }
-.ly-boxout--warmgrey    { background: #CCC8C4; color: #111; }
-.ly-boxout--blue        { background: #619CBA; color: #FAF8F6; }
-.ly-boxout--paleblue    { background: #CBD9DA; color: #111; }
+.ly-boxout--yellow {
+  background: #f1d46e;
+  color: #111;
+}
+.ly-boxout--terracotta {
+  background: #d8b4a3;
+  color: #111;
+}
+.ly-boxout--warmgrey {
+  background: #ccc8c4;
+  color: #111;
+}
+.ly-boxout--blue {
+  background: #619cba;
+  color: #faf8f6;
+}
+.ly-boxout--paleblue {
+  background: #cbd9da;
+  color: #111;
+}
 
 .ly-boxout__label {
   display: block;
@@ -803,8 +903,12 @@
   max-width: 32ch;
 }
 
-.ly-boxout--blue .ly-boxout__body { max-width: 32ch; }
-.ly-boxout--wide .ly-boxout__body { max-width: 60ch; }
+.ly-boxout--blue .ly-boxout__body {
+  max-width: 32ch;
+}
+.ly-boxout--wide .ly-boxout__body {
+  max-width: 60ch;
+}
 
 /* ── Real image slots (Media component) ────────────────────────────────── */
 
@@ -822,34 +926,56 @@
   object-fit: cover;
 }
 
-.ly-media--16-9 { aspect-ratio: 16 / 9; }
-.ly-media--21-9 { aspect-ratio: 21 / 9; }
-.ly-media--square { aspect-ratio: 1 / 1; }
-.ly-media--landscape { aspect-ratio: 3 / 2; }
-.ly-media--portrait { aspect-ratio: 4 / 5; }
-.ly-media--portrait-tall { aspect-ratio: 2 / 3; }
-.ly-media--circle { aspect-ratio: 1 / 1; border-radius: 50%; }
-.ly-media--circle .ly-media__img { border-radius: 50%; }
+.ly-media--16-9 {
+  aspect-ratio: 16 / 9;
+}
+.ly-media--21-9 {
+  aspect-ratio: 21 / 9;
+}
+.ly-media--square {
+  aspect-ratio: 1 / 1;
+}
+.ly-media--landscape {
+  aspect-ratio: 3 / 2;
+}
+.ly-media--portrait {
+  aspect-ratio: 4 / 5;
+}
+.ly-media--portrait-tall {
+  aspect-ratio: 2 / 3;
+}
+.ly-media--circle {
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+}
+.ly-media--circle .ly-media__img {
+  border-radius: 50%;
+}
 
 /* ── Head, Heart and Hands pattern ── */
 
 .hhh-pattern {
-  --hhh-paper: #FAF8F6;
-  --hhh-surface: #FCFBF8;
+  --hhh-paper: #faf8f6;
+  --hhh-surface: #fcfbf8;
   --hhh-ink: #333333;
-  --hhh-navy: #213D59;
-  --hhh-orange: #EC671B;
-  --hhh-blue: #619CBA;
-  --hhh-grey: #CCC8C4;
-  --hhh-terracotta: #D8B4A3;
-  --hhh-yellow: #F1D46E;
-  --hhh-mist: #CBD9DA;
+  --hhh-navy: #213d59;
+  --hhh-orange: #ec671b;
+  --hhh-blue: #619cba;
+  --hhh-grey: #ccc8c4;
+  --hhh-terracotta: #d8b4a3;
+  --hhh-yellow: #f1d46e;
+  --hhh-mist: #cbd9da;
   --hhh-rule: rgba(51, 51, 51, 0.72);
 
   width: 100%;
   color: var(--hhh-ink);
-  font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', sans-serif;
+  font-family:
+    'Open Sans',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
 }
 
 .hhh-pattern *,
@@ -908,13 +1034,13 @@
 
 .hhh-panel--head {
   --hhh-title-bg: var(--hhh-navy);
-  --hhh-title-fg: #FFFFFF;
+  --hhh-title-fg: #ffffff;
   --hhh-active-rule: var(--hhh-navy);
 }
 
 .hhh-panel--heart {
   --hhh-title-bg: var(--hhh-orange);
-  --hhh-title-fg: #FFFFFF;
+  --hhh-title-fg: #ffffff;
   --hhh-active-rule: var(--hhh-orange);
 }
 
@@ -989,9 +1115,15 @@
   object-fit: cover;
 }
 
-.hhh-panel--head  .hhh-panel__photo img { object-position: 52% 52%; }
-.hhh-panel--heart .hhh-panel__photo img { object-position: 50% 46%; }
-.hhh-panel--hands .hhh-panel__photo img { object-position: 50% 46%; }
+.hhh-panel--head .hhh-panel__photo img {
+  object-position: 52% 52%;
+}
+.hhh-panel--heart .hhh-panel__photo img {
+  object-position: 50% 46%;
+}
+.hhh-panel--hands .hhh-panel__photo img {
+  object-position: 50% 46%;
+}
 
 .hhh-panel[data-active='true'] .hhh-panel__drawing {
   opacity: 0;
@@ -1018,7 +1150,9 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .hhh-panel[data-active='false']:hover { opacity: 1; }
+  .hhh-panel[data-active='false']:hover {
+    opacity: 1;
+  }
   .hhh-panel[data-active='false']:hover .hhh-panel__drawing {
     transform: scale(1.012);
   }
@@ -1030,20 +1164,34 @@
 }
 
 @media (max-width: 700px) {
-  .hhh-frame { gap: 5px; padding: 5px; }
-  .hhh-panel { grid-template-rows: 34px minmax(0, 1fr); }
-  .hhh-panel[data-active='true'] { flex-grow: 4.4; }
-  .hhh-panel__title { font-size: 13px; }
-  .hhh-panel[data-active='false'] .hhh-panel__title { font-size: 11px; }
-  .hhh-panel__drawing svg { padding: 8px; }
+  .hhh-frame {
+    gap: 5px;
+    padding: 5px;
+  }
+  .hhh-panel {
+    grid-template-rows: 34px minmax(0, 1fr);
+  }
+  .hhh-panel[data-active='true'] {
+    flex-grow: 4.4;
+  }
+  .hhh-panel__title {
+    font-size: 13px;
+  }
+  .hhh-panel[data-active='false'] .hhh-panel__title {
+    font-size: 11px;
+  }
+  .hhh-panel__drawing svg {
+    padding: 8px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .hhh-panel,
   .hhh-panel__drawing,
-  .hhh-panel__photo { transition: none; }
+  .hhh-panel__photo {
+    transition: none;
+  }
 }
-
 
 /* ── Quote card ── */
 
@@ -1054,18 +1202,33 @@
 
 .p1v2__qcard {
   margin: 0;
-  max-width: var(--w-panel);                              /* 720px — matches .p1v2__card */
-  padding: var(--sp-8);                                   /* 32px — matches .p1v2__card */
+  max-width: var(--w-panel); /* 720px — matches .p1v2__card */
+  padding: var(--sp-8); /* 32px — matches .p1v2__card */
   display: flex;
   flex-direction: column;
   gap: clamp(0.5rem, 1vw, 0.75rem);
 }
 
-.p1v2__qcard--yellow     { background: #F1D46E; color: #111; }
-.p1v2__qcard--terracotta { background: #D8B4A3; color: #111; }
-.p1v2__qcard--paleblue   { background: #CBD9DA; color: #111; }
-.p1v2__qcard--warmgrey   { background: #CCC8C4; color: #111; }
-.p1v2__qcard--blue       { background: #619CBA; color: #FAF8F6; }
+.p1v2__qcard--yellow {
+  background: #f1d46e;
+  color: #111;
+}
+.p1v2__qcard--terracotta {
+  background: #d8b4a3;
+  color: #111;
+}
+.p1v2__qcard--paleblue {
+  background: #cbd9da;
+  color: #111;
+}
+.p1v2__qcard--warmgrey {
+  background: #ccc8c4;
+  color: #111;
+}
+.p1v2__qcard--blue {
+  background: #619cba;
+  color: #faf8f6;
+}
 
 /* Georgia's " sits in the upper ~40% of the em box, so a normal line-height
    leaves a huge empty strip below the glyph. We clip that with a fixed height
@@ -1074,17 +1237,21 @@
 .p1v2__qcard-mark {
   display: block;
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(4rem, 8vw, 5.5rem);                    /* toned for 720px frame */
+  font-size: clamp(4rem, 8vw, 5.5rem); /* toned for 720px frame */
   line-height: 1;
   height: 0.55em;
   overflow: hidden;
   color: currentColor;
-  margin: 0 0 var(--sp-4);                                /* 16px */
+  margin: 0 0 var(--sp-4); /* 16px */
 }
 
 .p1v2__qcard-text {
   margin: 0;
-  font-size: clamp(1.25rem, 2.2vw, 1.625rem);             /* 20 → 26px — sits between .p1v2__prose and the old L62 display */
+  font-size: clamp(
+    1.25rem,
+    2.2vw,
+    1.625rem
+  ); /* 20 → 26px — sits between .p1v2__prose and the old L62 display */
   font-weight: 800;
   line-height: 1.25;
   letter-spacing: -0.015em;
@@ -1094,15 +1261,14 @@
 
 .p1v2__qcard-attribution {
   display: block;
-  margin-top: var(--sp-5);                                /* 20px — matches .p1v2__card label→list rhythm */
+  margin-top: var(--sp-5); /* 20px — matches .p1v2__card label→list rhythm */
   font-weight: 700;
-  font-size: 11px;                                        /* matches .p1v2__card-label */
+  font-size: 11px; /* matches .p1v2__card-label */
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: currentColor;
   opacity: 0.65;
 }
-
 
 /* ── katsura additions ─────────────────────────────────────────────────── */
 
@@ -1142,4 +1308,18 @@
 
 .p1v2__hero--title .p1v2__lede {
   max-width: 60ch;
+}
+
+/* The pill must never sit over the text. On phones it is removed entirely; between phone and wide
+   desktop widths the article is held clear of it (pill: 20px in, 28px wide). */
+@media (max-width: 40rem) {
+  .pilot-pill {
+    display: none;
+  }
+}
+
+@media (min-width: 40.0625rem) and (max-width: 79.9375rem) {
+  .pilot-root .p1v2 {
+    padding-inline-start: 72px;
+  }
 }

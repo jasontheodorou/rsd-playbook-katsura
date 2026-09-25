@@ -1,0 +1,703 @@
+/*
+ * Accordion options, sized for the Who we are frame. The page is the site's 12 columns: column 1
+ * is the rail, as on Who we are, and everything else sits on columns 2 to 12. Rows use the same 11
+ * content columns, so in this file "column 1" means page column 2. Numbers sit on page column 2,
+ * titles and text start on page column 3 (or 2 where a design has no number), text keeps the body
+ * text size and measure, and controls end on page column 12's edge: the account control's line.
+ * Opening animates height (220ms) and fades the text in after; reduced motion opens instantly.
+ */
+
+.accp {
+  width: 100%;
+  align-self: flex-start;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  align-items: start;
+  color: #111;
+}
+
+/* The rail, as on Who we are: the number box and progress track on column 1, pinned. */
+.accp-rail {
+  grid-column: 1;
+  position: sticky;
+  top: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 48px;
+  height: calc(100svh - 63px - 96px - 48px);
+}
+.accp-rail__number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 32px;
+  border: 1.5px solid #ec671b;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-indent: 0.14em;
+  color: #ec671b;
+}
+.accp-rail__track {
+  flex: 1;
+  width: 8px;
+  border-radius: 999px;
+  background: rgba(216, 180, 163, 0.28);
+}
+
+/* Content: columns 2 to 12 as 11 columns, the same template every row uses. */
+.accp-main {
+  grid-column: 2 / -1;
+}
+
+.accp-main,
+.acc__summary,
+.acc__body,
+.acc-showall__bar,
+.acc-side {
+  display: grid;
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+}
+
+.accp-intro,
+.accp-design {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+}
+
+/* ── Page intro and design headings ── */
+
+.accp-intro__title {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: clamp(2.5rem, 1rem + 3vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-box: trim-both cap alphabetic;
+}
+
+.accp-intro__lede {
+  grid-column: 1 / 9;
+  margin: 32px 0 0;
+  max-width: 34em;
+  font-size: clamp(1.125rem, 0.62rem + 0.78vw, 1.625rem);
+  line-height: 1.6;
+  color: #55524e;
+  text-box: trim-both cap alphabetic;
+}
+
+.accp-design {
+  margin-top: 160px;
+}
+
+.accp-intro + .accp-design {
+  margin-top: 128px;
+}
+
+.accp-design__id {
+  display: inline-flex;
+  margin-bottom: 24px;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 32px;
+  border: 1.5px solid #ec671b;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-indent: 0.14em;
+  color: #ec671b;
+}
+
+.accp-design__head {
+  grid-column: 1 / 9;
+  grid-row: 1;
+}
+
+.accp-design__name {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.15;
+  text-box: trim-both cap alphabetic;
+}
+
+.accp-design__rule {
+  margin: 16px 0 0;
+  max-width: 44em;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #55524e;
+}
+
+.accp-design__demo {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  margin-top: 48px;
+}
+
+/* ── Shared row anatomy ── */
+
+.acc {
+  position: relative;
+  interpolate-size: allow-keywords;
+}
+
+.acc__summary {
+  align-items: center;
+  padding-block: 28px;
+  list-style: none;
+  cursor: pointer;
+}
+
+.acc__summary::-webkit-details-marker {
+  display: none;
+}
+
+.acc__summary:focus-visible {
+  outline: 3px solid #ec671b;
+  outline-offset: -3px;
+}
+
+.acc__n {
+  grid-column: 1;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #8a847e;
+}
+
+.acc__title {
+  grid-column: 2 / 8;
+  font-size: clamp(1.25rem, 0.9rem + 0.6vw, 1.625rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.acc__preview {
+  color: #8a847e;
+  font-size: 1rem;
+  line-height: 1.5;
+  transition: opacity 180ms ease;
+}
+
+/* Plus that becomes a minus, on column 12's right edge. */
+.acc__plus {
+  grid-column: 11;
+  justify-self: end;
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.acc__plus::before,
+.acc__plus::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+  transition: transform 220ms ease;
+}
+
+.acc__plus::after {
+  transform: rotate(90deg);
+}
+
+.acc[open] > .acc__summary .acc__plus::after,
+.acc__plus[data-open='true']::after {
+  transform: rotate(0deg);
+}
+
+.acc__copy {
+  grid-column: 2 / 9;
+  padding-bottom: 40px;
+}
+
+/* Text at the body text size and measure (components/body-text.css). */
+.acc__copy > p {
+  margin: 0;
+  max-width: 34em;
+  font-size: clamp(1.125rem, 0.62rem + 0.78vw, 1.625rem);
+  line-height: 1.6;
+  color: #2a2a2e;
+  text-box: trim-both cap alphabetic;
+}
+
+.acc__copy > p + p {
+  margin-top: 24px;
+}
+
+.acc::details-content {
+  block-size: 0;
+  overflow: clip;
+  transition:
+    block-size 220ms ease,
+    content-visibility 220ms allow-discrete;
+}
+
+.acc[open]::details-content {
+  block-size: auto;
+}
+
+.acc[open] .acc__copy {
+  animation: acc-fade 220ms ease 120ms both;
+}
+
+@keyframes acc-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── 1. Hairline ledger ── */
+
+.acc--ledger {
+  border-top: 1px solid #d9d4cd;
+}
+.acc--ledger:last-child {
+  border-bottom: 1px solid #d9d4cd;
+}
+
+/* ── 2. Large index ── */
+
+.acc--index {
+  border-top: 1px solid #d9d4cd;
+}
+.acc--index:last-child {
+  border-bottom: 1px solid #d9d4cd;
+}
+.acc--index .acc__summary {
+  align-items: baseline;
+  padding-block: 40px;
+}
+.acc--index .acc__n {
+  font-size: clamp(2rem, 1rem + 2vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #d9d4cd;
+  transition: color 220ms ease;
+}
+.acc--index .acc__title {
+  grid-column: 2 / -1;
+  font-size: clamp(2rem, 1rem + 2.4vw, 3.75rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+.acc--index[open] .acc__n {
+  color: #ec671b;
+}
+
+/* ── 3. Paper cards ── */
+
+.acc-set--cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.acc--cards {
+  border: 1px solid rgba(17, 17, 17, 0.07);
+  border-radius: 20px;
+  background: #f5f1ea;
+  transition:
+    background 220ms ease,
+    box-shadow 220ms ease;
+}
+.acc--cards .acc__title {
+  grid-column: 2 / 5;
+}
+.acc--cards .acc__preview {
+  grid-column: 5 / 10;
+}
+/* Inside a card the control ends on column 11, leaving one column of margin to match the left. */
+.acc--cards .acc__plus,
+.acc--folders .acc__plus {
+  grid-column: 10;
+}
+.acc--folders .acc__n {
+  justify-self: center;
+}
+.acc--cards[open] {
+  background: #efe9e0;
+  box-shadow: 0 10px 28px rgba(33, 61, 89, 0.08);
+}
+.acc--cards[open] .acc__preview {
+  opacity: 0;
+}
+
+/* ── 4. Side index ── */
+
+.acc-side {
+  align-items: start;
+}
+.acc-side__list {
+  grid-column: 1 / 5;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid #d9d4cd;
+}
+.acc-side__list li {
+  border-bottom: 1px solid #d9d4cd;
+}
+.acc-side__tab {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  width: 100%;
+  padding: 20px 0 20px 16px;
+  border: 0;
+  border-left: 3px solid transparent;
+  background: none;
+  font: inherit;
+  color: #8a847e;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    border-color 180ms ease;
+}
+.acc-side__tab .acc__title {
+  font-size: 1.25rem;
+}
+.acc-side__tab:hover,
+.acc-side__tab[aria-selected='true'] {
+  color: #111;
+}
+.acc-side__tab[aria-selected='true'] {
+  border-left-color: #ec671b;
+}
+.acc-side__tab:focus-visible {
+  outline: 3px solid #ec671b;
+  outline-offset: -3px;
+}
+.acc-side__panel {
+  grid-column: 5 / -1;
+  min-height: 320px;
+  padding: 48px;
+  border-radius: 20px;
+  background: #f5f1ea;
+  animation: acc-fade 220ms ease both;
+}
+.acc-side__heading {
+  margin: 0 0 32px;
+  font-size: clamp(1.75rem, 1rem + 1.4vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-box: trim-both cap alphabetic;
+}
+.acc-side__panel .acc__copy {
+  padding: 0;
+}
+
+/* ── 5. Preview lines ── */
+
+.acc--preview {
+  border-top: 1px solid #d9d4cd;
+}
+.acc--preview:last-child {
+  border-bottom: 1px solid #d9d4cd;
+}
+.acc--preview .acc__title {
+  grid-column: 1 / 4;
+}
+.acc--preview .acc__preview {
+  grid-column: 4 / 10;
+}
+.acc--preview .acc__copy {
+  grid-column: 1 / 8;
+}
+.acc--preview[open] .acc__preview {
+  opacity: 0;
+}
+
+/* ── 6. Progress rail ── */
+
+.acc-set--rail {
+  position: relative;
+}
+.acc-set--rail::before {
+  content: '';
+  position: absolute;
+  top: 36px;
+  bottom: 36px;
+  left: 7px;
+  width: 2px;
+  background: #d9d4cd;
+}
+.acc--rail .acc__node {
+  grid-column: 1;
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #213d59;
+  background: #fcfbf8;
+  transition: background 220ms ease;
+}
+.acc--rail[open] .acc__node {
+  background: #213d59;
+}
+.acc--rail .acc__title {
+  grid-column: 2 / 5;
+}
+.acc--rail .acc__preview {
+  grid-column: 5 / 11;
+}
+
+/* ── 7. Show all sections ── */
+
+.acc-showall__bar {
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #d9d4cd;
+}
+.acc-showall__count {
+  grid-column: 1 / 5;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a847e;
+}
+.acc-showall__toggle {
+  grid-column: 7 / -1;
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #213d59;
+  cursor: pointer;
+}
+.acc-showall__toggle .acc__plus {
+  width: 14px;
+  height: 14px;
+}
+.acc-showall__toggle .acc__plus::before,
+.acc-showall__toggle .acc__plus::after {
+  top: 6px;
+  width: 14px;
+}
+.acc--showall {
+  border-bottom: 1px solid #d9d4cd;
+}
+.acc--showall .acc__summary {
+  grid-template-rows: auto auto;
+  row-gap: 8px;
+  align-items: start;
+}
+.acc--showall .acc__title {
+  grid-column: 1 / 9;
+  grid-row: 1;
+  color: #213d59;
+}
+.acc--showall .acc__preview {
+  grid-column: 1 / 9;
+  grid-row: 2;
+}
+.acc--showall .acc__copy {
+  grid-column: 1 / 8;
+}
+.acc--showall .acc__action {
+  grid-column: 10 / -1;
+  grid-row: 1;
+  justify-self: end;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #213d59;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.acc--showall .acc__action::after {
+  content: 'Show';
+}
+.acc--showall[open] .acc__action::after {
+  content: 'Hide';
+}
+
+/* ── 8. Folder tabs ── */
+
+.acc--folders {
+  margin-top: -16px;
+  border: 1px solid rgba(17, 17, 17, 0.07);
+  border-bottom: 0;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -6px 16px rgba(33, 61, 89, 0.05);
+}
+.acc--folders:first-child {
+  margin-top: 0;
+}
+.acc--folders:last-child {
+  border-bottom: 1px solid rgba(17, 17, 17, 0.07);
+  border-radius: 20px;
+}
+.acc--folders:nth-child(1) {
+  background: #f7f4ef;
+}
+.acc--folders:nth-child(2) {
+  background: #f2ede6;
+}
+.acc--folders:nth-child(3) {
+  background: #ede7de;
+}
+.acc--folders:nth-child(4) {
+  background: #e8e1d6;
+}
+.acc--folders:nth-child(5) {
+  background: #e3dbcf;
+}
+.acc--folders .acc__summary {
+  padding-block: 28px 44px;
+}
+.acc--folders[open] {
+  z-index: 1;
+  background: #fcfbf8;
+}
+
+/* ── 9. Colour sweep ── */
+
+.acc--sweep {
+  border-top: 1px solid #d9d4cd;
+  isolation: isolate;
+}
+.acc--sweep:last-child {
+  border-bottom: 1px solid #d9d4cd;
+}
+.acc--sweep::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #faf0c8;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.acc--sweep[open]::before {
+  transform: scaleX(1);
+}
+
+/* ── 10. Watermark numerals ── */
+
+.acc--watermark {
+  border-top: 1px solid #d9d4cd;
+}
+.acc--watermark:last-child {
+  border-bottom: 1px solid #d9d4cd;
+}
+.acc--watermark .acc__body {
+  position: relative;
+}
+.acc--watermark .acc__title {
+  grid-column: 1 / 8;
+}
+.acc--watermark .acc__copy {
+  grid-column: 1 / 8;
+}
+.acc__mark {
+  grid-column: 9 / -1;
+  grid-row: 1;
+  align-self: start;
+  justify-self: end;
+  margin-top: -24px;
+  font-size: clamp(6rem, 3rem + 6vw, 11rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: rgba(236, 103, 27, 0.1);
+  pointer-events: none;
+}
+.acc--watermark .acc__body > .acc__copy {
+  grid-row: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .acc::details-content,
+  .acc--sweep::before,
+  .acc__plus::before,
+  .acc__plus::after {
+    transition: none;
+  }
+  .acc[open] .acc__copy,
+  .acc-side__panel {
+    animation: none;
+  }
+}
+
+/* ── Below 1024px: one column, with the number, title and control on one line ── */
+
+@media (max-width: 63.9375rem) {
+  .accp,
+  .accp-main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .accp-rail {
+    position: static;
+    height: auto;
+    margin-bottom: 32px;
+  }
+  .accp-rail__track {
+    display: none;
+  }
+  .accp-main,
+  .accp-intro > *,
+  .accp-design > * {
+    grid-column: 1 / -1 !important;
+  }
+  .accp-design__head {
+    grid-row: 2;
+    margin-top: 24px;
+  }
+  .accp-design__demo {
+    grid-row: 3;
+  }
+  .acc__summary {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    column-gap: 16px;
+    padding-inline: 16px;
+  }
+  .acc__summary > * {
+    grid-column: auto !important;
+    grid-row: auto !important;
+  }
+  .acc__preview,
+  .acc__mark,
+  .acc-set--rail::before {
+    display: none;
+  }
+  .acc__body {
+    grid-template-columns: minmax(0, 1fr);
+    padding-inline: 16px;
+  }
+  .acc__copy {
+    grid-column: 1;
+  }
+  .acc-side__list,
+  .acc-side__panel {
+    grid-column: 1 / -1;
+  }
+  .acc-side__panel {
+    margin-top: 24px;
+    padding: 24px;
+  }
+}

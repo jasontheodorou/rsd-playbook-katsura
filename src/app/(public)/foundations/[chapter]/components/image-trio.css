@@ -1,0 +1,133 @@
+/*
+ * Image trio: three equal cells with vertical hairlines between the photographs (no horizontal rules), each holding a centred 4:5 portrait. The cell's
+ * colour fills in behind the photograph on hover or focus (200ms), and the label pill follows the
+ * pointer. It spans a Foundations page's 11 content columns (page columns 2 to 12).
+ */
+
+.trio {
+  /* The space between a photograph and its cell's edge (the colour fill's margin). A page can
+     set --trio-pad itself; 48px otherwise. */
+  --trio-pad-own: var(--trio-pad, 48px);
+
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.trio__cell {
+  --x: 50%;
+  --y: 50%;
+
+  position: relative;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: var(--trio-pad-own) 0;
+  outline: none;
+  cursor: default;
+  isolation: isolate;
+}
+
+/* Dividers run only the height of the photographs, so the trio's visible edge is its photographs. */
+.trio__cell + .trio__cell::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: var(--trio-pad-own);
+  bottom: var(--trio-pad-own);
+  width: 1px;
+  background: #e2dcd3;
+  transition: opacity 200ms ease;
+}
+
+/* While a cell is lit, the dividers either side of it step away, so the fill's edges are clean,
+   straight lines. */
+.trio__cell:is(:hover, :focus-visible)::after,
+.trio__cell:is(:hover, :focus-visible) + .trio__cell::after {
+  opacity: 0;
+}
+
+/* The colour fill, behind the photograph. It stops 5px short of the cell at top and bottom, so
+   when lit it never presses against the text above or below. */
+.trio__cell::before {
+  content: '';
+  position: absolute;
+  inset: 5px 0;
+  z-index: -1;
+  background: var(--tone);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.trio__cell:hover::before,
+.trio__cell:focus-visible::before {
+  opacity: 1;
+}
+
+.trio__img {
+  display: block;
+  width: 62%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+/* The label: a dark pill that follows the pointer, sitting 16px above it so the pointer stays in
+   view; centred for keyboard focus. */
+.trio__label {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  z-index: 1;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  transform: translate(-50%, calc(-100% - 12px)) scale(0.9);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+.trio__cell:hover .trio__label,
+.trio__cell:focus-visible .trio__label {
+  opacity: 1;
+  transform: translate(-50%, calc(-100% - 16px)) scale(1);
+}
+
+.trio__cell:focus-visible .trio__label {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.trio__cell:focus-visible {
+  box-shadow: inset 0 0 0 3px #111;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trio__cell::before,
+  .trio__label {
+    transition: none;
+  }
+}
+
+/* Phones: the three stack, each photograph wider. Labels show beneath their photograph. */
+@media (max-width: 40rem) {
+  .trio {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .trio {
+    --trio-pad-own: var(--trio-pad, 32px);
+  }
+  .trio__cell + .trio__cell::after {
+    display: none;
+  }
+  .trio__img {
+    width: 72%;
+  }
+}
