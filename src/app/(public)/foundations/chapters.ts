@@ -15,14 +15,15 @@ export type Chapter = {
   Mark: ComponentType<{ className?: string; style?: React.CSSProperties }>
 }
 
-/** The six Foundations themes, in reading order. Static until the read model carries sections. */
+/** The six Foundations chapters, in reading order, as in the manual explorer's plan. Static until the read model carries sections. */
 export const chapters: Chapter[] = [
   { slug: 'who-we-are', title: 'Who we are', Mark: WhatWeDoMark },
   { slug: 'why-design-matters', title: 'Why design matters', Mark: WhyWeDoItMark },
-  { slug: 'our-difference', title: 'Our difference', Mark: OurDifferenceMark },
   { slug: 'head-heart-and-hands', title: 'Head, heart and hands', Mark: HeadHeartHandsMark },
-  { slug: 'our-methods', title: 'Our methods', Mark: OurMethodsMark },
-  { slug: 'our-values', title: 'Our values', Mark: OurValuesMark },
+  // Marks keep their original names; each went to the chapter it suits best.
+  { slug: 'how-we-think', title: 'How we think', Mark: OurDifferenceMark },
+  { slug: 'what-we-care-about', title: 'What we care about', Mark: OurValuesMark },
+  { slug: 'how-we-deliver', title: 'How we deliver', Mark: OurMethodsMark },
 ]
 
 /** Stable content identity for progress. Survives the move to the read model as long as slugs do. */

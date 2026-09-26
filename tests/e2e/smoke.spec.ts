@@ -28,7 +28,7 @@ test('the top bar title is identical on every page', async ({ page }) => {
     })
   }
   const home = await measure('/')
-  for (const path of ['/foundations', '/foundations/head-heart-and-hands', '/foundations/our-methods']) {
+  for (const path of ['/foundations', '/foundations/head-heart-and-hands', '/foundations/how-we-deliver']) {
     expect(await measure(path)).toBe(home)
   }
 })
