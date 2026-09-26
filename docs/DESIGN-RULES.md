@@ -114,7 +114,17 @@ How pages in this build are designed, and how Claude works on them. Loaded into 
 | `photo` | A landscape photograph, usually the first block | 2:1, with a pale blue plane (`#cbd9da`) one grid gap below and to the right |
 | `accordion` | Several short sections, such as commitments | Quiet outline: tinted rows `#f7f4ef`, 4px apart, deeper when open; a marker, the title and a 32px hairline button that fills when open. Bodies start with "We…" |
 | `trio` | Three portrait photographs with labels | 4:5 photographs in equal cells; hovering fills a cell with yellow, blue or terracotta and shows a label 16px above the pointer. Vertical dividers only as tall as the photographs, hidden either side of a lit cell. The fill stops 5px short of the cell at top and bottom so it never presses against text |
+| `pinned` | A photograph as a quieter pause between text blocks | Adapted from the original build's PinnedPhoto: square photograph on page columns 2 to 6 on a yellow plane the same size, which settles from 0 to -3 degrees over 2.4s as it scrolls into view (at rest under reduced motion). Chapter 02's signature image. It can carry the chapter's quotation, hidden until asked for: a "Read the quote" tab on the photograph's corner slides a yellow quote card out from behind it (tucked 30% under the photograph, reaching page column 11, within the photograph's height); Escape or the tab closes it; without JavaScript the quote shows under the photograph |
+| `diagram` | A centre idea with five items to explore (such as the five benefits) | The refined diagram; see "Refined pattern standard" below. Spans columns 2 to 11: stage on page columns 2 to 6, reading panel on 7 to 11 |
+| `boxout` | A short list that deserves to stand apart (such as features or signs) | Adapted from the original build's information card: white panel, hairline edge, 4px corners, a 48 by 4px accent bar top-left in the chapter's colour (not orange), a small uppercase grey label, points with grey square markers, 40px padding. Spans page columns 2 to 9. Introduced by a body-text line ending in a colon |
+| `quote` | One quotation that deserves weight | Adapted from the original build's tinted quote card: flat yellow `#f1d46e` panel (the one recurring tint; terracotta read as a warning, pale blue competed with image planes), 24px corners, 48px padding. Spans page columns 2 to 9 like body text; Georgia speech mark centred in the first column, quotation bold at about 25px on columns 3 to 8, optional small uppercase attribution |
 | `tabs` | Roles or options to compare | T-shaped tabs: paper card with a hairline edge, bar tinted `#f5f1ea`, a sand pill for the chosen tab, photo on page columns 3 to 5 and text on 7 to 11, grey square markers, bold lead-ins. It stays the height of the tallest panel |
+
+**Hide to include.** Every passage of the manual must appear, but not all at once. Secondary content (a quotation, extra detail, a list that supports a point) should sit behind a reader's choice: a tab on an image, an accordion, a diagram, tabs. It must stay in the page for screen readers and appear without JavaScript. A standalone block that breaks the flow is a sign its content should be folded into another block.
+
+**Rhythm.** Do not run text block after text block. Break up runs of text with an image or a visual component, roughly every two or three blocks.
+
+**Each page is a little unique.** The frame, grid, type and spacing are shared; the content shape is not. Do not copy another chapter's block order (for example, opening every chapter with the same photograph after the statement). Give each chapter its own image treatment or signature element, agreed with Jason, so pages feel related but not identical.
 
 A block that introduces the next one (such as "Most of our specialists do work in four roles:") is a `text` block ending in a colon.
 
@@ -144,6 +154,40 @@ A block that introduces the next one (such as "Most of our specialists do work i
 4. Copy photographs into `public/photos` and give each alt text that describes the photograph only.
 5. Run `node scripts/check-foundations.mjs <slug>` with the dev server running. It must pass at 1440px and 1024px.
 6. Open the page with the spacing overlay on, check every gap by eye at 1440px, and show Jason before anything else.
+
+## Refined pattern standard (the gold standard for refined components)
+
+The refined diagram (chapter 02, "Why design matters", 26 September 2026) is the standard for any component that should feel "minimal, elegant, chic": it lifts off the page without the Transform colours. Jason approved it as a gold standard after rejecting a colourful version (too loud) and a paper-and-ink version (too dull). Build any new refined component to these rules.
+
+**Code.** `foundations/[chapter]/components/Diagram.tsx` with `look="refined"`, styles in `components/diagram.css` (`.bd--refined`). Used as the `diagram` block. Icons from Phosphor (`@phosphor-icons/react`, MIT).
+
+**Colour.**
+- No Transform orange and no black lines. Text stays ink (`#16222b` for headings, `#44515a` for body).
+- No blue inside icons. Icons are Phosphor "light" line icons in grey-ink (`#3c4a54`); the chosen one turns ink (`#16222b`) at "regular" weight. The panel icon sits on neutral paper (`#f3f1ed`).
+- One restrained accent, slate `#34566b`, only in the drawn connector (at 60%) and the filled progress bars.
+- Surfaces are frosted white (`rgba(255,255,255,0.62)` with a 10 to 12px backdrop blur) or plain white, edged with a hairline `rgba(52,60,70,0.1)`.
+
+**Size.** Compact: ten columns wide (page columns 2 to 11, a column short of full width), the stage and panel five columns each; a wider-than-tall stage (16:11), 60px tiles with 16px corners, 13px labels, a 14px centre pill, a 40px-padded panel. About 490px tall at 1440px.
+
+**Ambience (subtle, never showy).**
+- Two blurred washes behind the stage, at 32% opacity with an 80px blur, drifting over 24 and 28 seconds. **The washes pick up the chapter's own colour** (the `washes` field on the block), so the component flows from what comes before it: pale blue `#cfe0e6` and sand `#eadfcf` by default; chapter 02 uses yellow `#f1dc93` and sand. The slate accent stays the same everywhere.
+- Shadows are soft and low: about `0 20px 40px -28px rgba(52,60,70,0.1)` for surfaces, smaller for tiles.
+- No coloured glow or fill on a chosen item: a fine ink edge (`rgba(22,34,43,0.28)`) and a 2px lift only.
+- Nothing playful: no bounce or spring, no breathing outlines, no travelling lights. Items fade in once; choices ease over 0.3 to 0.4 seconds.
+
+**Lines.**
+- Connectors are hairlines in pale slate (16%, 30% once explored). The chosen one draws in slate over 0.6 seconds.
+- **No line may pass through wording, a tile or the centre.** Lines end at the measured edge of each surface plus clear space (measured from layout size, so entrance animations cannot skew it), and labels sit on the side of their tile away from the centre. `scripts/check-foundations.mjs` fails a page if any line crosses a label, tile or the centre.
+
+**Type.** Labels 13px, weight 600, mid-grey, ink when chosen. Panel heading weight 600, tight tracking (−0.025em), about 30px at 1440px. Panel count ("03 of 05") in warm grey, letter-spaced.
+
+**Placement.** Introduce the component with a one-line body-text lead-in ending in a colon, and do not place it directly after another heavy panel such as a quote card; let body text or an image sit between them.
+
+**Behaviour.**
+- The panel says what to do before anything is chosen: a title and one instruction.
+- Every item is a real button with a short label, reachable by keyboard, with arrow keys moving between items.
+- Without JavaScript, the component is a plain list with icons and all text.
+- Reduced motion stops the washes and the connector drawing.
 
 ## Always
 

@@ -108,8 +108,20 @@
   grid-column: 1 / -1;
 }
 
-/* Text keeps to columns 2 to 9. */
-.fc__block--text {
+/* The diagram takes columns 2 to 11, a column short of the full width. */
+.fc__block--diagram {
+  grid-column: 1 / 11;
+}
+
+/* The pinned photo takes columns 2 to 6. */
+.fc__block--pinned {
+  grid-column: 1 / 6;
+}
+
+/* Text, the quote card and the boxout keep to columns 2 to 9. */
+.fc__block--text,
+.fc__block--quote,
+.fc__block--boxout {
   grid-column: 1 / 9;
 }
 
@@ -197,7 +209,11 @@
   .fc__rail,
   .fc__main,
   .fc__block,
-  .fc__block--text {
+  .fc__block--text,
+  .fc__block--quote,
+  .fc__block--pinned,
+  .fc__block--diagram,
+  .fc__block--boxout {
     grid-column: 1;
   }
 

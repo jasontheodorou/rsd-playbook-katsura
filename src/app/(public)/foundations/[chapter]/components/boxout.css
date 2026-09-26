@@ -1,0 +1,68 @@
+/*
+ * Boxout: white panel, hairline edge, a 48 by 4px accent bar in the top-left corner, 40px padding.
+ * Points at the body text size less a step, 16px apart, with small grey square markers.
+ */
+
+.boxout {
+  position: relative;
+  padding: 40px;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+  color: #111;
+}
+
+.boxout::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 48px;
+  height: 4px;
+  border-top-left-radius: 4px;
+  background: var(--boxout-accent);
+}
+
+.boxout__label {
+  margin: 0 0 24px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #8a847e;
+  text-box: trim-both cap alphabetic;
+}
+
+.boxout__list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.boxout__list li {
+  position: relative;
+  padding-left: 24px;
+  font-size: clamp(1.0625rem, 0.75rem + 0.5vw, 1.3125rem);
+  line-height: 1.5;
+  color: #2a2a2e;
+}
+
+.boxout__list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 7px;
+  height: 7px;
+  border-radius: 1.5px;
+  background: #9a928a;
+}
+
+@media (max-width: 40rem) {
+  .boxout {
+    padding: 28px 24px;
+  }
+}

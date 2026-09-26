@@ -17,6 +17,7 @@ if (!slugs.length) {
 }
 
 const SCALE = new Set([96, 64, 48, 32])
+// Diagrams: every connector must stop clear of every label, tile and the centre pill.
 const browser = await chromium.launch()
 let failures = 0
 
@@ -37,20 +38,57 @@ for (const slug of slugs) {
       (g) => g.id.startsWith('V') && !/plane/i.test(g.label) && !SCALE.has(Math.round(g.px)),
     )
     const widths = await page.evaluate(() => {
-      const text = [...document.querySelectorAll('.fc__block--text')].map((e) => e.getBoundingClientRect())
+      const text = [
+        ...document.querySelectorAll(
+          '.fc__block--text, .fc__block--quote, .fc__block--pinned, .fc__block--diagram, .fc__block--boxout',
+        ),
+      ].map((e) => e.getBoundingClientRect())
       const main = document.querySelector('.fc__main').getBoundingClientRect()
-      const others = [...document.querySelectorAll('.fc__block:not(.fc__block--text)')].map((e) => e.getBoundingClientRect())
+      const others = [
+        ...document.querySelectorAll(
+          '.fc__block:not(.fc__block--text):not(.fc__block--quote):not(.fc__block--pinned):not(.fc__block--diagram):not(.fc__block--boxout)',
+        ),
+      ].map((e) => e.getBoundingClientRect())
       return {
         offLeft: [...text, ...others].filter((r) => Math.abs(r.left - main.left) > 0.5).length,
         offRight: others.filter((r) => Math.abs(r.right - main.right) > 0.5).length,
       }
     })
-    const ok = !bad.length && !widths.offLeft && !widths.offRight
+    const crossings = await page.evaluate(() => {
+      let hits = 0
+      document.querySelectorAll('.fc .bd').forEach((root) => {
+        const boxes = [...root.querySelectorAll('.bd__label, .bd__hub, .bd__tile')].map((l) =>
+          l.getBoundingClientRect(),
+        )
+        root.querySelectorAll('.bd__lines path').forEach((path) => {
+          const len = path.getTotalLength()
+          const m = path.getScreenCTM()
+          for (let t = 0; t <= 1.0001; t += 0.01) {
+            const pt = path.getPointAtLength(t * len).matrixTransform(m)
+            for (const r of boxes) {
+              if (
+                pt.x > r.left + 1 &&
+                pt.x < r.right - 1 &&
+                pt.y > r.top + 1 &&
+                pt.y < r.bottom - 1
+              )
+                hits++
+            }
+          }
+        })
+      })
+      return hits
+    })
+    const ok = !bad.length && !widths.offLeft && !widths.offRight && !crossings
     if (!ok) failures++
-    console.log(`${ok ? 'PASS' : 'FAIL'} ${slug} at ${width}px: ${gaps.filter((g) => g.id.startsWith('V')).length} gaps checked`)
+    console.log(
+      `${ok ? 'PASS' : 'FAIL'} ${slug} at ${width}px: ${gaps.filter((g) => g.id.startsWith('V')).length} gaps checked`,
+    )
     for (const g of bad) console.log(`  ${g.id} ${g.label}: ${g.px}px is not on the scale`)
     if (widths.offLeft) console.log(`  ${widths.offLeft} block(s) not starting on column 2`)
     if (widths.offRight) console.log(`  ${widths.offRight} block(s) not ending on column 12`)
+    if (crossings)
+      console.log(`  a diagram line crosses a label, tile or the centre (${crossings} points)`)
     await page.close()
   }
 }

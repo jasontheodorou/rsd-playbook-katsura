@@ -1,0 +1,68 @@
+/*
+ * Quote card. Yellow (#f1d46e), as in the original build, where it was the one recurring tint;
+ * terracotta read as a warning and pale blue competed with the image planes. It spans eight
+ * content columns (page columns 2 to 9) with the tabs' 24px corners.
+ */
+
+.qcard {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  align-items: start;
+  margin: 0;
+  padding-block: 48px;
+  border-radius: 24px;
+  background: #f1d46e;
+  color: #111;
+}
+
+/* Georgia's speech mark sits high in its em box; a fixed height clips the empty space below it. */
+.qcard__mark {
+  grid-column: 1;
+  justify-self: center;
+  display: block;
+  height: 0.55em;
+  overflow: hidden;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(4rem, 2rem + 4vw, 6.5rem);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.qcard__text {
+  grid-column: 2 / 8;
+  margin: 0;
+}
+
+.qcard__text p {
+  margin: 0;
+  font-size: clamp(1.25rem, 0.8rem + 0.9vw, 1.875rem);
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.012em;
+  text-box: trim-both cap alphabetic;
+}
+
+.qcard__attribution {
+  grid-column: 2 / 8;
+  margin-top: 24px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+@media (max-width: 63.9375rem) {
+  .qcard {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 16px;
+    padding: 32px 24px;
+  }
+  .qcard__mark,
+  .qcard__text,
+  .qcard__attribution {
+    grid-column: 1;
+    justify-self: start;
+  }
+}

@@ -1,0 +1,405 @@
+/*
+ * Discovery grid options. Each version spans the 11 content columns (page columns 2 to 12).
+ * Five tiles do not divide 11 columns, so tiles are equal fifths with the grid gap between them.
+ * Tints come from the palette's pale tones; a found or chosen tile takes its deeper tone.
+ */
+
+.dg-n {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #6f6860;
+}
+
+.dg-body {
+  margin: 0;
+  font-size: clamp(1.125rem, 0.62rem + 0.78vw, 1.5rem);
+  line-height: 1.6;
+  color: #2a2a2e;
+}
+
+.dg-count {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a847e;
+}
+
+/* Shared tile button */
+.dg1__tile,
+.dg2__tile,
+.dg3__card,
+.dg4__tile,
+.dg5__col {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  font: inherit;
+  color: #111;
+  text-align: left;
+  cursor: pointer;
+}
+
+:is(.dg1__tile, .dg2__tile, .dg3__card, .dg4__tile, .dg5__col):focus-visible {
+  outline: 3px solid #ec671b;
+  outline-offset: 3px;
+}
+
+/* Without JavaScript */
+.dg-static {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dg-static__item {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 16px;
+}
+.dg-static__item p {
+  margin: 0;
+  max-width: 34em;
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+/* ── 1. Tiles and panel ── */
+
+.dg1__tiles {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+.dg1__tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  aspect-ratio: 1;
+  padding: 24px;
+  border-radius: 16px;
+  background: var(--tone);
+  transition:
+    background 250ms ease,
+    transform 250ms cubic-bezier(0.2, 0, 0, 1);
+}
+.dg1__tile:hover {
+  transform: translateY(-3px);
+}
+.dg1__tile[data-found='true'],
+.dg1__tile[aria-pressed='true'] {
+  background: var(--deep);
+}
+.dg1__lead {
+  font-size: clamp(1rem, 0.7rem + 0.45vw, 1.25rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+.dg1__foot {
+  margin-top: 24px;
+}
+.dg1__panel {
+  margin-top: 24px;
+  min-height: 190px;
+}
+.dg1__panel-inner {
+  padding: 40px 48px;
+  border-radius: 16px;
+  background: var(--tone);
+}
+.dg1__panel-lead {
+  margin: 0 0 16px;
+  font-size: clamp(1.25rem, 0.9rem + 0.6vw, 1.625rem);
+  font-weight: 800;
+}
+.dg1__hint {
+  margin: 0;
+  padding-top: 8px;
+  color: #8a847e;
+}
+
+/* ── 2. Bento ── */
+
+.dg2 {
+  display: grid;
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+.dg2__hero {
+  grid-column: 1 / 6;
+  min-height: 460px;
+  padding: 48px;
+  border-radius: 20px;
+  background: var(--deep);
+  transition: background 400ms ease;
+}
+.dg2__hero-lead {
+  margin: 24px 0 24px;
+  font-size: clamp(1.625rem, 1rem + 1.2vw, 2.375rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.dg2__small {
+  grid-column: 6 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+.dg2__tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px;
+  border-radius: 16px;
+  background: var(--tone);
+  transition: background 250ms ease;
+}
+.dg2__tile:last-child {
+  grid-column: 1 / -1;
+}
+.dg2__tile[aria-pressed='true'] {
+  box-shadow: inset 0 0 0 2px #111;
+}
+.dg2__lead {
+  font-size: clamp(1rem, 0.75rem + 0.4vw, 1.1875rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* ── 3. Flip cards ── */
+
+.dg3__cards {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--grid-gap);
+  perspective: 1400px;
+}
+.dg3__card {
+  aspect-ratio: 3 / 4;
+  padding: 0;
+  background: none;
+}
+.dg3__inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+.dg3__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  border-radius: 16px;
+  backface-visibility: hidden;
+}
+.dg3__front {
+  justify-content: space-between;
+  background: var(--tone);
+}
+.dg3__back {
+  justify-content: center;
+  background: var(--deep);
+  transform: rotateY(180deg);
+}
+/* Reduced motion: cross-fade instead of turning. */
+.dg3__inner[data-reduced='true'] .dg3__back {
+  transform: none;
+  opacity: 0;
+}
+.dg3__inner[data-reduced='true'][data-flipped='true'] .dg3__back {
+  opacity: 1;
+}
+.dg3__lead {
+  font-size: clamp(1rem, 0.7rem + 0.45vw, 1.25rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+.dg3__turn {
+  font-size: 12px;
+  font-weight: 700;
+  color: #6f6860;
+}
+.dg3__back-body {
+  font-size: clamp(0.9375rem, 0.75rem + 0.3vw, 1.0625rem);
+  line-height: 1.5;
+}
+.dg3 .dg-count {
+  margin-top: 24px;
+}
+
+/* ── 4. Progress count ── */
+
+.dg4__bar {
+  height: 4px;
+  border-radius: 999px;
+  background: #ece6dd;
+  overflow: hidden;
+}
+.dg4__fill {
+  display: block;
+  height: 100%;
+  background: #ec671b;
+  transform-origin: left;
+}
+.dg4__head {
+  display: flex;
+  justify-content: space-between;
+  margin: 16px 0 24px;
+}
+.dg4__done {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #111;
+}
+.dg4__tiles {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+.dg4__tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  min-height: 200px;
+  padding: 24px;
+  border-radius: 16px;
+  background: #f5f1ea;
+  transition: background 250ms ease;
+}
+.dg4__tile[data-found='true'] {
+  background: var(--tone);
+}
+.dg4__tile[aria-pressed='true'] {
+  background: var(--deep);
+}
+.dg4__n {
+  font-size: clamp(2rem, 1.2rem + 1.4vw, 3rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #111;
+}
+.dg4__lead {
+  font-size: clamp(0.9375rem, 0.7rem + 0.4vw, 1.125rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+.dg4__tick {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background: #fff;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+.dg4__tick::after {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 3px;
+  width: 5px;
+  height: 10px;
+  border-right: 2px solid #111;
+  border-bottom: 2px solid #111;
+  transform: rotate(45deg);
+}
+.dg4__tile[data-found='true'] .dg4__tick {
+  opacity: 1;
+}
+.dg4__panel {
+  margin-top: 32px;
+  min-height: 120px;
+  max-width: calc((100% - 10 * var(--grid-gap)) / 11 * 8 + 7 * var(--grid-gap));
+}
+
+/* ── 5. Expanding columns ── */
+
+.dg5 {
+  display: flex;
+  gap: 8px;
+  height: 460px;
+}
+.dg5__col {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 28px;
+  border-radius: 16px;
+  background: var(--tone);
+  overflow: hidden;
+  transition:
+    flex-grow 720ms cubic-bezier(0.6, 0, 0.1, 1),
+    background 300ms ease;
+}
+.dg5__col[data-open='true'] {
+  flex-grow: 3.2;
+  background: var(--deep);
+}
+.dg5__lead {
+  font-size: clamp(1rem, 0.7rem + 0.45vw, 1.25rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+.dg5__col[data-open='true'] .dg5__lead {
+  font-size: clamp(1.375rem, 0.9rem + 0.8vw, 1.875rem);
+  font-weight: 800;
+}
+.dg5__body {
+  font-size: clamp(1rem, 0.7rem + 0.45vw, 1.25rem);
+  line-height: 1.55;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+.dg5__col[data-open='true'] .dg5__body {
+  opacity: 1;
+  transition-delay: 350ms;
+}
+.dg5__col[data-open='false'] .dg5__body {
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dg1__tile,
+  .dg5__col,
+  .dg5__body {
+    transition: none;
+  }
+}
+
+@media (max-width: 63.9375rem) {
+  .dg1__tiles,
+  .dg3__cards,
+  .dg4__tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .dg2,
+  .dg2__small {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .dg2__hero,
+  .dg2__small {
+    grid-column: 1;
+  }
+  .dg5 {
+    flex-direction: column;
+    height: auto;
+  }
+}

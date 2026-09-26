@@ -6,8 +6,12 @@ import { useMemo, useRef, type ReactNode } from 'react'
 import { useChapterFrame } from '../ChapterFrame'
 import { Accordion } from '../components/Accordion'
 import { BodyText } from '../components/BodyText'
+import { Boxout } from '../components/Boxout'
+import { Diagram } from '../components/Diagram'
 import { ImageTrio } from '../components/ImageTrio'
 import { PhotoWithPlane } from '../components/PhotoWithPlane'
+import { PinnedPhoto } from '../components/PinnedPhoto'
+import { QuoteCard } from '../components/QuoteCard'
 import { SpacingOverlay, type Space } from '../components/SpacingOverlay'
 import { TShapedTabs } from '../components/TShapedTabs'
 import type { Block, ChapterContent } from './types'
@@ -35,7 +39,10 @@ export function FoundationsChapter({
   const reduce = useReducedMotion()
   const { scrollYProgress } = useScroll({ container: scrollRef })
   const { leaving } = useChapterFrame()
-  const spaces = useMemo(() => spacesFor(content.blocks), [content.blocks])
+  const spaces = useMemo(
+    () => spacesFor(content.blocks, Boolean(content.statement)),
+    [content.blocks, content.statement],
+  )
 
   return (
     <div ref={scrollRef} className="fc">
@@ -72,10 +79,12 @@ export function FoundationsChapter({
               {content.title}
               <span className="fc__stop" aria-hidden="true" />
             </h1>
-            <p className="fc__statement">
-              <span className="fc__statement-lead">{content.statement.lead}</span>{' '}
-              {content.statement.rest}
-            </p>
+            {content.statement && (
+              <p className="fc__statement">
+                <span className="fc__statement-lead">{content.statement.lead}</span>
+                {content.statement.rest && <> {content.statement.rest}</>}
+              </p>
+            )}
           </header>
 
           {content.blocks.map((block, i) => (
@@ -109,6 +118,24 @@ function BlockView({ block }: { block: Block }) {
       return <ImageTrio items={block.items} />
     case 'tabs':
       return <TShapedTabs roles={block.roles} />
+    case 'diagram':
+      return (
+        <Diagram
+          look="refined"
+          hub={block.hub}
+          label={block.label}
+          emptyTitle={block.emptyTitle}
+          emptyBody={block.emptyBody}
+          items={block.items}
+          washes={block.washes}
+        />
+      )
+    case 'boxout':
+      return <Boxout label={block.label} items={block.items} accent={block.accent} />
+    case 'pinned':
+      return <PinnedPhoto src={block.src} alt={block.alt} quote={block.quote} />
+    case 'quote':
+      return <QuoteCard text={block.text} attribution={block.attribution} />
   }
 }
 
@@ -128,6 +155,14 @@ function edges(block: Block, i: number): { top: string; bottom: string } {
       return { top: `${b} .trio__img`, bottom: `${b} .trio__img` }
     case 'tabs':
       return { top: `${b} .tst`, bottom: `${b} .tst` }
+    case 'diagram':
+      return { top: `${b} .bd__stage`, bottom: `${b} .bd__stage` }
+    case 'boxout':
+      return { top: `${b} .boxout`, bottom: `${b} .boxout` }
+    case 'pinned':
+      return { top: `${b} .pin__img`, bottom: `${b} .pin__img` }
+    case 'quote':
+      return { top: `${b} .qcard`, bottom: `${b} .qcard` }
   }
 }
 
@@ -137,9 +172,13 @@ const NAMES: Record<Block['kind'], string> = {
   accordion: 'accordion',
   trio: 'image trio',
   tabs: 'tabs',
+  quote: 'quote card',
+  pinned: 'pinned photo',
+  diagram: 'diagram',
+  boxout: 'boxout',
 }
 
-function spacesFor(blocks: Block[]): Space[] {
+function spacesFor(blocks: Block[], hasStatement: boolean): Space[] {
   const out: Space[] = []
   let v = 0
   const add = (label: string, from: string, to: string) =>
@@ -162,9 +201,11 @@ function spacesFor(blocks: Block[]): Space[] {
     toEdge: 'top',
     span: '.fc__main',
   })
-  add('Title to statement', '.fc__title', '.fc__statement')
-
-  let prev = { bottom: '.fc__statement', name: 'statement' }
+  let prev = { bottom: '.fc__title', name: 'title' }
+  if (hasStatement) {
+    add('Title to statement', '.fc__title', '.fc__statement')
+    prev = { bottom: '.fc__statement', name: 'statement' }
+  }
   blocks.forEach((block, i) => {
     const e = edges(block, i)
     add(`${prev.name} to ${NAMES[block.kind]}`, prev.bottom, e.top)

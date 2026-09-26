@@ -1,0 +1,758 @@
+/*
+ * Diagram (the refined pattern's first component). The stage spans content columns 1 to 6 (page 2 to 7) and the panel 7 to 11
+ * (page 8 to 12). The stage holds a square: an SVG of curved connectors under real buttons placed
+ * at a pentagon's points. Tiles are 88px rounded squares in each benefit's tint, with Phosphor
+ * duotone icons in ink; the chosen tile takes its deep tint and a filled icon.
+ */
+
+.bd {
+  display: grid;
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  align-items: stretch;
+  color: #111;
+}
+
+/* ── Stage ── */
+
+.bd__stage {
+  grid-column: 1 / 7;
+  display: flex;
+  flex-direction: column;
+  padding: 32px 32px 24px;
+  border-radius: 24px;
+  background:
+    radial-gradient(#e2dcd3 1px, transparent 1.2px) 0 0 / 20px 20px,
+    #f7f4ef;
+}
+
+.bd__square {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.bd__lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.bd__line {
+  fill: none;
+  stroke: #d9cfc1;
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  transition: stroke 300ms ease;
+}
+
+.bd__line[data-seen='true'] {
+  stroke: #b7ab9b;
+}
+
+.bd__line--on {
+  stroke: #111;
+  /* In viewBox units (the stage is about 600px across, so this is about 2.5px). The draw-in
+     animation needs real path lengths, so this line cannot use non-scaling-stroke. */
+  stroke-width: 0.42;
+  stroke-linecap: round;
+  vector-effect: none;
+}
+
+/* The centre: an ink card with a small orange square. */
+.bd__hub {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-radius: 14px;
+  background: #111;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 10px 24px rgba(17, 17, 17, 0.16);
+}
+
+.bd__hub-mark {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: #ec671b;
+}
+
+/* ── Nodes ── */
+
+/* The spot places a node: its tile's centre on the pentagon point. A node above the centre puts
+   its label above its tile, on the side away from the centre, so no line meets the label. */
+.bd__spot {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, -44px);
+}
+
+.bd__spot[data-label='above'] {
+  transform: translate(-50%, calc(-100% + 44px));
+}
+
+.bd__spot[data-label='above'] .bd__node {
+  flex-direction: column-reverse;
+}
+
+.bd__node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: #111;
+  cursor: pointer;
+}
+
+.bd__tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  border-radius: 22px;
+  background: var(--tone);
+  box-shadow:
+    inset 0 0 0 1px rgba(17, 17, 17, 0.06),
+    0 2px 6px rgba(60, 40, 20, 0.06);
+  transition:
+    background 300ms ease,
+    box-shadow 300ms ease,
+    transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 300ms ease;
+}
+
+.bd__node:hover .bd__tile {
+  transform: translateY(-4px);
+  box-shadow:
+    inset 0 0 0 1px rgba(17, 17, 17, 0.1),
+    0 12px 24px rgba(60, 40, 20, 0.14);
+}
+
+.bd__node[data-on='true'] .bd__tile {
+  background: var(--deep);
+  transform: translateY(-4px) scale(1.06);
+  box-shadow:
+    inset 0 0 0 2px #111,
+    0 14px 28px rgba(60, 40, 20, 0.18);
+}
+
+/* Unchosen tiles step back by softening their icon, not the tile, so no line shows through. */
+.bd__tile svg {
+  transition: opacity 300ms ease;
+}
+
+.bd__node[data-dim='true'] .bd__tile svg {
+  opacity: 0.55;
+}
+
+.bd__node:hover[data-dim='true'] .bd__tile svg {
+  opacity: 1;
+}
+
+.bd__node:focus-visible {
+  outline: none;
+}
+
+.bd__node:focus-visible .bd__tile {
+  box-shadow:
+    0 0 0 3px #fcfbf8,
+    0 0 0 6px #ec671b;
+}
+
+.bd__label {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #f7f4ef;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: color 300ms ease;
+}
+
+.bd__node[data-dim='true'] .bd__label {
+  color: #8a847e;
+}
+
+/* A quiet invitation on tiles not yet explored: an outline that breathes out and fades. */
+.bd__pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  box-shadow: 0 0 0 2px var(--deep);
+  animation: bd-breathe 2.8s ease-out infinite;
+  pointer-events: none;
+}
+
+.bd__spot:nth-of-type(2) .bd__pulse {
+  animation-delay: 0.5s;
+}
+.bd__spot:nth-of-type(3) .bd__pulse {
+  animation-delay: 1s;
+}
+.bd__spot:nth-of-type(4) .bd__pulse {
+  animation-delay: 1.5s;
+}
+.bd__spot:nth-of-type(5) .bd__pulse {
+  animation-delay: 2s;
+}
+
+@keyframes bd-breathe {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  70%,
+  100% {
+    transform: scale(1.22);
+    opacity: 0;
+  }
+}
+
+/* ── Progress ── */
+
+.bd__progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8a847e;
+}
+
+.bd__squares {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.bd__squares span {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: #e2dcd3;
+  transition: background 300ms ease;
+}
+
+.bd__squares span[data-seen='true'] {
+  background: var(--deep);
+}
+
+/* ── Panel ── */
+
+.bd__panel {
+  grid-column: 7 / -1;
+  display: flex;
+  padding: 48px;
+  border-radius: 24px;
+  background: var(--tone, #fff);
+  box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.06);
+  transition: background 400ms ease;
+}
+
+.bd__panel[data-empty='true'] {
+  background: #fcfbf8;
+  box-shadow: inset 0 0 0 1.5px #e2dcd3;
+}
+
+.bd__panel-content,
+.bd__panel-empty {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.bd__panel-empty {
+  justify-content: center;
+}
+
+.bd__panel-icon {
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  border-radius: 22px;
+  background: var(--deep);
+}
+
+.bd__panel-n {
+  margin-top: 32px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #6f6860;
+}
+
+.bd__panel-lead {
+  margin: 12px 0 20px;
+  font-size: clamp(1.5rem, 1rem + 1vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.bd__panel-body {
+  margin: 0;
+  font-size: clamp(1.0625rem, 0.7rem + 0.55vw, 1.375rem);
+  line-height: 1.6;
+  color: #2a2a2e;
+}
+
+.bd__panel-empty-title {
+  margin: 0;
+  font-size: clamp(1.5rem, 1rem + 1vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.bd__panel-empty-body {
+  margin: 16px 0 0;
+  font-size: clamp(1.0625rem, 0.7rem + 0.55vw, 1.375rem);
+  line-height: 1.6;
+  color: #55524e;
+}
+
+/* ── Without JavaScript ── */
+
+.bd-static {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bd-static__item {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+  padding: 24px;
+  border-radius: 16px;
+  background: var(--tone);
+}
+
+.bd-static__item p {
+  margin: 0;
+  max-width: 40em;
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bd__tile,
+  .bd__line,
+  .bd__panel {
+    transition: none;
+  }
+  .bd__pulse {
+    display: none;
+  }
+}
+
+@media (max-width: 63.9375rem) {
+  .bd {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 24px;
+  }
+  .bd__stage,
+  .bd__panel {
+    grid-column: 1;
+  }
+  .bd__panel {
+    padding: 32px 24px;
+  }
+}
+
+@media (max-width: 40rem) {
+  .bd__tile {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+  }
+  .bd__spot {
+    transform: translate(-50%, -32px);
+  }
+  .bd__spot[data-label='above'] {
+    transform: translate(-50%, calc(-100% + 32px));
+  }
+}
+
+/*
+ * Minimal: the same diagram in paper and ink only. Surfaces lift off the page with a white fill,
+ * a hairline and a soft shadow; benefit colours are gone; icons are light line icons. Orange stays
+ * only as the centre card's small square and the drawn connector's tip colour is ink.
+ */
+.bd--minimal .bd__stage {
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgba(17, 17, 17, 0.06),
+    0 1px 2px rgba(60, 40, 20, 0.04),
+    0 12px 32px rgba(60, 40, 20, 0.05);
+}
+
+.bd--minimal .bd__line {
+  stroke: #e7e2da;
+}
+.bd--minimal .bd__line[data-seen='true'] {
+  stroke: #cfc7bc;
+}
+
+.bd--minimal .bd__hub {
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: #fff;
+  color: #111;
+  box-shadow:
+    0 0 0 1px rgba(17, 17, 17, 0.1),
+    0 6px 16px rgba(60, 40, 20, 0.06);
+}
+
+.bd--minimal .bd__tile {
+  width: 76px;
+  height: 76px;
+  border-radius: 20px;
+  background: #fcfbf8;
+  box-shadow: 0 0 0 1px rgba(17, 17, 17, 0.08);
+}
+.bd--minimal .bd__node:hover .bd__tile {
+  box-shadow:
+    0 0 0 1px rgba(17, 17, 17, 0.14),
+    0 10px 20px rgba(60, 40, 20, 0.08);
+}
+.bd--minimal .bd__node[data-on='true'] .bd__tile {
+  background: #fff;
+  transform: translateY(-3px);
+  box-shadow:
+    0 0 0 1.5px #111,
+    0 12px 24px rgba(60, 40, 20, 0.1);
+}
+.bd--minimal .bd__spot {
+  transform: translate(-50%, -38px);
+}
+
+.bd--minimal .bd__spot[data-label='above'] {
+  transform: translate(-50%, calc(-100% + 38px));
+}
+.bd--minimal .bd__pulse {
+  border-radius: 20px;
+  box-shadow: 0 0 0 1.5px #d9d2c8;
+}
+.bd--minimal .bd__label {
+  background: #fff;
+  font-weight: 600;
+}
+.bd--minimal .bd__node[data-dim='true'] .bd__tile svg {
+  opacity: 0.45;
+}
+
+.bd--minimal .bd__squares span {
+  background: #ece6dd;
+}
+.bd--minimal .bd__squares span[data-seen='true'] {
+  background: #111;
+}
+
+.bd--minimal .bd__panel,
+.bd--minimal .bd__panel[data-empty='true'] {
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgba(17, 17, 17, 0.06),
+    0 1px 2px rgba(60, 40, 20, 0.04),
+    0 12px 32px rgba(60, 40, 20, 0.05);
+}
+.bd--minimal .bd__panel-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: #f5f1ea;
+}
+.bd--minimal .bd__line--on {
+  stroke: #111;
+}
+
+/*
+ * Refined: minimal, not dull. No orange and almost no black. A deep slate accent (--acc) for the
+ * chosen state only; frosted, translucent surfaces with hairlines; two blurred washes (pale blue
+ * and sand) drifting slowly behind the stage; connectors that fade out from the centre; a light
+ * that travels along the chosen connector. Builds on the minimal rules above.
+ */
+.bd--refined {
+  --acc: #34566b;
+  --acc-soft: rgba(52, 86, 107, 0.08);
+  --glass: rgba(255, 255, 255, 0.62);
+  --hair: rgba(52, 60, 70, 0.1);
+}
+
+.bd--refined .bd__stage {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: #f7f5f1;
+  box-shadow:
+    0 0 0 1px var(--hair),
+    0 20px 40px -28px rgba(52, 60, 70, 0.1);
+}
+
+/* Two blurred washes, drifting very slowly. */
+.bd__washes {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.bd__washes span {
+  position: absolute;
+  width: 70%;
+  aspect-ratio: 1;
+  border-radius: 40%;
+  filter: blur(80px);
+  opacity: 0.32;
+}
+.bd__washes span:first-child {
+  left: -18%;
+  top: -14%;
+  background: var(--wash-a, #cfe0e6);
+  animation: bd-drift-a 24s ease-in-out infinite alternate;
+}
+.bd__washes span:last-child {
+  right: -20%;
+  bottom: -18%;
+  background: var(--wash-b, #eadfcf);
+  animation: bd-drift-b 28s ease-in-out infinite alternate;
+}
+@keyframes bd-drift-a {
+  to {
+    transform: translate(14%, 10%) rotate(20deg);
+  }
+}
+@keyframes bd-drift-b {
+  to {
+    transform: translate(-12%, -8%) rotate(-16deg);
+  }
+}
+
+/* Connectors: pale and fading towards the tiles; the chosen one in slate. */
+.bd--refined .bd__line {
+  stroke: rgba(52, 86, 107, 0.16);
+  stroke-width: 1.25;
+}
+.bd--refined .bd__line[data-seen='true'] {
+  stroke: rgba(52, 86, 107, 0.3);
+}
+.bd--refined .bd__line--on {
+  stroke: var(--acc);
+  stroke-width: 0.3;
+  opacity: 0.85;
+}
+/* Centre: a frosted pill, no orange. */
+.bd--refined .bd__hub {
+  gap: 0;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  color: #1d2a33;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  box-shadow:
+    0 0 0 1px var(--hair),
+    0 6px 16px -10px rgba(52, 60, 70, 0.14);
+}
+.bd--refined .bd__hub-mark {
+  display: none;
+}
+
+/* Tiles: frosted squares; the chosen one glows softly in slate. */
+.bd--refined .bd__tile {
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: #1d2a33;
+  box-shadow:
+    0 0 0 1px var(--hair),
+    0 4px 12px -8px rgba(52, 60, 70, 0.12);
+}
+.bd--refined .bd__node:hover .bd__tile {
+  box-shadow:
+    0 0 0 1px rgba(52, 86, 107, 0.18),
+    0 10px 20px -12px rgba(52, 60, 70, 0.16);
+}
+.bd--refined .bd__node[data-on='true'] .bd__tile {
+  background: rgba(255, 255, 255, 0.86);
+  color: var(--acc);
+  transform: translateY(-3px);
+  /* No glow: a fine slate edge and a neutral lift only. */
+  box-shadow:
+    0 0 0 1px rgba(52, 86, 107, 0.45),
+    0 10px 20px -14px rgba(52, 60, 70, 0.2);
+}
+.bd--refined .bd__pulse {
+  box-shadow: 0 0 0 1px rgba(52, 86, 107, 0.16);
+}
+.bd--refined .bd__label {
+  background: none;
+  color: #3c4a54;
+  font-weight: 600;
+}
+.bd--refined .bd__node[data-on='true'] .bd__label {
+  color: var(--acc);
+}
+.bd--refined .bd__node[data-dim='true'] .bd__label {
+  color: rgba(60, 74, 84, 0.55);
+}
+
+.bd--refined .bd__progress {
+  color: #6b7780;
+}
+.bd--refined .bd__squares span {
+  border-radius: 999px;
+  width: 16px;
+  height: 4px;
+  background: rgba(52, 86, 107, 0.14);
+}
+.bd--refined .bd__squares span[data-seen='true'] {
+  background: var(--acc);
+}
+
+/* Panel: light, editorial. */
+.bd--refined .bd__panel,
+.bd--refined .bd__panel[data-empty='true'] {
+  background: #fff;
+  box-shadow:
+    0 0 0 1px var(--hair),
+    0 20px 40px -28px rgba(52, 60, 70, 0.1);
+}
+.bd--refined .bd__panel-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 18px;
+  background: var(--acc-soft);
+  color: var(--acc);
+}
+.bd--refined .bd__panel-n {
+  color: var(--acc);
+  letter-spacing: 0.18em;
+}
+.bd--refined .bd__panel-lead,
+.bd--refined .bd__panel-empty-title {
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+  color: #16222b;
+}
+.bd--refined .bd__panel-body,
+.bd--refined .bd__panel-empty-body {
+  color: #44515a;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bd__washes span {
+    animation: none;
+  }
+}
+
+/*
+ * Refined, calmed (26 September): shorter and quieter. A wider-than-tall stage, 60px tiles, a
+ * smaller centre, no bounce, no breathing outline, no travelling light, and no blue in icons:
+ * the chosen icon is ink, the panel icon sits on neutral paper. Slate stays only in the drawn
+ * connector and the progress bars.
+ */
+.bd--refined .bd__stage {
+  padding: 24px 28px 20px;
+}
+.bd--refined .bd__square {
+  aspect-ratio: 16 / 11;
+}
+.bd--refined .bd__tile {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  color: #3c4a54;
+  transition:
+    background 300ms ease,
+    box-shadow 300ms ease,
+    transform 400ms cubic-bezier(0.2, 0, 0, 1);
+}
+.bd--refined .bd__spot {
+  transform: translate(-50%, -30px);
+}
+.bd--refined .bd__spot[data-label='above'] {
+  transform: translate(-50%, calc(-100% + 30px));
+}
+.bd--refined .bd__node:hover .bd__tile {
+  transform: translateY(-2px);
+}
+.bd--refined .bd__node[data-on='true'] .bd__tile {
+  background: #fff;
+  color: #16222b;
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 1px rgba(22, 34, 43, 0.28),
+    0 8px 16px -12px rgba(52, 60, 70, 0.22);
+}
+.bd--refined .bd__label {
+  font-size: 13px;
+}
+.bd--refined .bd__node[data-on='true'] .bd__label {
+  color: #16222b;
+}
+.bd--refined .bd__hub {
+  padding: 9px 18px;
+  font-size: 14px;
+}
+.bd--refined .bd__line--on {
+  opacity: 0.6;
+}
+.bd--refined .bd__panel {
+  padding: 40px;
+}
+.bd--refined .bd__panel-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: #f3f1ed;
+  color: #16222b;
+}
+.bd--refined .bd__panel-n {
+  margin-top: 24px;
+  color: #8a847e;
+}
+.bd--refined .bd__panel-lead,
+.bd--refined .bd__panel-empty-title {
+  font-size: clamp(1.375rem, 0.9rem + 0.8vw, 1.875rem);
+}
+
+/* Refined spans ten columns (page columns 2 to 11): the stage and the panel five columns each. */
+@media (min-width: 64rem) {
+  .bd--refined {
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+  }
+  .bd--refined .bd__stage {
+    grid-column: 1 / 6;
+  }
+  .bd--refined .bd__panel {
+    grid-column: 6 / -1;
+  }
+}

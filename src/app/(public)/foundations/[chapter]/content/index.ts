@@ -1,4 +1,5 @@
 import type { ChapterContent } from '../page/types'
+import { whyDesignMatters } from './why-design-matters'
 import { whoWeAre } from './who-we-are'
 
 /**
@@ -7,4 +8,5 @@ import { whoWeAre } from './who-we-are'
  */
 export const CHAPTER_CONTENT: Record<string, ChapterContent> = {
   'who-we-are': whoWeAre,
+  'why-design-matters': whyDesignMatters,
 }

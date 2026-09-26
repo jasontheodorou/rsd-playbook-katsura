@@ -1,0 +1,386 @@
+/*
+ * Bento with icons. The large tile spans content columns 1 to 5 (page 2 to 6); tiles and diagram
+ * fill the rest to column 12. Tints as the grid options; icons draw in ink.
+ */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.bicon {
+  display: block;
+  flex: none;
+  color: #111;
+}
+
+.bx-n {
+  display: block;
+  margin-top: 24px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #6f6860;
+}
+
+/* The large tile, shared */
+.bx-hero {
+  position: relative;
+  min-height: 460px;
+  padding: 48px;
+  border-radius: 20px;
+  background: var(--deep, #f5f1ea);
+  transition: background 400ms ease;
+}
+.bx-hero[data-empty='true'] {
+  background: #f5f1ea;
+  box-shadow: inset 0 0 0 1.5px #e2dcd3;
+}
+.bx-hero__lead {
+  margin: 12px 0 20px;
+  font-size: clamp(1.625rem, 1rem + 1.2vw, 2.375rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.bx-hero__body {
+  margin: 0;
+  font-size: clamp(1.0625rem, 0.7rem + 0.55vw, 1.375rem);
+  line-height: 1.6;
+  color: #2a2a2e;
+}
+.bx-hero__prompt {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  min-height: 364px;
+  gap: 20px;
+}
+.bx-hero__prompt p {
+  margin: 0;
+  max-width: 18em;
+  font-size: clamp(1.375rem, 0.9rem + 0.9vw, 1.875rem);
+  font-weight: 700;
+  line-height: 1.3;
+  color: #55524e;
+}
+/* An arrow pointing to the choices. */
+.bx-hero__prompt-arrow {
+  width: 40px;
+  height: 40px;
+  border-top: 3px solid #ec671b;
+  border-right: 3px solid #ec671b;
+  transform: rotate(45deg) translate(-8px, 8px);
+}
+
+/* Without JavaScript */
+.bx-static {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.bx-static__item {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+  padding: 24px;
+  border-radius: 16px;
+  background: var(--tone);
+}
+.bx-static__item p {
+  margin: 0;
+  max-width: 40em;
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+:is(.bxa__tile, .bxc__btn):focus-visible,
+.bxb__node:focus-visible {
+  outline: 3px solid #ec671b;
+  outline-offset: 3px;
+}
+
+/* ── A. Icon tiles ── */
+
+.bxa {
+  display: grid;
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+.bxa__hero {
+  grid-column: 1 / 6;
+}
+.bxa__tiles {
+  grid-column: 6 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+.bxa__tile {
+  appearance: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  border: 0;
+  border-radius: 16px;
+  background: var(--tone);
+  font: inherit;
+  color: #111;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(60, 40, 20, 0.06);
+  transition:
+    transform 200ms cubic-bezier(0.2, 0, 0, 1),
+    box-shadow 200ms ease,
+    background 250ms ease;
+}
+.bxa__tile:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(60, 40, 20, 0.1);
+}
+.bxa__tile[aria-pressed='true'] {
+  background: var(--deep);
+}
+.bxa__tile:last-child {
+  grid-column: 1 / -1;
+}
+.bxa__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.bxa__new {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #b8551a;
+}
+.bxa__lead {
+  font-size: clamp(1rem, 0.75rem + 0.4vw, 1.1875rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+.bxa__cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  font-size: 13px;
+  font-weight: 700;
+  color: #55524e;
+}
+.bxa__plus {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  box-shadow: inset 0 0 0 1.5px currentColor;
+}
+.bxa__plus::before,
+.bxa__plus::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 10px;
+  width: 10px;
+  height: 1.5px;
+  background: currentColor;
+}
+.bxa__plus::after {
+  transform: rotate(90deg);
+}
+.bxa__tile[aria-pressed='true'] .bxa__plus::after {
+  transform: none;
+}
+
+/* ── B. Interactive diagram ── */
+
+.bxb {
+  display: grid;
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+  gap: var(--grid-gap);
+  align-items: stretch;
+}
+.bxb__stage {
+  grid-column: 1 / 6;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  border-radius: 20px;
+  background: #f5f1ea;
+}
+.bxb__svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.bxb__spoke {
+  stroke: #d9cfc1;
+  stroke-width: 2;
+  stroke-dasharray: 4 6;
+}
+.bxb__spoke--on {
+  stroke: #111;
+  stroke-dasharray: none;
+}
+.bxb__hub rect {
+  fill: #111;
+}
+.bxb__hub text {
+  fill: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+.bxb__node {
+  cursor: pointer;
+  outline: none;
+}
+.bxb__node-bg {
+  fill: var(--tone);
+  stroke: #d9cfc1;
+  stroke-width: 1.5;
+  transition:
+    fill 250ms ease,
+    stroke 250ms ease;
+}
+.bxb__node:hover .bxb__node-bg {
+  stroke: #111;
+}
+.bxb__node[data-on='true'] .bxb__node-bg {
+  fill: var(--deep);
+  stroke: #111;
+  stroke-width: 2;
+}
+.bxb__node:focus-visible .bxb__node-bg {
+  stroke: #ec671b;
+  stroke-width: 3;
+}
+.bxb__count {
+  margin: 8px 0 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a847e;
+}
+.bxb__hero {
+  grid-column: 6 / -1;
+}
+
+/* ── C. Icon control ── */
+
+.bxc__hero {
+  min-height: 360px;
+}
+.bxc__hero .bx-hero__prompt {
+  min-height: 264px;
+}
+.bxc__hero .bx-hero__prompt-arrow {
+  transform: rotate(135deg) translate(-8px, 8px);
+}
+.bxc__hero .bx-hero__content {
+  max-width: calc((100% - 10 * var(--grid-gap)) / 11 * 8 + 7 * var(--grid-gap));
+}
+.bxc__bar {
+  height: 4px;
+  margin: 24px 0 16px;
+  border-radius: 999px;
+  background: #ece6dd;
+  overflow: hidden;
+}
+.bxc__fill {
+  display: block;
+  height: 100%;
+  background: #ec671b;
+  transform-origin: left;
+}
+.bxc__buttons {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+.bxc__btn {
+  appearance: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: #111;
+  text-align: left;
+  cursor: pointer;
+}
+.bxc__icon {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 16px;
+  background: var(--tone);
+  box-shadow: inset 0 0 0 1.5px transparent;
+  transition:
+    background 250ms ease,
+    box-shadow 200ms ease,
+    transform 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+.bxc__btn:hover .bxc__icon {
+  transform: translateY(-3px);
+  box-shadow: inset 0 0 0 1.5px #111;
+}
+.bxc__btn[aria-pressed='true'] .bxc__icon {
+  background: var(--deep);
+  box-shadow: inset 0 0 0 2px #111;
+}
+.bxc__label {
+  font-size: clamp(0.9375rem, 0.75rem + 0.3vw, 1.0625rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+.bxc__btn[data-seen='false'] .bxc__label::after {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: 8px;
+  vertical-align: middle;
+  border-radius: 2px;
+  background: #ec671b;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bxa__tile,
+  .bxc__icon {
+    transition: none;
+  }
+}
+
+@media (max-width: 63.9375rem) {
+  .bxa,
+  .bxb {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .bxa__hero,
+  .bxa__tiles,
+  .bxb__stage,
+  .bxb__hero {
+    grid-column: 1;
+  }
+  .bxc__buttons {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
