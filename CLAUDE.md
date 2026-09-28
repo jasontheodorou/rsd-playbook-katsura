@@ -12,6 +12,12 @@ How pages in this build are designed and checked: the shared 12-column grid, the
 
 @docs/DESIGN-RULES.md
 
+## Design and taste criteria, always loaded
+
+Jason's taste as rules that carry across projects: the working loop, the criteria by area, what he rejects, how to read his feedback, and the checklist to run before showing him anything. The project rules above override it where they differ. The master copy is `~/projects/.appkit/TASTE.md`; keep this copy in step with it.
+
+@docs/TASTE.md
+
 ## Live during the session — do these without being asked
 
 - Extend today's logbook at `/Users/jason.theodorou/projects/katsura/design-journal/logbook/YYYY-MM-DD.md` as we work. Prose, chronological, blow-by-blow.

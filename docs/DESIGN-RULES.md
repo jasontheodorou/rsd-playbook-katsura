@@ -64,20 +64,32 @@ How pages in this build are designed, and how Claude works on them. Loaded into 
 
 ## Taste: what Jason chose and rejected
 
-- **Chosen:** calm, warm and restrained design; strict alignment; Material Design 3 behaviour in a restrained form (tonal surfaces, faint state layers, gentle shape morphs); scroll-linked motion that only moves when the reader does.
-- **Rejected:** horizontal hairline rules of any kind (dividers, section rules, lines above or below blocks): separate things with space and tint instead; busy pages, loud accent fills on components (the first orange-pill tabs were "obnoxious"), split screens used as decoration, full-bleed colour bands, unequal card widths, cards that shrink when covered, strong colour competing with the text, anything off the grid.
-- Page layout is one column, top to bottom. Patterns Jason has approved may place things side by side inside their own frame (stacking cards, the image trio).
+The full criteria are in `docs/TASTE.md` (loaded every session): the working loop, the rules by area, the rejected list, how to read his feedback and the checklist before showing him anything. In short:
+
+- **Chosen:** calm, warm and restrained, never dull; strict alignment; one column; space and tint instead of rules; each page a little unique, drawing its liveliness from its own imagery; motion only when the reader acts or scrolls, and subtle; one way to navigate; prompts shown once.
+- **Rejected:** horizontal rules, busy pages, loud accent fills, split screens as decoration, full-bleed colour bands, unequal cards, anything off the grid, duplicate navigation, plain unframed photos, and anything that grows an approved component's footprint.
 
 ## Approved patterns
 
-| Pattern | Where | Use |
+Every approved block for a Foundations page is in the block table under "Foundations page standard" below, with its rules. Components live in `foundations/[chapter]/components/`.
+
+| Pattern | Block | Use |
 |---|---|---|
-| Body text | `foundations/[chapter]/components/BodyText.tsx` | Reading copy, columns 2 to 9 |
-| Accordion, "quiet outline" | `components/Accordion.tsx` | Sections that open and close. Each row on a faint warm tint (`#f7f4ef`, deeper when open), 4px apart; marker on column 2, title and text on column 3, a 32px hairline button inside column 12's edge that fills when open |
-| Image trio | `components/ImageTrio.tsx` | Three portrait photographs; hovering fills a cell with colour and shows a label 16px above the pointer |
-| T-shaped tabs | `components/TShapedTabs.tsx` | Roles or options side by side: a paper card with a hairline edge, sand pill on the chosen tab, photo on page columns 3 to 5, text on 7 to 11, grey square markers. Stays the height of the tallest panel |
-| Stacking cards | `app/(public)/options/StackingCards.tsx` | Long sections as identical cards that pin and fold over one another, in paper tones |
-| Photograph with plane | `components/PhotoWithPlane.tsx` | A 2:1 photograph with a pale plane one grid gap below and to the right |
+| Body text | `text` | Reading copy, columns 2 to 9, with an optional short list |
+| Photograph with plane | `photo` | A 2:1 photograph with a pale plane one grid gap behind |
+| Pinned photograph | `pinned` | A square photo on a plane, with an optional quote behind a "Read the quote" tab |
+| Accordion, quiet outline | `accordion` | Sections that open and close, on faint warm tints |
+| Small accordion | `Accordion small` | A short list inside text's columns, one line per row |
+| Image trio | `trio` | Three portrait photographs that fill with colour on hover |
+| T-shaped tabs | `tabs` | Roles or options side by side in one card |
+| Photo diagram | `diagram` with photos | A centre idea and five items: one card, a tinted control zone and a white result zone |
+| Balance sliders | `balance` | Ideas that move from a failure to good practice |
+| Boxout | `boxout`, or `part` with `boxout` | Points that stand apart, or the middle of a long run of paragraphs |
+| Quote card | `quote` | A yellow quote card, columns 2 to 9 |
+| Illustration, and the self-building wall | `illustration`, `hhhWall` | A drawing trimmed to its edge; the head, heart and hands sketch that builds itself |
+| Stacking cards | `stack` | Short ideas that introduce a page, pinning and folding over one another |
+| Written part | `part` | A section written out: heading with a drawn mark, a photo on a drifting plane, text |
+| Fanned sticky notes | `part` with `fan` | Two or three short points that fan out when pointed at, with a one-time hint |
 
 ## Foundations page standard (the gold standard)
 
@@ -150,6 +162,18 @@ A block that introduces the next one (such as "Most of our specialists do work i
 **Motion.** The page fades up 24px as the frame opens, and the rail slides in 0.3 seconds later. Components move only when the reader acts or scrolls. Reduced motion removes all movement.
 
 **Accessibility.** Every block works without JavaScript first. All text in accordions, tabs and the trio is in the page. Photographs have alt text that describes the photograph only. The tabs use arrow keys, Home and End.
+
+### Building the remaining pages (4 to 6)
+
+Pages 4 (How we think), 5 (What we care about) and 6 (How we deliver) follow the manual explorer's Sequencing plan (decision 023): each carries the deeper sections of Ian's Head, Heart or Hands, whole and in his order, then the role methods page 1 points to, grouped at the end. For each page:
+
+1. Read the page's sections in the explorer's Sequencing tab and its passages in the Original. Check the notes for typos to fix.
+2. Re-aim any copy that addresses the client as "you" so it talks about clients, changing only those words. List every change for sign-off.
+3. Plan the page's shape before building it. Do not copy chapter 03's order. Give it one signature element drawn from its own content, such as the Design Landscape on page 4, the stories on page 5 and the participation model on page 6, and agree it with Jason first.
+4. Break long prose with the approved devices (`part` with `boxout` or `fan`, `accordion`), varying them so no two neighbouring parts use the same one. Give photos drifting planes that vary by corner, colour and drift.
+5. When Jason asks for ideas, build numbered options on a sub-URL with the real content, and let him choose.
+6. Build, run `node scripts/check-foundations.mjs <slug>`, look at screenshots at 1440, 1024 and 390px, test every interaction in the browser, and check the console.
+7. Sync the explorer (Content draft, Sequencing notes, notes in the Original, the layout entry and an "as built" post), check the draft against the live text in both directions, then log it in both journals.
 
 ### Making a new Foundations page
 
