@@ -599,39 +599,7 @@ body {
   transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.mark-card:hover .mark-card__mark {
-  transform: scale(1.03);
-}
-
-/* ---- Marks: one SVG, two states. Unread is a line drawing, read is solid. ---- */
-.mark-card__mark *,
-.chapter-end__svg * {
-  stroke-width: 2;
-  vector-effect: non-scaling-stroke;
-  transition:
-    fill-opacity 400ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    stroke-opacity 400ms ease;
-}
-
-/* Centre shapes fill first, then the rest, so colour appears to spread outward. */
-.mark-card__mark > :nth-child(2),
-.chapter-end__svg > :nth-child(2) { transition-delay: 60ms; }
-.mark-card__mark > :nth-child(3),
-.chapter-end__svg > :nth-child(3) { transition-delay: 120ms; }
-.mark-card__mark > :nth-child(n + 4),
-.chapter-end__svg > :nth-child(n + 4) { transition-delay: 180ms; }
-
-[data-state='unread'] .mark-card__mark *,
-[data-state='unread'] .chapter-end__svg * {
-  fill-opacity: 0;
-  stroke-opacity: 1;
-}
-
-[data-state='read'] .mark-card__mark *,
-[data-state='read'] .chapter-end__svg * {
-  fill-opacity: 1;
-  stroke-opacity: 0;
-}
+/* ---- Marks: drawn and coloured by foundations/foundation-marks.css. ---- */
 
 .mark-card[data-state='read'] .mark-card__number {
   color: var(--grey-5);
@@ -846,8 +814,6 @@ body {
   @view-transition {
     navigation: none;
   }
-  .mark-card__mark *,
-  .chapter-end__svg *,
   .progress-line__dot {
     transition: none !important;
   }

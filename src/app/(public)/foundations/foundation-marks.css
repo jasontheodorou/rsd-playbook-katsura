@@ -1,0 +1,127 @@
+/* Foundations marks, after the "try" reference (28 September 2026). Geometry and motion are in
+   marks.tsx, which draws every mark twice: fm-line (unread) and fm-solid (read).
+   Unread: grey outlines on a grey circle. Read: one solid dark colour on a pastel circle of the
+   same family. On reading, the pastel blooms out and the outline cross-fades into the solid. */
+
+.foundation-mark {
+  overflow: visible;
+  --fm-grey: #e5e1dd;
+  --fm-line-ink: #7d8489;
+}
+
+.foundation-mark[data-icon='users'] {
+  --fm-done: #c7dee4;
+  --fm-ink: #2f4a52;
+}
+.foundation-mark[data-icon='interface'] {
+  --fm-done: #cdd4e5;
+  --fm-ink: #132f50;
+  --fm-accent: #a0aed3;
+}
+.foundation-mark[data-icon='heart'] {
+  --fm-done: #f1c7ac;
+  --fm-ink: #9b4e33;
+}
+.foundation-mark[data-icon='type'] {
+  --fm-done: #f2de9d;
+  --fm-ink: #39223e;
+}
+.foundation-mark[data-icon='conversation'] {
+  --fm-done: #c8d7c3;
+  --fm-ink: #33544d;
+}
+.foundation-mark[data-icon='service'] {
+  --fm-done: #d6c6da;
+  --fm-ink: #5b3a59;
+}
+
+.foundation-mark.foundation-mark .fm-disc {
+  fill: var(--fm-grey);
+}
+
+.foundation-mark.foundation-mark .fm-bloom {
+  fill: var(--fm-done);
+}
+
+.foundation-mark.foundation-mark .fm-hover {
+  transform-box: view-box;
+  transform-origin: 80px 80px;
+}
+
+.foundation-mark.foundation-mark .fm-solid {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.foundation-mark.foundation-mark :is(circle, path, rect) {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---- Unread: grey outlines, each shape cut out of what sits behind it ---- */
+.foundation-mark.foundation-mark .fm-line :is(circle, path, rect) {
+  fill: var(--fm-grey);
+  stroke: var(--fm-line-ink);
+  stroke-width: 2.4;
+}
+
+.foundation-mark.foundation-mark .fm-line .fm-stroke {
+  fill: none;
+}
+
+/* ---- Read: one solid colour, with gaps in the circle's colour where shapes overlap ---- */
+.foundation-mark.foundation-mark .fm-solid :is(circle, path, rect) {
+  fill: var(--fm-ink);
+  stroke: none;
+}
+
+.foundation-mark.foundation-mark .fm-solid .fm-stroke {
+  fill: none;
+  stroke: var(--fm-ink);
+  stroke-width: 4;
+}
+
+.foundation-mark.foundation-mark .fm-solid .fm-accent {
+  fill: var(--fm-accent);
+}
+
+.foundation-mark.foundation-mark .fm-solid .fm-knock {
+  stroke: var(--fm-done);
+  stroke-width: 5;
+  paint-order: stroke;
+}
+
+.foundation-mark.foundation-mark :is(.fm-line, .fm-solid) .fm-bar {
+  stroke-width: 7;
+}
+
+.foundation-mark.foundation-mark .fm-line .fm-bar {
+  stroke: #b3b6b8;
+}
+
+/* ---- The cross-fade. Going to read, it waits for the bloom; going back, it does not. ---- */
+.foundation-mark .fm-line {
+  opacity: 1;
+  transition: opacity 350ms ease 150ms;
+}
+
+.foundation-mark .fm-solid {
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+[data-state='read'] .foundation-mark .fm-line {
+  opacity: 0;
+  transition: opacity 350ms ease 250ms;
+}
+
+[data-state='read'] .foundation-mark .fm-solid {
+  opacity: 1;
+  transition: opacity 450ms ease 250ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .foundation-mark * {
+    transition: none !important;
+  }
+}

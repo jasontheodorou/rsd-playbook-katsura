@@ -137,6 +137,8 @@ export function ChapterEnd({
             disabled={enhanced}
           >
             <Mark
+              read={read}
+              drawOnView={!initiallyRead}
               className="chapter-end__svg"
               style={morphMark ? { viewTransitionName: `mark-${slug}` } : undefined}
             />

@@ -1,8 +1,7 @@
-import Link from 'next/link'
-
 import { currentCompleted, currentLearnerId } from '@/learning/reader'
 
 import { chapterPageId, chapters } from './chapters'
+import { MarkCard } from './MarkCard'
 
 import type { ReactNode } from 'react'
 
@@ -54,7 +53,7 @@ export default async function FoundationsLayout({ children }: { children: ReactN
             return (
               <li key={slug}>
                 {/* Client navigation: the chapter is intercepted into a layer over this grid and grows out of this card. */}
-                <Link
+                <MarkCard
                   href={`/foundations/${slug}`}
                   scroll={false}
                   className="mark-card"
@@ -67,10 +66,11 @@ export default async function FoundationsLayout({ children }: { children: ReactN
                     {read ? 'Read' : String(i + 1).padStart(2, '0')}
                   </span>
                   <Mark
+                    read={read}
                     className="mark-card__mark"
                     style={{ viewTransitionName: `mark-${slug}` }}
                   />
-                </Link>
+                </MarkCard>
               </li>
             )
           })}

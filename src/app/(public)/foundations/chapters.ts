@@ -7,12 +7,13 @@ import {
   OurValuesMark,
   WhatWeDoMark,
   WhyWeDoItMark,
+  type MarkProps,
 } from './marks'
 
 export type Chapter = {
   slug: string
   title: string
-  Mark: ComponentType<{ className?: string; style?: React.CSSProperties }>
+  Mark: ComponentType<MarkProps>
 }
 
 /** The six Foundations chapters, in reading order, as in the manual explorer's plan. Static until the read model carries sections. */
