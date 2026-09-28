@@ -1,7 +1,9 @@
 'use client'
 
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
-import { useEffect, useState, useSyncExternalStore } from 'react'
+import { useEffect, useState } from 'react'
+
+import { createOnce } from '../page/once'
 
 import './note-fan.css'
 
@@ -15,37 +17,8 @@ import './note-fan.css'
  */
 export type FanNote = { label: string; text: string }
 
-/* Whether the reader has opened a stack before. Once they have, the hint is not shown again on
-   any stack, now or on a later visit: they have understood. Kept in the browser, and shared by
-   every stack on the page. */
-const SEEN_KEY = 'katsura:note-fan-used'
-const listeners = new Set<() => void>()
-let seen: boolean | null = null
-const readSeen = () => {
-  if (seen === null) {
-    try {
-      seen = localStorage.getItem(SEEN_KEY) === '1'
-    } catch {
-      seen = false
-    }
-  }
-  return seen
-}
-const markSeen = () => {
-  if (readSeen()) return
-  seen = true
-  try {
-    localStorage.setItem(SEEN_KEY, '1')
-  } catch {
-    // Storage can be blocked; the hint then stays hidden for this visit only.
-  }
-  listeners.forEach((l) => l())
-}
-const subscribe = (l: () => void) => {
-  listeners.add(l)
-  return () => listeners.delete(l)
-}
-const useSeen = () => useSyncExternalStore(subscribe, readSeen, () => true)
+/* The hint shows until the reader has opened any stack once, then never again. */
+const hint = createOnce('katsura:note-fan-used')
 
 const REST = [
   { x: 0, y: 0, rotate: -2 },
@@ -72,11 +45,11 @@ export function NoteFan({
 }) {
   const [open, setOpen] = useState(false)
   const reduce = useReducedMotion()
-  const used = useSeen()
+  const used = hint.useUsed()
   const spread = open || Boolean(reduce)
   // Remember the first opening after it happens, not while React is drawing the stack.
   useEffect(() => {
-    if (open) markSeen()
+    if (open) hint.mark()
   }, [open])
   return (
     <ul

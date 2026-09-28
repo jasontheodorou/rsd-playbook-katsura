@@ -1,12 +1,11 @@
 /*
- * Photo diagram (rebuilt 28 September 2026). One card, laid out on one rule: two inset boxes held
- * 8px inside the card's edge (the diagram's frosted box on the left, the photograph on the right)
- * with the reading between them, and every text edge 40px from the card's edge. So the title and
- * the counter share a top line, and the navigator and the diagram box's padding share a bottom one.
- *
- * Columns (of the card's 10): from 1280px the diagram box 1 to 4, the reading 5 to 7, the photo
- * 8 to 10; from 1024px the reading 5 to 8 and the photo 9 to 10. Below 1024px they stack.
- * The card is at least 424px tall, the diagram's original height.
+ * Photo diagram (rebuilt 28 September 2026). One card in two zones: the diagram's zone on the
+ * left (page columns 2 to 5 and the gap after them), edge to edge on its warm tint with the
+ * ambient washes, and a white zone holding the reading (6 to 8) and a portrait photograph inset
+ * 8px (9 to 11). The zones meet in one straight edge with a hairline, so the control and its
+ * result read apart but stay one shape. Text edges sit 40px from the card's edge. From 1024px to
+ * 1279px the reading takes four of the white zone's six columns and padding drops to 32px.
+ * Below 1024px the zones stack. The card is at least 424px tall.
  */
 
 .pd {
@@ -14,7 +13,8 @@
   --glass: rgba(255, 255, 255, 0.62);
   --hair: rgba(52, 60, 70, 0.1);
   --ink: #16222b;
-  /* The inset of the two boxes, and the padding inside the diagram box: 8 + 32 = 40. */
+  /* The photograph's inset, and the padding inside each zone: text edges sit 8 + 32 = 40 from
+     the card's edge. */
   --inset: 8px;
   --pad: 32px;
 
@@ -26,29 +26,11 @@
   column-gap: var(--grid-gap);
   min-height: 424px;
   border-radius: 24px;
-  background: #f7f5f1;
+  background: #fff;
   box-shadow:
     0 0 0 1px var(--hair),
     0 20px 40px -28px rgba(52, 60, 70, 0.1);
   color: var(--ink);
-}
-
-/* The ambience fades lightly to white towards the photograph (at 40% strength), laid over the
-   washes (after them in paint order, at the same layer). */
-.pd::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.4;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0) 28%,
-    rgba(255, 255, 255, 0.7) 50%,
-    #fff 68%
-  );
 }
 
 /* Two blurred washes, drifting very slowly, on the diagram's side. */
@@ -60,7 +42,7 @@
 }
 .pd__washes span {
   position: absolute;
-  width: 50%;
+  width: 90%;
   aspect-ratio: 1;
   border-radius: 40%;
   filter: blur(80px);
@@ -81,15 +63,20 @@
 
 /* ── The diagram's box: frosted, inset like the photograph ── */
 
+/* The diagram's zone: the card's left side, edge to edge, on its warm tint with the washes. It
+   runs across the grid gap to the reading's column line, so the two zones meet in one straight
+   edge with a hairline. */
 .pd__stage {
   grid-column: 1 / 5;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  margin: var(--inset) 0 var(--inset) var(--inset);
-  padding: var(--pad);
-  border-radius: 17px;
-  background: rgba(255, 255, 255, 0.34);
-  box-shadow: inset 0 0 0 1px rgba(52, 60, 70, 0.07);
+  margin-right: calc(-1 * var(--grid-gap));
+  padding: calc(var(--inset) + var(--pad));
+  background: #f7f5f1;
+  box-shadow: inset -1px 0 0 var(--hair);
 }
 
 /* The title, as on the balance slider, at the box's top left. */
@@ -293,63 +280,6 @@
   text-box: trim-both cap alphabetic;
 }
 
-/* The navigator: progress pills, the current one longer, and back and forward. */
-.pd__nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-top: 24px;
-}
-.pd__pills {
-  display: flex;
-  gap: 6px;
-}
-.pd__pills span {
-  width: 14px;
-  height: 4px;
-  border-radius: 999px;
-  background: rgba(52, 86, 107, 0.14);
-  transition:
-    width 300ms cubic-bezier(0.2, 0, 0, 1),
-    background 300ms ease;
-}
-.pd__pills span[data-seen='true'] {
-  background: rgba(52, 86, 107, 0.45);
-}
-.pd__pills span[data-on='true'] {
-  width: 28px;
-  background: var(--acc);
-}
-.pd__steps {
-  display: flex;
-  gap: 8px;
-}
-.pd__step {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  border-radius: 999px;
-  background: var(--glass);
-  color: var(--ink);
-  cursor: pointer;
-  box-shadow: 0 0 0 1px var(--hair);
-  transition:
-    background 200ms ease,
-    box-shadow 200ms ease;
-}
-.pd__step:hover {
-  background: #fff;
-  box-shadow: 0 0 0 1px rgba(22, 34, 43, 0.22);
-}
-.pd__step:focus-visible {
-  outline: 3px solid #ec671b;
-  outline-offset: 2px;
-}
 .pd__sr {
   position: absolute;
   width: 1px;
@@ -359,19 +289,55 @@
   white-space: nowrap;
 }
 
+/* The first view's prompt: a soft slate ring that swells out from the first tile and fades,
+   every 2.4 seconds, until the reader has chosen a tile once. */
+.pd__tile {
+  position: relative;
+}
+.pd__pulse {
+  position: absolute;
+  inset: -2px;
+  border-radius: 17px;
+  box-shadow: 0 0 0 1.5px rgba(52, 86, 107, 0.45);
+  pointer-events: none;
+  animation: pd-pulse 2.4s cubic-bezier(0.2, 0, 0, 1) infinite;
+}
+@keyframes pd-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  70%,
+  100% {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+}
+
 /* ── The reading: its top and bottom edges 40px from the card's ── */
 
+/* The result: a white card beside the diagram's card, one grid gap away, holding the reading and
+   the photograph on its own columns (page columns 5 to 7 and 8 to 10). */
+/* The result: the card's white side, holding the reading and the photograph on its own columns
+   (page columns 6 to 8 and 9 to 11). */
+.pd__result {
+  grid-column: 5 / 11;
+  display: grid;
+  grid-template-columns: subgrid;
+}
+
 .pd__read {
-  grid-column: 5 / 8;
+  grid-column: 1 / 4;
   display: flex;
   flex-direction: column;
-  padding-block: calc(var(--inset) + var(--pad));
+  padding: calc(var(--inset) + var(--pad)) 0 calc(var(--inset) + var(--pad))
+    calc(var(--inset) + var(--pad));
 }
 
 /* ── The photograph: inset from the card's edge, so it reads as held by the card ── */
 
 .pd__photo {
-  grid-column: 8 / 11;
+  grid-column: 4 / 7;
   position: relative;
   margin: var(--inset) var(--inset) var(--inset) 0;
   overflow: hidden;
@@ -406,6 +372,9 @@
 /* From 1024px to 1279px: a wider reading, a slimmer photograph, and smaller tiles so the
    diagram keeps clear lines in its narrower box. */
 @media (max-width: 79.9375rem) {
+  .pd {
+    --pad: 24px;
+  }
   .pd__tile {
     width: 44px;
     height: 44px;
@@ -432,10 +401,10 @@
     font-size: 12px;
   }
   .pd__read {
-    grid-column: 5 / 9;
+    grid-column: 1 / 5;
   }
   .pd__photo {
-    grid-column: 9 / 11;
+    grid-column: 5 / 7;
   }
 }
 
@@ -444,16 +413,20 @@
   .pd {
     --pad: 24px;
     grid-template-columns: minmax(0, 1fr);
-    row-gap: var(--inset);
     min-height: 0;
   }
+  .pd__stage {
+    margin-right: 0;
+    box-shadow: inset 0 -1px 0 var(--hair);
+  }
   .pd__stage,
+  .pd__result,
   .pd__read,
   .pd__photo {
     grid-column: 1;
   }
-  .pd__stage {
-    margin: var(--inset) var(--inset) 0;
+  .pd__result {
+    grid-template-columns: minmax(0, 1fr);
   }
   .pd__square {
     width: min(100%, 320px);
@@ -487,15 +460,12 @@
     padding-top: 24px;
   }
   .pd__photo {
-    grid-row: 2;
-    margin: 0 var(--inset);
+    grid-row: 1;
+    margin: var(--inset) var(--inset) 0;
     aspect-ratio: 16 / 10;
   }
   .pd__read {
-    grid-row: 3;
+    grid-row: 2;
     padding: var(--pad) calc(var(--inset) + var(--pad)) calc(var(--inset) + var(--pad));
-  }
-  .pd::after {
-    display: none;
   }
 }

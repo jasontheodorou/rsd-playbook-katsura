@@ -1,8 +1,8 @@
 'use client'
 
-import { ArrowLeft, ArrowRight } from '@phosphor-icons/react'
 import { motion, useReducedMotion } from 'motion/react'
 import {
+  useEffect,
   useLayoutEffect,
   useRef,
   useState,
@@ -11,6 +11,7 @@ import {
   type KeyboardEvent,
 } from 'react'
 
+import { createOnce } from '../page/once'
 import { DIAGRAM_ICONS, HUB, POS, curve, type DiagramItem, type Half } from './Diagram'
 import './photo-diagram.css'
 
@@ -19,7 +20,7 @@ import './photo-diagram.css'
  * item, at the size the diagram had without one. Three zones sit side by side on the card's
  * 10 columns: the diagram (4), the reading (3) and a portrait photograph (3). Every passage is
  * laid in the same grid cell, so the card is always as tall as the longest and never jumps.
- * A navigator under the reading shows progress and steps back and forward. Without JavaScript it
+ * Without JavaScript it
  * is the diagram's plain list.
  */
 
@@ -32,6 +33,9 @@ const useEnhanced = () =>
   )
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number]
 const n = (i: number) => String(i + 1).padStart(2, '0')
+
+/* The first tile pulses until the reader has chosen any tile once, then never again. */
+const prompt = createOnce('katsura:diagram-used')
 
 export function PhotoDiagram({
   hub = 'Good design',
@@ -66,6 +70,11 @@ export function PhotoDiagram({
     hub: { x: 11.5, y: 4.5 },
     tile: { x: 7.5, y: 7.5 },
   })
+
+  const used = prompt.useUsed()
+  useEffect(() => {
+    if (active !== null) prompt.mark()
+  }, [active])
 
   // Line ends track the real edges of the centre pill and the tiles (layout sizes, so the
   // tiles' scale-in does not skew the measure).
@@ -120,10 +129,6 @@ export function PhotoDiagram({
     e.preventDefault()
     buttons.current[next]?.focus()
   }
-  const step = (d: 1 | -1) => {
-    if (active === null) return choose(d === 1 ? 0 : last)
-    choose((active + d + items.length) % items.length)
-  }
 
   return (
     <div
@@ -132,14 +137,13 @@ export function PhotoDiagram({
         washes ? ({ '--wash-a': washes[0], '--wash-b': washes[1] } as CSSProperties) : undefined
       }
     >
-      <span className="pd__washes" aria-hidden="true">
-        <span />
-        <span />
-      </span>
-
       {/* ── The diagram, in its own frosted box: the title at its top left, the diagram
           centred in the space below ── */}
       <div className="pd__stage">
+        <span className="pd__washes" aria-hidden="true">
+          <span />
+          <span />
+        </span>
         {title && (
           <motion.p
             className="pd__title"
@@ -213,6 +217,9 @@ export function PhotoDiagram({
                       transition={{ duration: 0.5, ease: EASE, delay: 0.1 + i * 0.06 }}
                     >
                       <span className="pd__tile">
+                        {i === 0 && !used && active === null && !reduce && (
+                          <span className="pd__pulse" aria-hidden="true" />
+                        )}
                         <I size={24} weight={on ? 'regular' : 'light'} aria-hidden="true" />
                       </span>
                       <span className="pd__label" aria-hidden="true">
@@ -227,74 +234,57 @@ export function PhotoDiagram({
         </div>
       </div>
 
-      {/* ── The reading: every passage in one cell, the chosen one shown ── */}
-      <div className="pd__read">
-        <div id="pd-reading" className="pd__passages" aria-live="polite">
-          <div className="pd__passage" data-on={active === null} aria-hidden={active !== null}>
-            <span className="pd__n">{items.length} to explore</span>
-            <p className="pd__lead">{emptyTitle}</p>
-            <p className="pd__body">{emptyBody}</p>
-          </div>
-          {items.map((it, i) => (
-            <div
-              key={it.id}
-              className="pd__passage"
-              data-on={active === i}
-              aria-hidden={active !== i}
-            >
-              <span className="pd__n">
-                {n(i)} of {n(last)}
-              </span>
-              <p className="pd__lead">{it.lead}</p>
-              <p className="pd__body">{it.body}</p>
+      {/* ── The result, in its own white card: the reading and the photograph ── */}
+      <div className="pd__result">
+        {/* The reading: every passage in one cell, the chosen one shown */}
+        <div className="pd__read">
+          <div id="pd-reading" className="pd__passages" aria-live="polite">
+            <div className="pd__passage" data-on={active === null} aria-hidden={active !== null}>
+              <span className="pd__n">{items.length} to explore</span>
+              <p className="pd__lead">{emptyTitle}</p>
+              <p className="pd__body">{emptyBody}</p>
             </div>
-          ))}
-        </div>
-
-        <div className="pd__nav">
-          <span className="pd__pills" aria-hidden="true">
             {items.map((it, i) => (
-              <span key={it.id} data-seen={seen.includes(i)} data-on={active === i} />
+              <div
+                key={it.id}
+                className="pd__passage"
+                data-on={active === i}
+                aria-hidden={active !== i}
+              >
+                <span className="pd__n">
+                  {n(i)} of {n(last)}
+                </span>
+                <p className="pd__lead">{it.lead}</p>
+                <p className="pd__body">{it.body}</p>
+              </div>
             ))}
-          </span>
+          </div>
+
           <span className="pd__sr" aria-live="polite">
             {seen.length} of {items.length} explored
           </span>
-          <span className="pd__steps">
-            <button
-              type="button"
-              className="pd__step"
-              aria-label="Previous"
-              onClick={() => step(-1)}
-            >
-              <ArrowLeft size={16} weight="regular" aria-hidden="true" />
-            </button>
-            <button type="button" className="pd__step" aria-label="Next" onClick={() => step(1)}>
-              <ArrowRight size={16} weight="regular" aria-hidden="true" />
-            </button>
-          </span>
         </div>
-      </div>
 
-      {/* ── The photograph: all of them stacked, the chosen one faded in ── */}
-      <div className="pd__photo">
-        {restPhoto && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={restPhoto} alt={active === null ? restAlt : ''} data-on={active === null} />
-        )}
-        {items.map((it, i) =>
-          it.photo ? (
+        {/* ── The photograph: all of them stacked, the chosen one faded in ── */}
+        <div className="pd__photo">
+          {restPhoto && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img
-              key={it.id}
-              src={it.photo}
-              alt={active === i ? (it.alt ?? '') : ''}
-              data-on={active === i}
-              style={it.focus ? { objectPosition: it.focus } : undefined}
-              loading="lazy"
-            />
-          ) : null,
-        )}
+            <img src={restPhoto} alt={active === null ? restAlt : ''} data-on={active === null} />
+          )}
+          {items.map((it, i) =>
+            it.photo ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={it.id}
+                src={it.photo}
+                alt={active === i ? (it.alt ?? '') : ''}
+                data-on={active === i}
+                style={it.focus ? { objectPosition: it.focus } : undefined}
+                loading="lazy"
+              />
+            ) : null,
+          )}
+        </div>
       </div>
     </div>
   )
