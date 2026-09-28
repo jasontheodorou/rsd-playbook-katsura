@@ -1,0 +1,58 @@
+/*
+ * Voices: one card in the chapter's tint across page columns 2 to 11, 40px padding, a small
+ * uppercase label at its top left, then the quotations side by side, a grid gap apart, each
+ * under a Georgia speech mark. Below 1024px they stack.
+ */
+.vx {
+  margin: 0;
+  padding: 40px;
+  border-radius: 24px;
+  background: var(--vx-tint);
+  color: #111;
+}
+.vx__label {
+  margin: 0 0 32px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a5a55;
+  text-box: trim-both cap alphabetic;
+}
+.vx__row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  grid-auto-flow: column;
+  gap: calc(var(--grid-gap) * 2);
+}
+.vx__quote {
+  margin: 0;
+}
+.vx__mark {
+  display: block;
+  height: 0.5em;
+  overflow: hidden;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(3.5rem, 2rem + 3vw, 5rem);
+  font-weight: 700;
+  line-height: 1;
+  color: #c4121f;
+}
+.vx__quote p {
+  margin: 20px 0 0;
+  font-size: clamp(1.25rem, 0.8rem + 0.9vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.012em;
+  text-box: trim-both cap alphabetic;
+}
+@media (max-width: 63.9375rem) {
+  .vx {
+    padding: 28px 24px;
+  }
+  .vx__row {
+    grid-auto-flow: row;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+}

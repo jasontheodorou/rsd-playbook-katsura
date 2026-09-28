@@ -5,6 +5,9 @@ import type { BalanceItem } from '../components/Balance'
 import type { DiagramItem } from '../components/Diagram'
 import type { TrioItem } from '../components/ImageTrio'
 import type { FanNote } from '../components/NoteFan'
+import type { LandscapeLayer } from '../components/DesignLandscape'
+import type { FrameworkPart } from '../components/FrameworkPill'
+import type { JourneyStep } from '../components/Journey'
 import type { Drift } from '../components/PartMedia'
 import type { PlaneTone } from '../components/PartSection'
 import type { StackCardItem } from '../components/StackCards'
@@ -55,6 +58,30 @@ export type Block =
   /** The head, heart and hands sketch as a wall that builds itself on scroll, its posters swinging
       when pointed at; at the illustration's size. */
   | { kind: 'hhhWall'; alt: string }
+  /** Nested layers to explore (chapter 04's Design Landscape): one card, the layers on a tinted
+      side and the chosen layer's text on white, across columns 2 to 11. Layers run outside in. */
+  | {
+      kind: 'landscape'
+      title?: string
+      label: string
+      restTitle: string
+      restBody: string
+      layers: LandscapeLayer[]
+      washes?: [string, string]
+    }
+  /** Short quotations from the people services are for, side by side in one tinted card,
+      across columns 2 to 11 (chapter 05). Up to three. */
+  | { kind: 'voices'; label?: string; quotes: string[]; tint?: string }
+  /** A model of steps in a row on a tinted band, the chosen step's text on white below, across
+      columns 2 to 11 (chapter 06's participation model). */
+  | {
+      kind: 'journey'
+      title?: string
+      label: string
+      restTitle: string
+      restBody: string
+      steps: JourneyStep[]
+    }
   /** Stacking cards that pin and fold over one another as the reader scrolls, across columns 2 to
       12. Each card: an eyebrow, a title and a photograph. */
   | { kind: 'stack'; cards: StackCardItem[] }
@@ -64,8 +91,8 @@ export type Block =
       kind: 'part'
       eyebrow?: string
       heading: string
-      photo: string
-      alt: string
+      photo?: string
+      alt?: string
       paragraphs: ReactNode[]
       list?: ReactNode[]
       /** A boxout of points between the paragraphs, after paragraph number `after`. */
@@ -87,5 +114,8 @@ export type ChapterContent = {
   title: string
   /** The statement under the title: a first sentence in ink, the rest in grey, one weight. */
   statement?: { lead: ReactNode; rest?: ReactNode }
+  /** Chapters 04 to 06: which part of Head, heart and hands this is. Shows the framework pill
+      between the title and the statement. */
+  framework?: FrameworkPart
   blocks: Block[]
 }

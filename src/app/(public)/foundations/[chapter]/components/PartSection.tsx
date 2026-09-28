@@ -33,8 +33,9 @@ export function PartSection({
   /** A small label above the heading. Optional: a drawn mark can do its job. */
   eyebrow?: string
   heading: string
-  photo: string
-  alt: string
+  /** Optional: a short part (a lead-in and a set of notes) can go without a photograph. */
+  photo?: string
+  alt?: string
   paragraphs: ReactNode[]
   list?: ReactNode[]
   /** A boxout of points set between the paragraphs, after the paragraph numbered `after`. */
@@ -68,7 +69,7 @@ export function PartSection({
           <img className="part__mark" src={mark} alt="" aria-hidden="true" />
         )}
       </h2>
-      <PartMedia photo={photo} alt={alt} plane={plane} side={side} drift={drift} />
+      {photo && <PartMedia photo={photo} alt={alt ?? ''} plane={plane} side={side} drift={drift} />}
       {boxout ? (
         <>
           <BodyText>
@@ -79,18 +80,20 @@ export function PartSection({
           <div className="part__boxout">
             <Boxout items={boxout.items} accent={boxout.accent} />
           </div>
-          <BodyText>
-            {paragraphs.slice(boxout.after).map((p, i) => (
-              <p key={i}>{p}</p>
-            ))}
-            {list && (
-              <ul className="body-text__list">
-                {list.map((it, i) => (
-                  <li key={i}>{it}</li>
-                ))}
-              </ul>
-            )}
-          </BodyText>
+          {(paragraphs.length > boxout.after || list) && (
+            <BodyText>
+              {paragraphs.slice(boxout.after).map((p, i) => (
+                <p key={i}>{p}</p>
+              ))}
+              {list && (
+                <ul className="body-text__list">
+                  {list.map((it, i) => (
+                    <li key={i}>{it}</li>
+                  ))}
+                </ul>
+              )}
+            </BodyText>
+          )}
         </>
       ) : (
         <BodyText>

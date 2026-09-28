@@ -8,9 +8,12 @@ import { Accordion } from '../components/Accordion'
 import { Balance } from '../components/Balance'
 import { BodyText } from '../components/BodyText'
 import { Boxout } from '../components/Boxout'
+import { DesignLandscape } from '../components/DesignLandscape'
 import { Diagram } from '../components/Diagram'
+import { FrameworkPill } from '../components/FrameworkPill'
 import { HhhWall } from '../components/HhhWall'
 import { ImageTrio } from '../components/ImageTrio'
+import { Journey } from '../components/Journey'
 import { PartSection } from '../components/PartSection'
 import { PhotoDiagram } from '../components/PhotoDiagram'
 import { PhotoWithPlane } from '../components/PhotoWithPlane'
@@ -19,6 +22,7 @@ import { QuoteCard } from '../components/QuoteCard'
 import { SpacingOverlay, type Space } from '../components/SpacingOverlay'
 import { StackCards } from '../components/StackCards'
 import { TShapedTabs } from '../components/TShapedTabs'
+import { Voices } from '../components/Voices'
 import { ChapterScrollContext } from './scroll-context'
 import type { Block, ChapterContent } from './types'
 import './foundations-chapter.css'
@@ -46,8 +50,8 @@ export function FoundationsChapter({
   const { scrollYProgress } = useScroll({ container: scrollRef })
   const { leaving } = useChapterFrame()
   const spaces = useMemo(
-    () => spacesFor(content.blocks, Boolean(content.statement)),
-    [content.blocks, content.statement],
+    () => spacesFor(content.blocks, Boolean(content.statement), Boolean(content.framework)),
+    [content.blocks, content.statement, content.framework],
   )
 
   return (
@@ -86,6 +90,11 @@ export function FoundationsChapter({
                 {content.title}
                 <span className="fc__stop" aria-hidden="true" />
               </h1>
+              {content.framework && (
+                <div className="fc__framework">
+                  <FrameworkPill part={content.framework} />
+                </div>
+              )}
               {content.statement && (
                 <p className="fc__statement">
                   <span className="fc__statement-lead">{content.statement.lead}</span>
@@ -172,6 +181,29 @@ function BlockView({ block }: { block: Block }) {
       return <img className="fc__illustration" src={block.src} alt={block.alt} />
     case 'hhhWall':
       return <HhhWall alt={block.alt} />
+    case 'voices':
+      return <Voices label={block.label} quotes={block.quotes} tint={block.tint} />
+    case 'journey':
+      return (
+        <Journey
+          title={block.title}
+          label={block.label}
+          restTitle={block.restTitle}
+          restBody={block.restBody}
+          steps={block.steps}
+        />
+      )
+    case 'landscape':
+      return (
+        <DesignLandscape
+          title={block.title}
+          label={block.label}
+          restTitle={block.restTitle}
+          restBody={block.restBody}
+          layers={block.layers}
+          washes={block.washes}
+        />
+      )
     case 'stack':
       return <StackCards cards={block.cards} />
     case 'part':
@@ -226,6 +258,12 @@ function edges(block: Block, i: number): { top: string; bottom: string } {
       return { top: `${b} .fc__illustration`, bottom: `${b} .fc__illustration` }
     case 'hhhWall':
       return { top: `${b} .hxw`, bottom: `${b} .hxw` }
+    case 'landscape':
+      return { top: `${b} .dl`, bottom: `${b} .dl` }
+    case 'voices':
+      return { top: `${b} .vx`, bottom: `${b} .vx` }
+    case 'journey':
+      return { top: `${b} .jy`, bottom: `${b} .jy` }
     case 'stack':
       return { top: `${b} .stk__card:first-child`, bottom: `${b} .stk__card:last-child` }
     case 'part':
@@ -246,11 +284,14 @@ const NAMES: Record<Block['kind'], string> = {
   balance: 'balance',
   illustration: 'illustration',
   hhhWall: 'head, heart and hands wall',
+  landscape: 'design landscape',
+  voices: 'voices',
+  journey: 'journey',
   stack: 'stacking cards',
   part: 'written part',
 }
 
-function spacesFor(blocks: Block[], hasStatement: boolean): Space[] {
+function spacesFor(blocks: Block[], hasStatement: boolean, hasFramework = false): Space[] {
   const out: Space[] = []
   let v = 0
   const add = (label: string, from: string, to: string) =>
@@ -274,14 +315,38 @@ function spacesFor(blocks: Block[], hasStatement: boolean): Space[] {
     span: '.fc__main',
   })
   let prev = { bottom: '.fc__title', name: 'title' }
+  if (hasFramework) {
+    add('Title to framework pill', '.fc__title', '.fwp')
+    prev = { bottom: '.fwp', name: 'framework pill' }
+  }
   if (hasStatement) {
-    add('Title to statement', '.fc__title', '.fc__statement')
+    add(
+      `${prev.name === 'title' ? 'Title' : 'Framework pill'} to statement`,
+      prev.bottom,
+      '.fc__statement',
+    )
     prev = { bottom: '.fc__statement', name: 'statement' }
   }
   blocks.forEach((block, i) => {
     const e = edges(block, i)
     add(`${prev.name} to ${NAMES[block.kind]}`, prev.bottom, e.top)
-    if (block.kind === 'text' || block.kind === 'part') {
+    if (block.kind === 'part' && block.boxout) {
+      // A boxout splits the part's text in two; pair paragraphs only within each half.
+      const halves = [
+        { sel: '.part > .body-text:first-of-type', count: block.boxout.after },
+        {
+          sel: '.part > .body-text:last-of-type',
+          count: block.paragraphs.length - block.boxout.after,
+        },
+      ]
+      for (const h of halves)
+        for (let p = 1; p < h.count; p++)
+          add(
+            'Paragraph to paragraph',
+            `[data-block="${i}"] ${h.sel} > p:nth-child(${p})`,
+            `[data-block="${i}"] ${h.sel} > p:nth-child(${p + 1})`,
+          )
+    } else if (block.kind === 'text' || block.kind === 'part') {
       for (let p = 1; p < block.paragraphs.length; p++) {
         add(
           'Paragraph to paragraph',

@@ -110,7 +110,10 @@
 
 /* The diagram and balance take columns 2 to 11, a column short of the full width. */
 .fc__block--diagram,
-.fc__block--balance {
+.fc__block--balance,
+.fc__block--landscape,
+.fc__block--voices,
+.fc__block--journey {
   grid-column: 1 / 11;
 }
 
@@ -157,6 +160,12 @@
   margin-left: 0.06em;
   border-radius: 50%;
   background: #ec671b;
+}
+
+/* The Head, heart and hands pill (chapters 04 to 06): 32px under the title; the statement keeps
+   its usual gap below it. */
+.fc__framework {
+  margin-top: 32px;
 }
 
 /* The statement: one weight; the first sentence in ink, the rest in grey. Its measure is in ems,
@@ -230,6 +239,9 @@
   .fc__block--pinned,
   .fc__block--diagram,
   .fc__block--balance,
+  .fc__block--landscape,
+  .fc__block--voices,
+  .fc__block--journey,
   .fc__block--boxout,
   .fc__block--part {
     grid-column: 1;

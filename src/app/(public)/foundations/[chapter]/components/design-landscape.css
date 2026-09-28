@@ -1,0 +1,271 @@
+/*
+ * The Design Landscape. One card in two zones, at least 480px tall, across page columns 2 to 11:
+ * the layers on the tinted, ambient left (columns 2 to 8 and the gap after them) and the reading
+ * on white (9 to 11), meeting in one straight edge with a hairline. Text edges sit 40px from the
+ * card's edge. Five frames nest 32px apart, each a step more frosted than the one around it, its
+ * label at its top left; the chosen frame gains an ink hairline and the rest step back.
+ */
+
+.dl {
+  --ink: #16222b;
+  --hair: rgba(52, 60, 70, 0.1);
+  --pad: 40px;
+  --step: 32px;
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  min-height: 480px;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px var(--hair),
+    0 20px 40px -28px rgba(52, 60, 70, 0.1);
+  color: var(--ink);
+}
+
+/* ── The layers' zone ── */
+
+.dl__stage {
+  grid-column: 1 / 8;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  margin-right: calc(-1 * var(--grid-gap));
+  padding: var(--pad);
+  background: #f7f5f1;
+  box-shadow: inset -1px 0 0 var(--hair);
+}
+
+.dl__washes {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.dl__washes span {
+  position: absolute;
+  width: 70%;
+  aspect-ratio: 1;
+  border-radius: 40%;
+  filter: blur(80px);
+  opacity: 0.3;
+}
+.dl__washes span:first-child {
+  left: -12%;
+  top: -20%;
+  background: var(--wash-a, #fde3c8);
+  animation: bd-drift-a 24s ease-in-out infinite alternate;
+}
+.dl__washes span:last-child {
+  right: -16%;
+  bottom: -28%;
+  background: var(--wash-b, #eadfcf);
+  animation: bd-drift-b 28s ease-in-out infinite alternate;
+}
+
+.dl__title {
+  margin: 0 0 32px;
+  font-size: clamp(1.25rem, 0.9rem + 0.6vw, 1.625rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  text-box: trim-both cap alphabetic;
+}
+
+.dl__rings {
+  position: relative;
+  flex: 1;
+  min-height: 300px;
+}
+
+/* Each frame sits one step inside the frame around it. */
+.dl__ring {
+  position: absolute;
+  inset: calc(var(--k) * var(--step));
+  border-radius: calc(22px - var(--k) * 2px);
+  background: rgba(255, 255, 255, calc(0.18 + var(--k) * 0.1));
+  box-shadow: inset 0 0 0 1px rgba(52, 60, 70, 0.12);
+  transition:
+    background 300ms ease,
+    box-shadow 300ms ease,
+    opacity 300ms ease;
+}
+.dl__ring[data-lit='true'] {
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow:
+    inset 0 0 0 1px rgba(22, 34, 43, 0.3),
+    0 10px 24px -18px rgba(52, 60, 70, 0.35);
+}
+.dl__ring[data-on='true'] {
+  box-shadow:
+    inset 0 0 0 1.5px var(--ink),
+    0 10px 24px -18px rgba(52, 60, 70, 0.35);
+}
+.dl__ring[data-dim='true'] .dl__label {
+  color: rgba(60, 74, 84, 0.55);
+}
+
+/* The label: a small pill at the frame's top left, inside its band. */
+.dl__label {
+  position: absolute;
+  top: 6px;
+  left: 10px;
+  z-index: 1;
+  margin: 0;
+  padding: 3px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #3c4a54;
+  cursor: pointer;
+  transition:
+    color 200ms ease,
+    background 200ms ease;
+}
+.dl__label:hover,
+.dl__ring[data-on='true'] > .dl__label {
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 0 0 1px var(--hair);
+}
+.dl__label:focus-visible {
+  outline: 3px solid #ec671b;
+  outline-offset: 2px;
+}
+
+/* The innermost frame's label sits in its centre. */
+.dl__ring:last-child > .dl__label {
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  background: #fff;
+  box-shadow: 0 0 0 1px var(--hair);
+}
+
+/* The first view's prompt: a soft slate ring swelling out from the innermost label. */
+.dl__pulse {
+  position: absolute;
+  inset: -2px;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1.5px rgba(52, 86, 107, 0.45);
+  pointer-events: none;
+  animation: dl-pulse 2.4s cubic-bezier(0.2, 0, 0, 1) infinite;
+}
+@keyframes dl-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  70%,
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+/* ── The result ── */
+
+.dl__result {
+  grid-column: 8 / 11;
+  display: flex;
+  flex-direction: column;
+  padding: var(--pad);
+}
+.dl__passages {
+  display: grid;
+  flex: 1;
+}
+.dl__passage {
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition:
+    opacity 200ms ease,
+    transform 200ms ease,
+    visibility 0s 200ms;
+}
+.dl__passage[data-on='true'] {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 400ms cubic-bezier(0.16, 1, 0.3, 1) 80ms,
+    transform 400ms cubic-bezier(0.16, 1, 0.3, 1) 80ms;
+}
+.dl__n {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #8a847e;
+  text-box: trim-both cap alphabetic;
+}
+.dl__lead {
+  margin: 24px 0 0;
+  font-size: clamp(1.25rem, 0.8rem + 0.6vw, 1.625rem);
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  text-box: trim-both cap alphabetic;
+}
+.dl__body {
+  margin: 24px 0 0;
+  font-size: clamp(1rem, 0.85rem + 0.2vw, 1.0625rem);
+  line-height: 1.6;
+  color: #44515a;
+  text-box: trim-both cap alphabetic;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dl__washes span {
+    animation: none;
+  }
+  .dl__passage,
+  .dl__passage[data-on='true'] {
+    transition: none;
+    transform: none;
+  }
+}
+
+@media (max-width: 79.9375rem) {
+  .dl {
+    --pad: 32px;
+    --step: 28px;
+  }
+}
+
+/* Below 1024px: the layers, then the reading. */
+@media (max-width: 63.9375rem) {
+  .dl {
+    --pad: 24px;
+    --step: 26px;
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+  .dl__stage,
+  .dl__result {
+    grid-column: 1;
+  }
+  .dl__stage {
+    margin-right: 0;
+    box-shadow: inset 0 -1px 0 var(--hair);
+  }
+  .dl__rings {
+    min-height: 320px;
+  }
+  .dl__result {
+    padding: var(--pad);
+  }
+}
