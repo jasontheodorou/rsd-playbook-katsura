@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
 import type { AccordionSection } from '../components/Accordion'
+import type { BalanceItem } from '../components/Balance'
 import type { DiagramItem } from '../components/Diagram'
 import type { TrioItem } from '../components/ImageTrio'
 import type { Role } from '../components/TShapedTabs'
@@ -11,8 +12,9 @@ import type { Role } from '../components/TShapedTabs'
  * chapter is only a new ChapterContent; it never sets its own layout or spacing.
  */
 export type Block =
-  /** Body text: paragraphs of reading copy on columns 2 to 9. Keep paragraphs short. */
-  | { kind: 'text'; paragraphs: ReactNode[] }
+  /** Body text: paragraphs of reading copy on columns 2 to 9. Keep paragraphs short. An optional
+      short list follows the paragraphs, with small grey square bullets. */
+  | { kind: 'text'; paragraphs: ReactNode[]; list?: ReactNode[] }
   /** A landscape photograph with its offset plane, across columns 2 to 12. */
   | { kind: 'photo'; src: string; alt: string }
   /** The quiet outline accordion, across columns 2 to 12. */
@@ -34,6 +36,8 @@ export type Block =
       /** The two wash colours, in the chapter's own colour. Defaults to pale blue and sand. */
       washes?: [string, string]
     }
+  /** Balance sliders, from a failure to good practice, revealing each passage; columns 2 to 11. */
+  | { kind: 'balance'; prompt: string; items: BalanceItem[]; washes?: [string, string] }
   /** A boxout of points, across columns 2 to 9, like body text. */
   | { kind: 'boxout'; label?: string; items: string[]; accent?: string }
   /** A yellow quote card, across columns 2 to 9, like body text. */

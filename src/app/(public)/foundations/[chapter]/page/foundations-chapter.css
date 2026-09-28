@@ -108,8 +108,9 @@
   grid-column: 1 / -1;
 }
 
-/* The diagram takes columns 2 to 11, a column short of the full width. */
-.fc__block--diagram {
+/* The diagram and balance take columns 2 to 11, a column short of the full width. */
+.fc__block--diagram,
+.fc__block--balance {
   grid-column: 1 / 11;
 }
 
@@ -213,6 +214,7 @@
   .fc__block--quote,
   .fc__block--pinned,
   .fc__block--diagram,
+  .fc__block--balance,
   .fc__block--boxout {
     grid-column: 1;
   }

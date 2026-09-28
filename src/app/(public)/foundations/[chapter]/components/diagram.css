@@ -744,8 +744,12 @@
   font-size: clamp(1.375rem, 0.9rem + 0.8vw, 1.875rem);
 }
 
-/* Refined spans ten columns (page columns 2 to 11): the stage and the panel five columns each. */
+/* Refined spans ten columns (page columns 2 to 11): the stage and the panel five columns each.
+   The stage gets extra room at the top for the label above the top tile. */
 @media (min-width: 64rem) {
+  .bd--refined .bd__stage {
+    padding-top: 36px;
+  }
   .bd--refined {
     grid-template-columns: repeat(10, minmax(0, 1fr));
   }
@@ -754,5 +758,45 @@
   }
   .bd--refined .bd__panel {
     grid-column: 6 / -1;
+  }
+}
+
+/* Refined, phones and small tablets: a square stage with room above the top label and below the
+   bottom labels, smaller tiles and labels, so nothing is clipped or collides with the count. */
+@media (max-width: 63.9375rem) {
+  .bd--refined .bd__stage {
+    padding: 36px 16px 20px;
+  }
+  .bd--refined .bd__square {
+    aspect-ratio: 1 / 1.02;
+    margin-bottom: 24px;
+  }
+}
+
+@media (max-width: 40rem) {
+  .bd--refined .bd__tile {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+  }
+  .bd--refined .bd__tile svg {
+    width: 22px;
+    height: 22px;
+  }
+  .bd--refined .bd__spot {
+    transform: translate(-50%, -25px);
+  }
+  .bd--refined .bd__spot[data-label='above'] {
+    transform: translate(-50%, calc(-100% + 25px));
+  }
+  .bd--refined .bd__label {
+    font-size: 12px;
+  }
+  .bd--refined .bd__hub {
+    padding: 7px 12px;
+    font-size: 12px;
+  }
+  .bd--refined .bd__node {
+    gap: 6px;
   }
 }

@@ -1,5 +1,46 @@
+import type { BalanceItem } from '../components/Balance'
 import type { DiagramItem } from '../components/Diagram'
 import type { ChapterContent } from '../page/types'
+
+/** The four design watch-outs, for the balance sliders. Text as supplied by Jason. */
+const WATCHOUTS: BalanceItem[] = [
+  {
+    id: 'ambiguity',
+    short: 'Ambiguity',
+    icon: 'question',
+    lead: 'Clarity about what “design” means.',
+    body: 'The word is often used interchangeably with “develop”, “consult”, or “innovate.” Being clear about what it means keeps teams aligned, keeps practice deep and avoids disillusionment.',
+    from: 'Vague',
+    to: 'Clear',
+  },
+  {
+    id: 'loops',
+    short: 'Endless loops',
+    icon: 'repeat',
+    lead: 'Research and design that lead to delivery.',
+    body: 'Delivery builds belief in the work, where endless loops create scepticism and backlash. The promise of transformational results relies on contextual grounding and delivered outcomes.',
+    from: 'Endless research',
+    to: 'Delivered outcomes',
+  },
+  {
+    id: 'theatre',
+    short: 'Design theatre',
+    icon: 'mask',
+    lead: 'Substance over design theatre.',
+    body: 'Design rituals such as Post-Its, workshops and prototypes only work when they carry their underlying purpose and discipline. Copying the form without them mistakes form for substance.',
+    from: 'Form',
+    to: 'Substance',
+  },
+  {
+    id: 'responsibly',
+    short: 'Responsibility',
+    icon: 'scales',
+    lead: 'Design responsibly.',
+    body: 'Avoid overclaiming, “cargo cult” adoption, or pendulum swings by grounding practice in rigour, ethics and transparency.',
+    from: 'Overclaiming',
+    to: 'Rigour',
+  },
+]
 
 /** The five benefits of good design, for the diagram. Text as supplied by Jason. */
 const BENEFITS: DiagramItem[] = [
@@ -106,7 +147,67 @@ export const whyDesignMatters: ChapterContent = {
     {
       kind: 'text',
       paragraphs: [
-        'Design cannot succeed in a vacuum. Good design listens deeply, tests ideas with real people and builds empathy into every level of decision-making.',
+        'Sometimes design itself is the reason a service fails.',
+        'That is why we work openly, sharing our methods, evidence and failures, and build in feedback loops that give early warning of problems.',
+      ],
+    },
+    {
+      kind: 'balance',
+      prompt: 'Move each one towards good practice',
+      washes: ['#f1dc93', '#eadfcf'],
+      items: WATCHOUTS,
+    },
+    {
+      kind: 'text',
+      paragraphs: [
+        'Design cannot succeed in a vacuum.',
+        'Good design listens deeply, tests ideas with real people and builds empathy into every level of decision-making.',
+        'We can enable good design by:',
+      ],
+    },
+    {
+      kind: 'accordion',
+      sections: [
+        {
+          id: 'dna',
+          title: 'Embedding design into the DNA',
+          body: (
+            <p>
+              Design thinking thrives where leadership and culture value and encourage
+              experimentation, learning and human-centred decision-making.
+            </p>
+          ),
+        },
+        {
+          id: 'language',
+          title: 'Creating clear definitions and shared language',
+          body: (
+            <p>
+              Design succeeds when there is common understanding of what it is and what it&rsquo;s
+              for.
+            </p>
+          ),
+        },
+        {
+          id: 'structures',
+          title: 'Building the structures, resources and mandates that support design',
+          body: (
+            <p>
+              Shared standards and frameworks are critical, with the right people, skills and
+              practices in place, supported by continuous evaluation frameworks and learning.
+            </p>
+          ),
+        },
+        {
+          id: 'conditions',
+          title: 'Shaping conditions as well as capability',
+          body: (
+            <p>
+              Recognise that design thrives not only through skilled people but also supportive
+              organisational environments, leadership and culture.
+            </p>
+          ),
+        },
       ],
     },
   ],

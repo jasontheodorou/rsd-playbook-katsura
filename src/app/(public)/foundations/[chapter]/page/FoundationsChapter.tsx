@@ -5,6 +5,7 @@ import { useMemo, useRef, type ReactNode } from 'react'
 
 import { useChapterFrame } from '../ChapterFrame'
 import { Accordion } from '../components/Accordion'
+import { Balance } from '../components/Balance'
 import { BodyText } from '../components/BodyText'
 import { Boxout } from '../components/Boxout'
 import { Diagram } from '../components/Diagram'
@@ -108,6 +109,13 @@ function BlockView({ block }: { block: Block }) {
           {block.paragraphs.map((p, i) => (
             <p key={i}>{p}</p>
           ))}
+          {block.list && (
+            <ul className="body-text__list">
+              {block.list.map((it, i) => (
+                <li key={i}>{it}</li>
+              ))}
+            </ul>
+          )}
         </BodyText>
       )
     case 'photo':
@@ -130,6 +138,8 @@ function BlockView({ block }: { block: Block }) {
           washes={block.washes}
         />
       )
+    case 'balance':
+      return <Balance prompt={block.prompt} items={block.items} washes={block.washes} />
     case 'boxout':
       return <Boxout label={block.label} items={block.items} accent={block.accent} />
     case 'pinned':
@@ -146,7 +156,7 @@ function edges(block: Block, i: number): { top: string; bottom: string } {
   const b = `[data-block="${i}"]`
   switch (block.kind) {
     case 'text':
-      return { top: `${b} .body-text > p:first-child`, bottom: `${b} .body-text > p:last-child` }
+      return { top: `${b} .body-text > :first-child`, bottom: `${b} .body-text > :last-child` }
     case 'photo':
       return { top: `${b} .pwp__img`, bottom: `${b} .pwp__plane` }
     case 'accordion':
@@ -156,9 +166,11 @@ function edges(block: Block, i: number): { top: string; bottom: string } {
     case 'tabs':
       return { top: `${b} .tst`, bottom: `${b} .tst` }
     case 'diagram':
-      return { top: `${b} .bd__stage`, bottom: `${b} .bd__stage` }
+      return { top: `${b} .bd`, bottom: `${b} .bd` }
     case 'boxout':
       return { top: `${b} .boxout`, bottom: `${b} .boxout` }
+    case 'balance':
+      return { top: `${b} .sl2`, bottom: `${b} .sl2` }
     case 'pinned':
       return { top: `${b} .pin__img`, bottom: `${b} .pin__img` }
     case 'quote':
@@ -176,6 +188,7 @@ const NAMES: Record<Block['kind'], string> = {
   pinned: 'pinned photo',
   diagram: 'diagram',
   boxout: 'boxout',
+  balance: 'balance',
 }
 
 function spacesFor(blocks: Block[], hasStatement: boolean): Space[] {

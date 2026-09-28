@@ -33,3 +33,35 @@
     margin-top: 24px;
   }
 }
+
+/* A short list after the paragraphs: 24px below the lead-in, items 12px apart, small grey
+   square bullets as in the boxout. */
+.body-text > .body-text__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+  list-style: none;
+  text-box: normal;
+}
+
+.body-text > * + .body-text__list {
+  margin-top: 24px;
+}
+
+.body-text__list > li {
+  position: relative;
+  padding-left: 24px;
+  line-height: 1.5;
+}
+
+.body-text__list > li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 7px;
+  height: 7px;
+  border-radius: 1.5px;
+  background: #9a928a;
+}
