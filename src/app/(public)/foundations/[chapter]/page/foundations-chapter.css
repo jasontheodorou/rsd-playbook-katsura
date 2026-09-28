@@ -122,8 +122,23 @@
 /* Text, the quote card and the boxout keep to columns 2 to 9. */
 .fc__block--text,
 .fc__block--quote,
-.fc__block--boxout {
+.fc__block--boxout,
+.fc__block--part {
   grid-column: 1 / 9;
+}
+
+/* An illustration: the drawing itself, no frame, at 74% of the content width (26% smaller than
+   full width, at Jason's request), its left edge on the content's first column line. */
+.fc__illustration {
+  display: block;
+  width: 74%;
+  height: auto;
+}
+
+/* The stacking cards take the full 11 columns, as a subgrid, so each card's inner columns snap. */
+.fc__block--stack {
+  display: grid;
+  grid-template-columns: subgrid;
 }
 
 .fc__title {
@@ -215,7 +230,8 @@
   .fc__block--pinned,
   .fc__block--diagram,
   .fc__block--balance,
-  .fc__block--boxout {
+  .fc__block--boxout,
+  .fc__block--part {
     grid-column: 1;
   }
 

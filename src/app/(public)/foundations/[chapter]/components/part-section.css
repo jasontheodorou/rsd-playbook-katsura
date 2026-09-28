@@ -1,0 +1,146 @@
+/*
+ * A written part: eyebrow, heading, a wide photograph on an offset plane, body text. Gaps are visible distance (text
+ * trimmed to cap height and baseline): eyebrow to heading 24, heading to the media (plane or photograph, whichever is higher) 48,
+ * media to text 48.
+ */
+
+.part__eyebrow {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a847e;
+  text-box: trim-both cap alphabetic;
+}
+
+.part__heading {
+  margin: 24px 0 0;
+}
+.part__heading:first-child {
+  margin-top: 0;
+}
+.part__heading {
+  font-size: clamp(1.75rem, 1rem + 1.6vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: #111;
+  text-box: trim-both cap alphabetic;
+}
+
+/* The original build's offset plane media: a flat colour plane one grid gap behind the photograph,
+   showing at its top-left or bottom-right corner. The figure's padding holds the plane, so the
+   plane's outer edge stays inside the part's columns. Square corners, as in the original. */
+/* The part's scribble, set after the heading like a stamp: the heading's cap height tall, a
+   little off the baseline and tilted, as if drawn beside it. */
+.part__mark {
+  display: inline-block;
+  height: 1.1em;
+  width: auto;
+  margin-left: 0.35em;
+  vertical-align: -0.12em;
+  rotate: -6deg;
+}
+
+.part__media {
+  position: relative;
+  margin: 48px 0 0;
+}
+.part__media--tl {
+  padding: var(--grid-gap) 0 0 var(--grid-gap);
+}
+.part__media--br {
+  padding: 0 var(--grid-gap) var(--grid-gap) 0;
+}
+.part__media--bl {
+  padding: 0 0 var(--grid-gap) var(--grid-gap);
+}
+.part__plane {
+  position: absolute;
+}
+.part__media--tl .part__plane {
+  inset: 0 var(--grid-gap) var(--grid-gap) 0;
+}
+.part__media--br .part__plane {
+  inset: var(--grid-gap) 0 0 var(--grid-gap);
+}
+.part__media--bl .part__plane {
+  inset: var(--grid-gap) var(--grid-gap) 0 0;
+}
+.part__media--paleblue .part__plane {
+  background: #cbd9da;
+}
+.part__media--terracotta .part__plane {
+  background: #d8b4a3;
+}
+.part__media--blue .part__plane {
+  background: #619cba;
+}
+.part__media--grey .part__plane {
+  background: #ccc8c4; /* Transform warm grey (--grey-3) */
+}
+.part__media--yellow .part__plane {
+  background: #f1d46e;
+}
+
+.part__photo {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  object-fit: cover;
+}
+
+.part .body-text {
+  margin-top: 48px;
+}
+
+/* A boxout between paragraphs: 48px from the text above and below it. */
+.part__boxout {
+  margin-top: 48px;
+}
+.part__boxout + .body-text {
+  margin-top: 48px;
+}
+
+/* The fanned stack sits 40px under the lead-in that ends the text. */
+.part__fan {
+  margin-top: 40px;
+}
+.part__fan + .part__items {
+  margin-top: 24px;
+}
+
+/* The small accordion sits 32px under the lead-in that ends the text, like a paragraph. */
+.part__items {
+  margin-top: 32px;
+}
+
+.part .body-text__list strong {
+  font-weight: 700;
+  color: #111;
+}
+
+@media (max-width: 40rem) {
+  .part__photo {
+    aspect-ratio: 3 / 2;
+  }
+  /* The part's scribble, set after the heading like a stamp: the heading's cap height tall, a
+   little off the baseline and tilted, as if drawn beside it. */
+  .part__mark {
+    display: inline-block;
+    height: 1.1em;
+    width: auto;
+    margin-left: 0.35em;
+    vertical-align: -0.12em;
+    rotate: -6deg;
+  }
+
+  .part__media {
+    margin-top: 32px;
+  }
+  .part .body-text {
+    margin-top: 32px;
+  }
+}

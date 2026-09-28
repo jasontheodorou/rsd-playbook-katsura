@@ -1,0 +1,95 @@
+/*
+ * The fanned stack. The stack is 30% of body text's width, square; fanned, the three notes span
+ * about 93% of it. Room is kept below for the notes' drop when fanned (18px) and their shadows.
+ */
+
+.nfan {
+  position: relative;
+  width: 30%;
+  aspect-ratio: 1;
+  margin: 0 0 32px;
+  padding: 0;
+  list-style: none;
+  cursor: pointer;
+}
+.nfan:focus-visible {
+  outline: 3px solid #ec671b;
+  outline-offset: 8px;
+}
+
+.nfan__note {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 22px 24px;
+  box-shadow:
+    0 1px 1px rgba(33, 26, 18, 0.06),
+    0 12px 24px -14px rgba(33, 26, 18, 0.25);
+  color: #2a2a2e;
+  overflow: hidden;
+}
+
+.nfan__label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.nfan__text {
+  font-size: clamp(1rem, 0.75rem + 0.35vw, 1.1875rem);
+  line-height: 1.45;
+}
+
+/* The hint sits 32px to the right of the stack, level with the top note's middle: small grey
+   words and an arrow that nudges towards the notes. */
+.nfan__hint {
+  position: absolute;
+  left: calc(100% + 32px);
+  top: 50%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: -0.75em;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: #8a847e;
+  pointer-events: none;
+}
+.nfan__arrow {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Phones: no fan; the notes sit one under another, each a little tilted. */
+@media (max-width: 40rem) {
+  .nfan {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: auto;
+    aspect-ratio: auto;
+    cursor: auto;
+  }
+  .nfan__note {
+    position: relative;
+    inset: auto;
+    transform: none !important;
+    rotate: -1deg;
+  }
+  .nfan__note:nth-child(2) {
+    rotate: 1deg;
+  }
+  .nfan__hint {
+    display: none;
+  }
+}

@@ -1,0 +1,148 @@
+/*
+ * Text treatments for chapter 03. Each demo is a written part at body text's width, as on the
+ * chapter, with the same type sizes and the same visible spacing scale.
+ */
+
+.tx-demo {
+  --grid-gap: clamp(16px, 2vw, 32px);
+  max-width: 900px;
+}
+
+/* Lead: the statement's size, ink, one weight. */
+.tx-lead {
+  max-width: 28.6em;
+  margin: 48px 0 0;
+  font-size: clamp(1.25rem, 0.7rem + 1.1vw, 2.125rem);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  color: #111;
+  text-box: trim-both cap alphabetic;
+}
+
+/* Ink and grey, as in the statement. */
+.tx-ink {
+  color: #111;
+}
+.tx-grey {
+  color: #8a847e;
+}
+
+/* Highlighter: a stroke of the part's tint under the phrase, drawn left to right. A background,
+   so it follows the phrase across a line break. */
+.tx-mark {
+  padding: 0 0.08em;
+  background-image: linear-gradient(#f0c3d5, #f0c3d5);
+  background-repeat: no-repeat;
+  background-position: 0 88%;
+  background-size: 100% 0.6em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Read more: a quiet disclosure, like the T-shaped tabs' "more" link. */
+.tx-more {
+  margin-top: 32px;
+  interpolate-size: allow-keywords;
+}
+.tx-more__summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: clamp(1.0625rem, 0.8rem + 0.4vw, 1.25rem);
+  font-weight: 700;
+  color: #111;
+  list-style: none;
+  cursor: pointer;
+}
+.tx-more__summary::-webkit-details-marker {
+  display: none;
+}
+.tx-more__summary::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(-45deg);
+  transition: transform 200ms ease;
+}
+.tx-more[open] .tx-more__summary::before {
+  transform: translateY(-4px) rotate(45deg);
+}
+.tx-more__summary:focus-visible {
+  outline: 3px solid #ec671b;
+  outline-offset: 4px;
+}
+.tx-more::details-content {
+  block-size: 0;
+  overflow: clip;
+  transition:
+    block-size 240ms ease,
+    content-visibility 240ms allow-discrete;
+}
+.tx-more[open]::details-content {
+  block-size: auto;
+}
+
+/* Three questions: three small paper cards in a row, a hairline edge, the name in the part's
+   colour. */
+.tx-qs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 32px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.tx-q {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.08);
+}
+.tx-q__name {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.tx-q__text {
+  font-size: clamp(1.0625rem, 0.8rem + 0.4vw, 1.25rem);
+  font-weight: 700;
+  line-height: 1.35;
+  color: #111;
+}
+
+/* Sticky note: the part's tint, square corners, a soft shadow and a slight tilt. */
+.tx-note {
+  max-width: 26em;
+  margin: 48px 0 0;
+  padding: 28px 32px 32px;
+  rotate: -1.2deg;
+  box-shadow:
+    0 1px 1px rgba(33, 26, 18, 0.06),
+    0 12px 24px -14px rgba(33, 26, 18, 0.25);
+}
+.tx-note__label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.tx-note p {
+  margin: 16px 0 0;
+  font-size: clamp(1.0625rem, 0.7rem + 0.55vw, 1.375rem);
+  line-height: 1.55;
+  color: #2a2a2e;
+}
+
+@media (max-width: 40rem) {
+  .tx-qs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

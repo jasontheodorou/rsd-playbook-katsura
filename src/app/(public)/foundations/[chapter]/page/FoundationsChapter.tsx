@@ -9,12 +9,17 @@ import { Balance } from '../components/Balance'
 import { BodyText } from '../components/BodyText'
 import { Boxout } from '../components/Boxout'
 import { Diagram } from '../components/Diagram'
+import { HhhWall } from '../components/HhhWall'
 import { ImageTrio } from '../components/ImageTrio'
+import { PartSection } from '../components/PartSection'
+import { PhotoDiagram } from '../components/PhotoDiagram'
 import { PhotoWithPlane } from '../components/PhotoWithPlane'
 import { PinnedPhoto } from '../components/PinnedPhoto'
 import { QuoteCard } from '../components/QuoteCard'
 import { SpacingOverlay, type Space } from '../components/SpacingOverlay'
+import { StackCards } from '../components/StackCards'
 import { TShapedTabs } from '../components/TShapedTabs'
+import { ChapterScrollContext } from './scroll-context'
 import type { Block, ChapterContent } from './types'
 import './foundations-chapter.css'
 
@@ -46,58 +51,60 @@ export function FoundationsChapter({
   )
 
   return (
-    <div ref={scrollRef} className="fc">
-      {showSpacing && <SpacingOverlay root={scrollRef} spaces={spaces} />}
-      <div className="container fc__grid">
-        <motion.aside
-          className="fc__rail"
-          aria-label="Chapter progress"
-          initial={reduce ? false : { opacity: 0, x: -16 }}
-          animate={
-            leaving
-              ? { opacity: 0, x: -16, transition: { duration: 0.22, ease: [0.4, 0, 1, 1] } }
-              : {
-                  opacity: 1,
-                  x: 0,
-                  transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.3 },
-                }
-          }
-        >
-          <span className="fc__number">{number}</span>
-          <span className="fc__track" aria-hidden="true">
-            <motion.span className="fc__fill" style={{ scaleY: scrollYProgress }} />
-          </span>
-        </motion.aside>
+    <ChapterScrollContext.Provider value={scrollRef}>
+      <div ref={scrollRef} className="fc">
+        {showSpacing && <SpacingOverlay root={scrollRef} spaces={spaces} />}
+        <div className="container fc__grid">
+          <motion.aside
+            className="fc__rail"
+            aria-label="Chapter progress"
+            initial={reduce ? false : { opacity: 0, x: -16 }}
+            animate={
+              leaving
+                ? { opacity: 0, x: -16, transition: { duration: 0.22, ease: [0.4, 0, 1, 1] } }
+                : {
+                    opacity: 1,
+                    x: 0,
+                    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.3 },
+                  }
+            }
+          >
+            <span className="fc__number">{number}</span>
+            <span className="fc__track" aria-hidden="true">
+              <motion.span className="fc__fill" style={{ scaleY: scrollYProgress }} />
+            </span>
+          </motion.aside>
 
-        <motion.article
-          className="fc__main"
-          initial={reduce ? { opacity: 0 } : { opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, ease: [0.65, 0, 0.45, 1], delay: 0.1 }}
-        >
-          <header className="fc__hero">
-            <h1 className="fc__title">
-              {content.title}
-              <span className="fc__stop" aria-hidden="true" />
-            </h1>
-            {content.statement && (
-              <p className="fc__statement">
-                <span className="fc__statement-lead">{content.statement.lead}</span>
-                {content.statement.rest && <> {content.statement.rest}</>}
-              </p>
-            )}
-          </header>
+          <motion.article
+            className="fc__main"
+            initial={reduce ? { opacity: 0 } : { opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: [0.65, 0, 0.45, 1], delay: 0.1 }}
+          >
+            <header className="fc__hero">
+              <h1 className="fc__title">
+                {content.title}
+                <span className="fc__stop" aria-hidden="true" />
+              </h1>
+              {content.statement && (
+                <p className="fc__statement">
+                  <span className="fc__statement-lead">{content.statement.lead}</span>
+                  {content.statement.rest && <> {content.statement.rest}</>}
+                </p>
+              )}
+            </header>
 
-          {content.blocks.map((block, i) => (
-            <div key={i} className={`fc__block fc__block--${block.kind}`} data-block={i}>
-              <BlockView block={block} />
-            </div>
-          ))}
+            {content.blocks.map((block, i) => (
+              <div key={i} className={`fc__block fc__block--${block.kind}`} data-block={i}>
+                <BlockView block={block} />
+              </div>
+            ))}
 
-          <div className="fc__end">{end}</div>
-        </motion.article>
+            <div className="fc__end">{end}</div>
+          </motion.article>
+        </div>
       </div>
-    </div>
+    </ChapterScrollContext.Provider>
   )
 }
 
@@ -127,6 +134,20 @@ function BlockView({ block }: { block: Block }) {
     case 'tabs':
       return <TShapedTabs roles={block.roles} />
     case 'diagram':
+      if (block.items.some((it) => it.photo))
+        return (
+          <PhotoDiagram
+            hub={block.hub}
+            label={block.label}
+            emptyTitle={block.emptyTitle}
+            emptyBody={block.emptyBody}
+            items={block.items}
+            washes={block.washes}
+            title={block.title}
+            restPhoto={block.restPhoto}
+            restAlt={block.restAlt}
+          />
+        )
       return (
         <Diagram
           look="refined"
@@ -146,6 +167,32 @@ function BlockView({ block }: { block: Block }) {
       return <PinnedPhoto src={block.src} alt={block.alt} quote={block.quote} />
     case 'quote':
       return <QuoteCard text={block.text} attribution={block.attribution} />
+    case 'illustration':
+      // eslint-disable-next-line @next/next/no-img-element
+      return <img className="fc__illustration" src={block.src} alt={block.alt} />
+    case 'hhhWall':
+      return <HhhWall alt={block.alt} />
+    case 'stack':
+      return <StackCards cards={block.cards} />
+    case 'part':
+      return (
+        <PartSection
+          eyebrow={block.eyebrow}
+          heading={block.heading}
+          photo={block.photo}
+          alt={block.alt}
+          paragraphs={block.paragraphs}
+          list={block.list}
+          boxout={block.boxout}
+          fan={block.fan}
+          items={block.items}
+          plane={block.plane}
+          side={block.side}
+          drift={block.drift}
+          accent={block.accent}
+          mark={block.mark}
+        />
+      )
   }
 }
 
@@ -166,7 +213,7 @@ function edges(block: Block, i: number): { top: string; bottom: string } {
     case 'tabs':
       return { top: `${b} .tst`, bottom: `${b} .tst` }
     case 'diagram':
-      return { top: `${b} .bd`, bottom: `${b} .bd` }
+      return { top: `${b} .bd, ${b} .pd`, bottom: `${b} .bd, ${b} .pd` }
     case 'boxout':
       return { top: `${b} .boxout`, bottom: `${b} .boxout` }
     case 'balance':
@@ -175,6 +222,14 @@ function edges(block: Block, i: number): { top: string; bottom: string } {
       return { top: `${b} .pin__img`, bottom: `${b} .pin__img` }
     case 'quote':
       return { top: `${b} .qcard`, bottom: `${b} .qcard` }
+    case 'illustration':
+      return { top: `${b} .fc__illustration`, bottom: `${b} .fc__illustration` }
+    case 'hhhWall':
+      return { top: `${b} .hxw`, bottom: `${b} .hxw` }
+    case 'stack':
+      return { top: `${b} .stk__card:first-child`, bottom: `${b} .stk__card:last-child` }
+    case 'part':
+      return { top: `${b} .part > :first-child`, bottom: `${b} .part > :last-child` }
   }
 }
 
@@ -189,6 +244,10 @@ const NAMES: Record<Block['kind'], string> = {
   diagram: 'diagram',
   boxout: 'boxout',
   balance: 'balance',
+  illustration: 'illustration',
+  hhhWall: 'head, heart and hands wall',
+  stack: 'stacking cards',
+  part: 'written part',
 }
 
 function spacesFor(blocks: Block[], hasStatement: boolean): Space[] {
@@ -222,7 +281,7 @@ function spacesFor(blocks: Block[], hasStatement: boolean): Space[] {
   blocks.forEach((block, i) => {
     const e = edges(block, i)
     add(`${prev.name} to ${NAMES[block.kind]}`, prev.bottom, e.top)
-    if (block.kind === 'text') {
+    if (block.kind === 'text' || block.kind === 'part') {
       for (let p = 1; p < block.paragraphs.length; p++) {
         add(
           'Paragraph to paragraph',

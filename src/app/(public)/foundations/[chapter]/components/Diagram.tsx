@@ -46,6 +46,11 @@ export type DiagramItem = {
   lead: string
   body: string
   icon: keyof typeof DIAGRAM_ICONS
+  /** A photograph, for PhotoDiagram only. */
+  photo?: string
+  alt?: string
+  /** Where to hold the photo when cropped, as a CSS object-position. Defaults to the centre. */
+  focus?: string
   /** Tints for the colour look only. */
   tone?: string
   deep?: string
@@ -53,21 +58,21 @@ export type DiagramItem = {
 type Benefit = DiagramItem
 
 /** Node centres, as percentages of the square stage: a pentagon around the centre. */
-const POS = [
+export const POS = [
   { x: 50, y: 15 },
   { x: 84, y: 40 },
   { x: 71, y: 81 },
   { x: 29, y: 81 },
   { x: 16, y: 40 },
 ]
-const HUB = { x: 50, y: 50 }
+export const HUB = { x: 50, y: 50 }
 
 /**
  * A gentle curve from the hub to a node, bowing clockwise, in a 100-unit viewBox. Both ends stop
  * short, at the edge of the centre pill and of the tile, so no line runs under a frosted surface
  * or through a label.
  */
-type Half = { x: number; y: number }
+export type Half = { x: number; y: number }
 const CLEAR = 1.8
 /** Distance from a box's centre to its edge along a unit direction, plus clear space. */
 const toEdge = (half: Half, ux: number, uy: number) =>
@@ -80,7 +85,7 @@ const toEdge = (half: Half, ux: number, uy: number) =>
  * the measured edge of the centre pill and of the tile, plus clear space, so no line runs under a
  * surface or through a label at any width.
  */
-const curve = (p: { x: number; y: number }, hubHalf: Half, tileHalf: Half) => {
+export const curve = (p: { x: number; y: number }, hubHalf: Half, tileHalf: Half) => {
   const mx = (HUB.x + p.x) / 2
   const my = (HUB.y + p.y) / 2
   const dx = p.x - HUB.x

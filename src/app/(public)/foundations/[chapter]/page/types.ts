@@ -4,6 +4,10 @@ import type { AccordionSection } from '../components/Accordion'
 import type { BalanceItem } from '../components/Balance'
 import type { DiagramItem } from '../components/Diagram'
 import type { TrioItem } from '../components/ImageTrio'
+import type { FanNote } from '../components/NoteFan'
+import type { Drift } from '../components/PartMedia'
+import type { PlaneTone } from '../components/PartSection'
+import type { StackCardItem } from '../components/StackCards'
 import type { Role } from '../components/TShapedTabs'
 
 /**
@@ -35,11 +39,47 @@ export type Block =
       items: DiagramItem[]
       /** The two wash colours, in the chapter's own colour. Defaults to pale blue and sand. */
       washes?: [string, string]
+      /** With a photo on each item, the diagram becomes the photo diagram; this is its resting photo. */
+      /** A short instruction at the top left of the card, as the balance slider has. */
+      title?: string
+      restPhoto?: string
+      restAlt?: string
     }
   /** Balance sliders, from a failure to good practice, revealing each passage; columns 2 to 11. */
   | { kind: 'balance'; prompt: string; items: BalanceItem[]; washes?: [string, string] }
   /** A boxout of points, across columns 2 to 9, like body text. */
   | { kind: 'boxout'; label?: string; items: string[]; accent?: string }
+  /** A drawn illustration on the page's own paper (a transparent image trimmed to its drawing),
+      across columns 2 to 12, with no frame. */
+  | { kind: 'illustration'; src: string; alt: string }
+  /** The head, heart and hands sketch as a wall that builds itself on scroll, its posters swinging
+      when pointed at; at the illustration's size. */
+  | { kind: 'hhhWall'; alt: string }
+  /** Stacking cards that pin and fold over one another as the reader scrolls, across columns 2 to
+      12. Each card: an eyebrow, a title and a photograph. */
+  | { kind: 'stack'; cards: StackCardItem[] }
+  /** A part of the chapter's idea written out: eyebrow, heading, a wide photograph, then body
+      text with an optional list, on columns 2 to 9. */
+  | {
+      kind: 'part'
+      eyebrow?: string
+      heading: string
+      photo: string
+      alt: string
+      paragraphs: ReactNode[]
+      list?: ReactNode[]
+      /** A boxout of points between the paragraphs, after paragraph number `after`. */
+      boxout?: { after: number; items: string[]; accent?: string }
+      /** Up to three short points as a fanned stack of sticky notes. */
+      fan?: { label: string; notes: FanNote[]; tints?: string[] }
+      /** A short list as a small accordion: each item's lead-in as its title. */
+      items?: { title: string; body: ReactNode }[]
+      plane?: PlaneTone
+      side?: 'tl' | 'br' | 'bl'
+      drift?: Drift
+      accent?: string
+      mark?: string
+    }
   /** A yellow quote card, across columns 2 to 9, like body text. */
   | { kind: 'quote'; text: ReactNode; attribution?: string }
 

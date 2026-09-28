@@ -40,13 +40,13 @@ for (const slug of slugs) {
     const widths = await page.evaluate(() => {
       const text = [
         ...document.querySelectorAll(
-          '.fc__block--text, .fc__block--quote, .fc__block--pinned, .fc__block--diagram, .fc__block--boxout, .fc__block--balance',
+          '.fc__block--text, .fc__block--quote, .fc__block--pinned, .fc__block--diagram, .fc__block--boxout, .fc__block--balance, .fc__block--part',
         ),
       ].map((e) => e.getBoundingClientRect())
       const main = document.querySelector('.fc__main').getBoundingClientRect()
       const others = [
         ...document.querySelectorAll(
-          '.fc__block:not(.fc__block--text):not(.fc__block--quote):not(.fc__block--pinned):not(.fc__block--diagram):not(.fc__block--boxout):not(.fc__block--balance)',
+          '.fc__block:not(.fc__block--text):not(.fc__block--quote):not(.fc__block--pinned):not(.fc__block--diagram):not(.fc__block--boxout):not(.fc__block--balance):not(.fc__block--part)',
         ),
       ].map((e) => e.getBoundingClientRect())
       return {
@@ -56,11 +56,11 @@ for (const slug of slugs) {
     })
     const crossings = await page.evaluate(() => {
       let hits = 0
-      document.querySelectorAll('.fc .bd').forEach((root) => {
-        const boxes = [...root.querySelectorAll('.bd__label, .bd__hub, .bd__tile')].map((l) =>
+      document.querySelectorAll('.fc .bd, .fc .pd').forEach((root) => {
+        const boxes = [...root.querySelectorAll('.bd__label, .bd__hub, .bd__tile, .pd__label, .pd__hub, .pd__tile')].map((l) =>
           l.getBoundingClientRect(),
         )
-        root.querySelectorAll('.bd__lines path').forEach((path) => {
+        root.querySelectorAll('.bd__lines path, .pd__lines path').forEach((path) => {
           const len = path.getTotalLength()
           const m = path.getScreenCTM()
           for (let t = 0; t <= 1.0001; t += 0.01) {

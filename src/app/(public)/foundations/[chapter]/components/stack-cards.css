@@ -1,0 +1,107 @@
+/*
+ * Stacking cards, as a Foundations block across the 11 content columns (page columns 2 to 12).
+ * Each card is a subgrid of those columns: the text on content columns 2 to 6, the photograph on
+ * 7 to 10, one column of margin inside each side. Cards pin at the frame's top padding (the rail
+ * number's line), each 16px below the last, and are 48px apart before they pin.
+ */
+
+.stk {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+}
+
+.stk__card {
+  position: sticky;
+  top: calc(var(--top) + var(--i) * 16px);
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: center;
+  height: min(600px, calc(100svh - 64px - var(--top) - 96px));
+  border-radius: 24px;
+  box-shadow:
+    inset 0 0 0 1px rgba(17, 17, 17, 0.07),
+    0 -8px 24px rgba(33, 61, 89, 0.05);
+  overflow: hidden;
+  color: #111;
+}
+
+.stk__card + .stk__card {
+  margin-top: 48px;
+}
+
+.stk__card--1 {
+  background: #f5f1ea;
+}
+.stk__card--2 {
+  background: #efe9e0;
+}
+.stk__card--3 {
+  background: #e9e2d7;
+}
+
+.stk__text {
+  grid-column: 2 / 7;
+}
+
+.stk__eyebrow {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a847e;
+  text-box: trim-both cap alphabetic;
+}
+
+.stk__title {
+  margin: 32px 0 0;
+  font-size: clamp(2rem, 1rem + 2vw, 3.25rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  text-box: trim-both cap alphabetic;
+}
+
+.stk__photo {
+  grid-column: 7 / 11;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.stk__shade {
+  position: absolute;
+  inset: 0;
+  background: #1b150e;
+  pointer-events: none;
+}
+
+/* Below 1024px: no pinning; the cards stack as plain panels, the photograph under the text. */
+@media (max-width: 63.9375rem) {
+  .stk,
+  .stk__card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .stk__card {
+    position: static;
+    height: auto;
+    padding: 32px 24px 24px;
+  }
+  .stk__card + .stk__card {
+    margin-top: 16px;
+  }
+  .stk__text,
+  .stk__photo {
+    grid-column: 1;
+  }
+  .stk__photo {
+    margin-top: 32px;
+  }
+  .stk__shade {
+    display: none;
+  }
+}

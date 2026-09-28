@@ -85,19 +85,34 @@ export function Balance({
         <span />
         <span />
       </span>
-      <div className="sl2__head">
+      <motion.div
+        className="sl2__head"
+        initial={reduce ? false : { opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.5, ease: EASE }}
+      >
         <p className="sl2__title">{prompt}</p>
         <p className="sl2__count" aria-live="polite">
           {balanced} of {items.length} in balance
         </p>
-      </div>
+      </motion.div>
       <ul className="sl2__rows">
         {items.map((w, k) => {
           const v = values[k]
           const good = v >= 50
           const I = ICONS[w.icon]
           return (
-            <li key={w.id} className="sl2__row" data-good={good}>
+            <motion.li
+              key={w.id}
+              className="sl2__row"
+              data-good={good}
+              // Fades in once as it scrolls into view, one row after another, as the diagram's tiles do.
+              initial={reduce ? false : { opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.5, ease: EASE, delay: 0.05 + k * 0.05 }}
+            >
               <div className="sl2__line">
                 <span className="sl__icon sl__icon--small">
                   <I size={22} weight={good ? 'regular' : 'light'} aria-hidden="true" />
@@ -141,7 +156,7 @@ export function Balance({
                   </motion.div>
                 )}
               </AnimatePresence>
-            </li>
+            </motion.li>
           )
         })}
       </ul>

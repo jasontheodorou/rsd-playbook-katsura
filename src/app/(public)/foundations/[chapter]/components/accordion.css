@@ -223,3 +223,50 @@
     grid-column: 1;
   }
 }
+
+/*
+ * The small accordion: a short list inside body text's columns (page columns 2 to 9), in place of
+ * bullets. One line per row (marker, title, button) on the same faint tint, 56px tall, with the
+ * text opening under the title. Titles and text a step smaller than the page accordion's.
+ */
+.qacc--small .qacc__summary,
+.qacc--small .qacc__body {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.qacc--small .qacc__summary {
+  min-height: 56px;
+  padding: 12px 16px;
+}
+.qacc--small .qacc__marker {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  margin: 0;
+  border-radius: 3px;
+}
+.qacc--small .qacc__title {
+  flex: 1;
+  font-size: clamp(1.0625rem, 0.8rem + 0.4vw, 1.25rem);
+}
+.qacc--small .qacc__button {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  margin: 0;
+  border-radius: 14px;
+}
+.qacc--small .qacc__button svg {
+  width: 18px;
+  height: 18px;
+}
+.qacc--small .qacc__row[open] .qacc__button {
+  border-radius: 9px;
+}
+.qacc--small .qacc__copy {
+  padding: 4px 60px 24px 42px;
+}
+.qacc--small .qacc__copy > * {
+  font-size: clamp(1.0625rem, 0.7rem + 0.5vw, 1.375rem);
+}

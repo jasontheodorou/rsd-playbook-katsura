@@ -1,0 +1,171 @@
+/*
+ * The head, heart and hands sketch, as a stage of absolutely placed pieces. The stage keeps the
+ * sketch's own shape (1320 by 600) at 74% of the demo width, as on the chapter page; every piece
+ * is placed and sized in percentages, so the pieces rebuild the drawing at any width.
+ */
+
+.hx-stage {
+  position: relative;
+  width: 74%;
+  aspect-ratio: 1320 / 600;
+  margin: 24px 0 0;
+  touch-action: pan-y;
+}
+
+.hx-piece {
+  position: absolute;
+  display: block;
+  height: auto;
+  user-select: none;
+}
+
+img.hx-piece,
+.hx-poster img,
+.hx-flip__front,
+.hx-hang img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+/* Posters are buttons: no chrome, a clear focus ring. */
+.hx-poster,
+.hx-flip {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  z-index: 2;
+}
+.hx-poster:focus-visible,
+.hx-flip:focus-visible {
+  outline: 3px solid #ec671b;
+  outline-offset: 6px;
+}
+
+/* A soft lift shadow, drawn under the poster's paper. */
+.hx-poster__shadow {
+  position: absolute;
+  inset: 8% 6% 2%;
+  z-index: -1;
+  border-radius: 8px;
+  box-shadow: 0 24px 40px -18px rgba(33, 26, 18, 0.35);
+}
+
+/* ── Turn it over ── */
+
+.hx-stage--flip {
+  perspective: 1400px;
+}
+.hx-flip__inner {
+  position: relative;
+  display: block;
+  transform-style: preserve-3d;
+}
+.hx-flip__front {
+  backface-visibility: hidden;
+}
+.hx-flip__back {
+  position: absolute;
+  inset: 9% 7%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  padding: 10%;
+  border: 3px solid #111;
+  background: #fffdf8;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  text-align: left;
+  color: #111;
+}
+.hx-flip__back--head {
+  background: #fdeede;
+}
+.hx-flip__back--heart {
+  background: #fde6e6;
+}
+.hx-flip__back--hands {
+  background: #f3e3ec;
+}
+.hx-flip__name {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6b625a;
+}
+.hx-flip__line {
+  font-size: clamp(0.9375rem, 0.6rem + 0.6vw, 1.375rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+/* ── Pinned as you arrive: each poster hangs from its top edge ── */
+
+.hx-hang {
+  display: block;
+  transform-origin: 50% 4%;
+}
+
+/* ── Caption, replay and keys ── */
+
+.hx-caption {
+  min-height: 2.2em;
+  margin-top: 32px;
+  font-size: clamp(1.125rem, 0.62rem + 0.78vw, 1.5rem);
+  line-height: 1.4;
+}
+.hx-caption p {
+  margin: 0;
+}
+.hx-caption__prompt {
+  color: #8a847e;
+}
+.hx-caption__line {
+  font-weight: 700;
+  color: #111;
+}
+.hx-caption__name {
+  margin-right: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  vertical-align: 0.2em;
+  color: #8a847e;
+}
+
+.hx-replay,
+.hx-key {
+  margin: 20px 8px 0 0;
+  padding: 8px 16px;
+  border: 1px solid rgba(17, 17, 17, 0.14);
+  border-radius: 999px;
+  background: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2a2a2e;
+  cursor: pointer;
+}
+.hx-key[aria-pressed='true'] {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+.hx-replay:focus-visible,
+.hx-key:focus-visible {
+  outline: 3px solid #ec671b;
+  outline-offset: 2px;
+}
+
+@media (max-width: 63.9375rem) {
+  .hx-stage {
+    width: 100%;
+  }
+}

@@ -1,0 +1,126 @@
+/*
+ * Photo options for chapter 03. Each demo is a written part at body text's width (about eight of
+ * the page's content columns), as on the chapter, so the options compare like for like.
+ */
+
+.h2-demo {
+  --grid-gap: clamp(16px, 2vw, 32px);
+  max-width: 900px;
+}
+
+.h2-frame {
+  position: relative;
+  aspect-ratio: 21 / 9;
+  overflow: hidden;
+}
+.h2-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.h2-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Spotlight */
+.h2-spot {
+  cursor: crosshair;
+}
+.h2-spot__grey {
+  filter: grayscale(1) contrast(0.95) brightness(1.04);
+}
+.h2-spot__colour {
+  pointer-events: none;
+}
+
+/* Photo stack */
+.h2-stack {
+  position: relative;
+  width: 86%;
+  aspect-ratio: 3 / 2;
+}
+.h2-stack__print {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 10px 10px 34px;
+  border: 0;
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgba(33, 26, 18, 0.08),
+    0 14px 30px -16px rgba(33, 26, 18, 0.3);
+  cursor: pointer;
+}
+.h2-stack__print img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+.h2-stack__print:focus-visible {
+  outline: 3px solid #ec671b;
+  outline-offset: 4px;
+}
+.h2-hint {
+  margin: 24px 0 0;
+  font-size: 14px;
+  color: #8a847e;
+}
+
+/* Photo per paragraph */
+.h2-scrolly {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+}
+.h2-demo:has(.h2-scrolly) {
+  max-width: 1200px;
+}
+.h2-scrolly__para {
+  min-height: 34vh;
+}
+.h2-scrolly__pin {
+  position: sticky;
+  top: 120px;
+}
+.h2-scrolly__photo {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+.h2-scrolly__photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Assembling tiles */
+.h2-tiles {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 3px;
+  aspect-ratio: 21 / 9;
+}
+.h2-tiles__tile {
+  display: block;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 63.9375rem) {
+  .h2-scrolly {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .h2-scrolly__pin {
+    position: static;
+    grid-row: 1;
+  }
+}

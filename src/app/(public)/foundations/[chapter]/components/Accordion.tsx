@@ -16,6 +16,7 @@ export function Accordion({
   sections,
   name,
   open,
+  small = false,
   className = '',
 }: {
   sections: AccordionSection[]
@@ -23,10 +24,12 @@ export function Accordion({
   name?: string
   /** The id of a section to show open at first. */
   open?: string
+  /** The small accordion: for a short list inside body text's columns, in place of bullets. */
+  small?: boolean
   className?: string
 }) {
   return (
-    <div className={`qacc ${className}`.trim()}>
+    <div className={`qacc${small ? ' qacc--small' : ''} ${className}`.trim()}>
       {sections.map((s) => (
         <details key={s.id} className="qacc__row" name={name} open={s.id === open}>
           <summary className="qacc__summary">

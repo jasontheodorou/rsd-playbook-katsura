@@ -1,0 +1,39 @@
+/*
+ * The head, heart and hands wall: a stage in the sketch's own shape (1320 by 600) at 74% of the
+ * content width, its left edge on the content's first column line. Every piece is placed and
+ * sized in percentages, so the pieces rebuild the drawing at any width.
+ */
+.hxw {
+  position: relative;
+  width: 74%;
+  aspect-ratio: 1320 / 600;
+}
+
+.hxw__piece {
+  position: absolute;
+  display: block;
+  user-select: none;
+}
+.hxw__poster {
+  z-index: 2;
+}
+
+.hxw__piece img,
+img.hxw__piece {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+/* A poster hangs from its top edge, so it swings from its pins. */
+.hxw__hang {
+  display: block;
+  transform-origin: 50% 4%;
+}
+
+@media (max-width: 63.9375rem) {
+  .hxw {
+    width: 100%;
+  }
+}

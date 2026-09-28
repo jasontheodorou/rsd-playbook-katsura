@@ -46,6 +46,8 @@ const WATCHOUTS: BalanceItem[] = [
 const BENEFITS: DiagramItem[] = [
   {
     id: 'effectiveness',
+    photo: '/photos/insight-wall-sticky.png',
+    alt: 'A man leaning in to add a sticky note to a wall covered in notes.',
     label: 'Root causes',
     icon: 'plant',
     lead: 'Improves effectiveness by addressing root causes.',
@@ -53,6 +55,8 @@ const BENEFITS: DiagramItem[] = [
   },
   {
     id: 'efficiency',
+    photo: '/photos/hands-assembly.png',
+    alt: 'Close-up of hands fitting Lego pieces together on a busy table.',
     label: 'Efficiency',
     icon: 'gauge',
     lead: 'Enhances efficiency and reduces waste.',
@@ -60,6 +64,9 @@ const BENEFITS: DiagramItem[] = [
   },
   {
     id: 'trust',
+    photo: '/photos/workshop-teaching.jpg',
+    focus: '72% 50%',
+    alt: 'Three colleagues talking at a workshop table, a screen behind them.',
     label: 'Trust',
     icon: 'shieldCheck',
     lead: 'Builds trust and legitimacy.',
@@ -67,6 +74,8 @@ const BENEFITS: DiagramItem[] = [
   },
   {
     id: 'learning',
+    photo: '/photos/board-review.jpg',
+    alt: 'Four colleagues leaning in to look at something one of them holds, beside a whiteboard.',
     label: 'Learning',
     icon: 'arrowsClockwise',
     lead: 'Strengthens organisational learning and adaptability.',
@@ -74,6 +83,8 @@ const BENEFITS: DiagramItem[] = [
   },
   {
     id: 'prevention',
+    photo: '/photos/lego-raised.png',
+    alt: 'A woman holding up a small Lego model at a workshop.',
     label: 'Prevention',
     icon: 'umbrella',
     lead: 'Enables prevention and long-term value.',
@@ -124,6 +135,10 @@ export const whyDesignMatters: ChapterContent = {
       emptyBody: 'Choose one on the diagram to find out how.',
       items: BENEFITS,
       // Warmed to this chapter's yellow (the pinned photo and quote card), with the usual sand.
+      title: 'Explore the benefits of design',
+      restPhoto: '/photos/three-way-conversation.png',
+      restAlt:
+        'Three colleagues in conversation at a table, one of them explaining with her hands.',
       washes: ['#f1dc93', '#eadfcf'],
     },
     {
@@ -134,7 +149,6 @@ export const whyDesignMatters: ChapterContent = {
     },
     {
       kind: 'boxout',
-      label: 'Common features',
       accent: '#f1d46e',
       items: [
         'Services designed around systems, not people and the complexities of life.',
