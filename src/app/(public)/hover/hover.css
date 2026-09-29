@@ -1,0 +1,149 @@
+/* Five message boxes over the Design Landscape, in the Transform colours. */
+.cue {
+  --cue: #ec671b;
+  --cue-ink: #ffffff;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: var(--cue);
+  color: var(--cue-ink);
+  box-shadow: 0 12px 28px -14px rgb(22 34 43 / 0.45);
+}
+
+.cue--orange {
+  --cue: #ec671b;
+}
+.cue--navy {
+  --cue: #213d59;
+  border-radius: 12px;
+}
+.cue--teal {
+  --cue: #3e7070;
+}
+.cue--purple {
+  --cue: #793f95;
+}
+.cue--yellow {
+  --cue: #f1d46e;
+  --cue-ink: #16222b;
+  border-radius: 4px;
+  padding: 16px 20px;
+  box-shadow: 0 14px 24px -16px rgb(22 34 43 / 0.5);
+}
+
+/* A small tail under the box's centre, pointing down at the map. */
+.cue--tail::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -8px;
+  border: 8px solid transparent;
+  border-top-color: var(--cue);
+  border-bottom-width: 0;
+}
+
+.cue-beacon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 10px;
+  height: 10px;
+}
+
+.cue-beacon__dot,
+.cue-beacon__ring {
+  grid-area: 1 / 1;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #f1d46e;
+}
+
+.cue-roll {
+  position: relative;
+  display: inline-grid;
+  overflow: hidden;
+  margin-left: -8px;
+}
+
+.cue-roll__hold,
+.cue-roll__word {
+  grid-area: 1 / 1;
+}
+
+.cue-roll__hold {
+  visibility: hidden;
+}
+
+.cue-roll__word {
+  justify-self: start;
+}
+
+.cue-note-wrap {
+  position: relative;
+}
+
+.cue-note__arrow {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 58%;
+  width: 40px;
+  height: 44px;
+  fill: none;
+  stroke: #213d59;
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cue-tap {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+}
+
+.cue-tap__ripple,
+.cue-tap__hand {
+  grid-area: 1 / 1;
+}
+
+.cue-tap__ripple {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+}
+
+.cue-tap__hand {
+  width: 20px;
+  height: 20px;
+  fill: #ffffff;
+  stroke: #793f95;
+  stroke-width: 1;
+  stroke-linejoin: round;
+  transform-origin: 30% 20%;
+}
+
+.cue--purple {
+  padding-left: 14px;
+}
+
+/* On a phone the box sits above the map, centred, in slightly smaller type. */
+@media (max-width: 767px) {
+  .l3d-cue {
+    text-align: center;
+  }
+  .cue {
+    font-size: 0.9375rem;
+    text-align: left;
+  }
+  .cue-note__arrow {
+    display: none;
+  }
+}

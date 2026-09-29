@@ -1,0 +1,55 @@
+/* Polaroid scatter: three prints overlapping across the reading columns, as in /different. The
+   block's height follows its width, so the prints never spill out of it. */
+
+.pol {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Holds the block open to the prints' height: a print is 36% of the width square, plus its 44px
+   of frame, with 16px above for the tilt. Padding in % follows the block's width. */
+.pol::before {
+  content: '';
+  display: block;
+  padding-top: calc(36% + 44px + 16px);
+}
+
+.pol__print {
+  position: absolute;
+  top: 16px;
+  width: 36%;
+  outline: none;
+}
+
+.pol__print:focus-visible .pol__figure {
+  outline: 2px solid #16222b;
+  outline-offset: 4px;
+}
+
+.pol__figure {
+  position: relative;
+  margin: 0;
+  padding: 10px 10px 34px;
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgb(33 26 18 / 0.08),
+    0 16px 30px -16px rgb(33 26 18 / 0.35);
+}
+
+.pol__figure img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.pol__figure figcaption {
+  position: absolute;
+  left: 12px;
+  bottom: 8px;
+  font-family: 'Segoe Print', 'Bradley Hand', 'Comic Sans MS', cursive;
+  font-size: 15px;
+  color: #3c4a54;
+}

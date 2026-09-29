@@ -6,6 +6,7 @@ import type { DiagramItem } from '../components/Diagram'
 import type { TrioItem } from '../components/ImageTrio'
 import type { FanNote } from '../components/NoteFan'
 import type { LandscapeLayer } from '../components/DesignLandscape'
+import type { Polaroid } from '../components/Polaroids'
 import type { FrameworkPart } from '../components/FrameworkPill'
 import type { JourneyStep } from '../components/Journey'
 import type { Drift } from '../components/PartMedia'
@@ -68,6 +69,22 @@ export type Block =
       restBody: string
       layers: LandscapeLayer[]
       washes?: [string, string]
+    }
+  /** Up to three photographs as overlapping prints at slight angles, each with a short
+      handwritten caption; pointing at one straightens and lifts it. Columns 2 to 9. */
+  | { kind: 'polaroids'; prints: Polaroid[] }
+  /** The Design Landscape as a map to explore (chapter 04's signature asset): the hand-drawn
+      landscape with its people in orange, across columns 2 to 12. Choosing a region brings the
+      rest of the drawing back, raises its line to its name and shows its text in a gold box
+      below. Layers run outside in. */
+  | {
+      kind: 'landscapeMap'
+      /** What to do, at the drawing's top left until a region is chosen. */
+      prompt: string
+      label: string
+      restTitle: string
+      restBody: string
+      layers: LandscapeLayer[]
     }
   /** Short quotations from the people services are for, side by side in one tinted card,
       across columns 2 to 11 (chapter 05). Up to three. */

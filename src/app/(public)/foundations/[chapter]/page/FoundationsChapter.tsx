@@ -9,6 +9,8 @@ import { Balance } from '../components/Balance'
 import { BodyText } from '../components/BodyText'
 import { Boxout } from '../components/Boxout'
 import { DesignLandscape } from '../components/DesignLandscape'
+import { Landscape3D } from '../components/landscape-3d/Landscape3D'
+import { Polaroids } from '../components/Polaroids'
 import { Diagram } from '../components/Diagram'
 import { FrameworkPill } from '../components/FrameworkPill'
 import { HhhWall } from '../components/HhhWall'
@@ -204,6 +206,18 @@ function BlockView({ block }: { block: Block }) {
           washes={block.washes}
         />
       )
+    case 'polaroids':
+      return <Polaroids prints={block.prints} />
+    case 'landscapeMap':
+      return (
+        <Landscape3D
+          prompt={block.prompt}
+          label={block.label}
+          restTitle={block.restTitle}
+          restBody={block.restBody}
+          layers={block.layers}
+        />
+      )
     case 'stack':
       return <StackCards cards={block.cards} />
     case 'part':
@@ -260,6 +274,10 @@ function edges(block: Block, i: number): { top: string; bottom: string } {
       return { top: `${b} .hxw`, bottom: `${b} .hxw` }
     case 'landscape':
       return { top: `${b} .dl`, bottom: `${b} .dl` }
+    case 'landscapeMap':
+      return { top: `${b} .lm-stage`, bottom: `${b} .lm-text` }
+    case 'polaroids':
+      return { top: `${b} .pol`, bottom: `${b} .pol` }
     case 'voices':
       return { top: `${b} .vx`, bottom: `${b} .vx` }
     case 'journey':
@@ -285,6 +303,8 @@ const NAMES: Record<Block['kind'], string> = {
   illustration: 'illustration',
   hhhWall: 'head, heart and hands wall',
   landscape: 'design landscape',
+  landscapeMap: 'design landscape map',
+  polaroids: 'polaroids',
   voices: 'voices',
   journey: 'journey',
   stack: 'stacking cards',

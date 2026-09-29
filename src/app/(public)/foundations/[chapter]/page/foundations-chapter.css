@@ -138,6 +138,17 @@
   height: auto;
 }
 
+/* The polaroids keep to columns 2 to 9, like text. */
+.fc__block--polaroids {
+  grid-column: 1 / 9;
+}
+
+/* The Design Landscape map takes the full 11 columns, as a subgrid, so its box snaps. */
+.fc__block--landscapeMap {
+  display: grid;
+  grid-template-columns: subgrid;
+}
+
 /* The stacking cards take the full 11 columns, as a subgrid, so each card's inner columns snap. */
 .fc__block--stack {
   display: grid;
@@ -202,6 +213,13 @@
   margin-top: var(--gap-end);
 }
 
+/* A one-time exception to the block gap, agreed with Jason (29 September 2026): the Design
+   Landscape map's own top band holds only its speech bubble, so the map starts 40px below the
+   text before it at every width. */
+.fc__block--landscapeMap {
+  margin-top: 40px;
+}
+
 /* The trio's cells pad their photographs; its margins take the padding back on both sides. */
 .fc__block--trio {
   margin-top: calc(var(--gap-block) - var(--trio-pad));
@@ -240,6 +258,7 @@
   .fc__block--diagram,
   .fc__block--balance,
   .fc__block--landscape,
+  .fc__block--polaroids,
   .fc__block--voices,
   .fc__block--journey,
   .fc__block--boxout,

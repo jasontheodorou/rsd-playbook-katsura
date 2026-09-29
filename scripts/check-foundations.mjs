@@ -17,6 +17,8 @@ if (!slugs.length) {
 }
 
 const SCALE = new Set([96, 64, 48, 32])
+// Agreed exceptions to the scale: the gap into the Design Landscape map is 37 to 43px (40px, 29 September 2026).
+const EXCEPTIONS = [{ label: /to design landscape map$/, min: 37, max: 43 }]
 // Diagrams: every connector must stop clear of every label, tile and the centre pill.
 const browser = await chromium.launch()
 let failures = 0
@@ -35,18 +37,22 @@ for (const slug of slugs) {
       }),
     )
     const bad = gaps.filter(
-      (g) => g.id.startsWith('V') && !/plane/i.test(g.label) && !SCALE.has(Math.round(g.px)),
+      (g) =>
+        g.id.startsWith('V') &&
+        !/plane/i.test(g.label) &&
+        !SCALE.has(Math.round(g.px)) &&
+        !EXCEPTIONS.some((x) => x.label.test(g.label) && g.px >= x.min && g.px <= x.max),
     )
     const widths = await page.evaluate(() => {
       const text = [
         ...document.querySelectorAll(
-          '.fc__block--text, .fc__block--quote, .fc__block--pinned, .fc__block--diagram, .fc__block--boxout, .fc__block--balance, .fc__block--part, .fc__block--landscape, .fc__block--voices, .fc__block--journey',
+          '.fc__block--text, .fc__block--quote, .fc__block--pinned, .fc__block--diagram, .fc__block--boxout, .fc__block--balance, .fc__block--part, .fc__block--landscape, .fc__block--polaroids, .fc__block--voices, .fc__block--journey',
         ),
       ].map((e) => e.getBoundingClientRect())
       const main = document.querySelector('.fc__main').getBoundingClientRect()
       const others = [
         ...document.querySelectorAll(
-          '.fc__block:not(.fc__block--text):not(.fc__block--quote):not(.fc__block--pinned):not(.fc__block--diagram):not(.fc__block--boxout):not(.fc__block--balance):not(.fc__block--part):not(.fc__block--landscape):not(.fc__block--voices):not(.fc__block--journey)',
+          '.fc__block:not(.fc__block--text):not(.fc__block--quote):not(.fc__block--pinned):not(.fc__block--diagram):not(.fc__block--boxout):not(.fc__block--balance):not(.fc__block--part):not(.fc__block--landscape):not(.fc__block--polaroids):not(.fc__block--voices):not(.fc__block--journey)',
         ),
       ].map((e) => e.getBoundingClientRect())
       return {

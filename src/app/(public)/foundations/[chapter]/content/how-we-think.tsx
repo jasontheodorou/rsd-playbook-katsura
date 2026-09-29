@@ -2,7 +2,7 @@ import type { LandscapeLayer } from '../components/DesignLandscape'
 import type { ChapterContent } from '../page/types'
 
 /** The Design Landscape's five layers, outside in (F2.46 to F2.42), in the manual's words. */
-const LAYERS: LandscapeLayer[] = [
+export const LAYERS: LandscapeLayer[] = [
   {
     id: 'environment',
     name: 'Environment',
@@ -51,22 +51,58 @@ export const howWeThink: ChapterContent = {
   },
   blocks: [
     {
-      kind: 'text',
-      paragraphs: [
-        'We identify what affects and shapes people’s lives, motivations and behaviours to develop complete strategies, where new ideas and designs can thrive.',
-        'We must be bold in designing 360° experiences and creating integrated services to improve lives, ways of working and daily experiences for users, companies and communities.',
-        'Our approach is based on our ‘Design Landscape’, the features that shape decision making:',
+      kind: 'polaroids',
+      prints: [
+        {
+          src: '/photos/wall-of-quotes.jpg',
+          alt: 'Colleagues gathered at a wall of printed notes, one reaching up to point at a note.',
+          caption: 'Insight wall',
+          angle: -6,
+        },
+        {
+          src: '/photos/pitching-idea.jpg',
+          alt: 'A man explaining an idea to colleagues around a table of Lego bricks.',
+          caption: 'Show and tell',
+          angle: 4,
+        },
+        {
+          src: '/photos/audience-hands.jpg',
+          alt: 'A room full of people raising their hands at a talk, a slide glowing at the front.',
+          caption: 'Everyone in the room',
+          angle: -2,
+        },
       ],
     },
     {
-      kind: 'landscape',
-      title: 'Explore the Design Landscape',
+      kind: 'text',
+      paragraphs: [
+        'We identify what affects and shapes people’s lives, motivations and behaviours to develop complete strategies, where new ideas and designs can thrive.',
+      ],
+    },
+    {
+      kind: 'boxout',
+      accent: '#f2de9d',
+      items: [
+        'Being bold in designing 360° experiences.',
+        'Creating integrated services that improve lives, ways of working and daily experiences.',
+        'Designing for users, companies and communities alike.',
+      ],
+    },
+    {
+      kind: 'text',
+      paragraphs: [
+        'Our approach is based on our ‘Design Landscape’.',
+        'It sets out the five layers that shape decisions, from the needs of each person and the services they use, to the organisation, the wider community and the environment around them.',
+      ],
+    },
+    {
+      kind: 'landscapeMap',
+      prompt: 'Select a region to explore the ecosystem',
       label: 'The five layers of the Design Landscape',
       restTitle: 'Five layers that shape decisions',
       restBody:
         'The Design Landscape spans the Individual, Service, Organisation, Community and Environment.',
       layers: LAYERS,
-      washes: ['#fde3c8', '#eadfcf'],
     },
     {
       kind: 'text',

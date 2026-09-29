@@ -1,0 +1,14 @@
+/* ── The options page: the full 12 columns, no rail, so the drawing can use the whole width. ── */
+.lp {
+  width: 100%;
+  align-self: flex-start;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  color: #111;
+}
+
+.lp-demo {
+  display: grid;
+  grid-template-columns: subgrid;
+}

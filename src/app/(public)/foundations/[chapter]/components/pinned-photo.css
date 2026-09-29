@@ -95,7 +95,7 @@
   z-index: 1;
   top: 50%;
   left: 70%;
-  width: calc((200% + var(--grid-gap) * 1.0) - 70%);
+  width: calc((200% + var(--grid-gap) * 1) - 70%);
   margin: 0;
   padding: 40px 48px 40px calc(30% + 48px);
   border-radius: 20px;
