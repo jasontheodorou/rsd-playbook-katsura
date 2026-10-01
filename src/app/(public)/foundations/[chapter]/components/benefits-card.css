@@ -1,0 +1,423 @@
+/*
+ * The benefits card. Two equal halves on one card with 4px corners and a hairline edge. Every
+ * size is on the 8px scale: 40px inside the card's edges (32px from 1024px to 1279px, 24px on
+ * phones), 64px circles (56px from 1024px to 1279px), 8px from a circle to its label.
+ */
+
+.bc {
+  --tile: 64px;
+  --size: 420px;
+  --pad: 40px;
+  --room: 128px;
+  --ink: #16222b;
+  --hair: rgba(22, 34, 43, 0.12);
+  --tint: #f6f4f0;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  overflow: hidden;
+  border-radius: 4px;
+  background: #ffffff;
+  box-shadow: 0 0 0 1px var(--hair);
+  color: var(--ink);
+}
+
+/* ── The diagram's half ───────────────────────────────────────────────────────────────── */
+
+/* The drawing is 0.633 of the square tall between its top and bottom circles' centres, plus a
+   circle and a label with its 8px gap at each end. Above it the half keeps room for the bubble
+   (--room: 24px from the card's edge, the 48px bubble, its 24px tail and 32px clear), and the
+   same below, so the drawing stays centred. */
+.bc__stage {
+  position: relative;
+  container-type: inline-size;
+  display: grid;
+  place-items: center;
+  min-height: calc(2 * var(--room) + var(--size) * 0.633 + var(--tile) + 48px);
+  padding: var(--pad);
+  background: var(--tint);
+  box-shadow: inset -1px 0 0 rgba(22, 34, 43, 0.08);
+}
+
+/* The Design Landscape's speech bubble in Transform yellow, centred just above the drawing. The drawing's
+   top is its top label's top: the top circle's centre (18.34% down the square) less half a
+   circle, the 8px gap and the 16px label. The bubble's tail tip sits 32px above that, at the
+   square's centre, leaning right as the Design Landscape's does. */
+.bc__bubble {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% - var(--s) * 0.1834 + var(--tile) / 2 + 24px + 32px + 24px);
+  z-index: 3;
+  translate: -50% 0;
+  transition: opacity 0.4s ease;
+}
+
+.bc__bubble p {
+  position: relative;
+  margin: 0;
+  padding: 12px 20px;
+  border-radius: 16px;
+  background: #f1d46e;
+  color: #16222b;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+  filter: drop-shadow(0 6px 10px rgb(22 34 43 / 0.14));
+}
+
+.bc__bubble p::after {
+  content: '';
+  position: absolute;
+  top: calc(100% - 1px);
+  left: calc(50% - 24px);
+  border-style: solid;
+  border-width: 24px 0 0 24px;
+  border-color: #f1d46e transparent transparent transparent;
+}
+
+.bc__bubble[data-gone='true'] {
+  opacity: 0;
+}
+
+/* The square takes --size, or the half's inner width less 48px for the side labels if that is
+   less (a container width, so the bubble above it can be placed from the same number). */
+.bc__square {
+  --s: min(var(--size), 100cqw - 48px);
+  position: relative;
+  width: var(--s);
+  /* Set from the drawn parts' widths, so the drawing, not its box, is centred. */
+  translate: var(--shift, 0) 0;
+  aspect-ratio: 1;
+}
+
+.bc__lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.bc__lines path {
+  fill: none;
+  stroke: rgba(22, 34, 43, 0.14);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  transition: stroke 0.3s ease;
+}
+
+.bc__lines path[data-seen='true'] {
+  stroke: rgba(22, 34, 43, 0.26);
+}
+
+.bc__lines .bc__line-on {
+  stroke: #34566b;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+/* The centre: small spaced capitals on the tint, which also stops the lines short of it. */
+.bc__hub {
+  position: absolute;
+  left: 50%;
+  translate: -50% -50%;
+  padding: 4px 8px;
+  background: var(--tint);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #6b7680;
+}
+
+/* Each item is one button whose circle's centre sits exactly on its pentagon point. Its label
+   hangs 8px above (the top item) or below (the rest), inside the button, so it can be clicked. */
+.bc__item {
+  position: absolute;
+  z-index: 1;
+  width: var(--tile);
+  height: var(--tile);
+  translate: -50% -50%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.bc__item:focus-visible {
+  outline: none;
+}
+
+.bc__item:focus-visible .bc__tile {
+  outline: 3px solid #ec671b;
+  outline-offset: 4px;
+}
+
+/* The circles as buttons: white, lifted, lifting further under the pointer, ink when chosen. */
+.bc__tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #44515a;
+  box-shadow:
+    0 0 0 1px rgba(22, 34, 43, 0.1),
+    0 1px 2px rgba(22, 34, 43, 0.06),
+    0 8px 16px -8px rgba(22, 34, 43, 0.28);
+  transition:
+    transform 0.4s cubic-bezier(0.2, 0, 0, 1),
+    background 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.bc__tile svg {
+  width: calc(var(--tile) * 0.4375);
+  height: calc(var(--tile) * 0.4375);
+}
+
+.bc__item:hover .bc__tile {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 1px rgba(22, 34, 43, 0.3),
+    0 2px 4px rgba(22, 34, 43, 0.08),
+    0 16px 24px -12px rgba(22, 34, 43, 0.34);
+}
+
+.bc__item[data-on='true'] .bc__tile {
+  transform: translateY(-2px);
+  background: var(--ink);
+  color: #ffffff;
+  box-shadow:
+    0 0 0 1px var(--ink),
+    0 16px 24px -12px rgba(22, 34, 43, 0.4);
+}
+
+.bc__label {
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 16px;
+  white-space: nowrap;
+  color: #5b6670;
+  transition: color 0.3s ease;
+}
+
+.bc__item[data-label='above'] .bc__label {
+  bottom: calc(100% + 8px);
+}
+
+.bc__item[data-label='below'] .bc__label {
+  top: calc(100% + 8px);
+}
+
+.bc__item:hover .bc__label,
+.bc__item[data-on='true'] .bc__label {
+  color: var(--ink);
+}
+
+.bc__item[data-dim='true'] .bc__label {
+  color: rgba(91, 102, 112, 0.6);
+}
+
+/* The Design Landscape's pulses: a soft blue disc with a ring that spreads and fades, rising
+   from each circle in turn, 0.35 seconds apart, every 5 seconds, until the first choice. */
+.bc__pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(97, 156, 186, 0.28);
+  box-shadow: 0 0 0 3px rgba(97, 156, 186, 0.9);
+  pointer-events: none;
+  animation: bc-pulse 5s cubic-bezier(0.2, 0, 0, 1) infinite backwards;
+}
+
+@keyframes bc-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  28%,
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+/* ── The reading's half: the passages, then the photo in a rounded rectangle ────────────── */
+
+.bc__side {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: var(--pad);
+}
+
+/* Only the chosen passage takes space, so the photo starts 32px under the words and fills the
+   rest. The card's height is set by the diagram's half, so it never changes. */
+.bc__passages {
+  display: grid;
+}
+
+.bc__passage {
+  display: none;
+}
+
+.bc__passage[data-on='true'] {
+  display: block;
+  animation: bc-passage 400ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes bc-passage {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.bc__count {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #8a847e;
+  text-box: trim-both cap alphabetic;
+}
+
+.bc__lead {
+  margin: 24px 0 0;
+  font-size: clamp(1.25rem, 0.8rem + 0.6vw, 1.625rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-box: trim-both cap alphabetic;
+}
+
+.bc__body {
+  margin: 16px 0 0;
+  font-size: clamp(1rem, 0.85rem + 0.2vw, 1.0625rem);
+  line-height: 1.6;
+  color: #44515a;
+}
+
+.bc__photo {
+  position: relative;
+  overflow: hidden;
+  /* It fills whatever height the reading leaves, so there is no empty band between them. */
+  flex: 1;
+  min-height: 200px;
+  border-radius: 16px;
+  background: #ece7df;
+}
+
+.bc__photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+
+.bc__photo img[data-on='true'] {
+  opacity: 1;
+}
+
+/* Without JavaScript: a plain list. */
+.bc-static {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0 0 0 1.2em;
+  line-height: 1.6;
+}
+
+/* ── From 1600px: a size up ── */
+@media (min-width: 100rem) {
+  .bc {
+    --size: 460px;
+    --tile: 72px;
+  }
+}
+
+/* ── From 1024px to 1279px: a size down ── */
+@media (max-width: 79.9375rem) {
+  .bc {
+    --tile: 56px;
+    --size: 320px;
+    --pad: 32px;
+  }
+  .bc__side {
+    gap: 24px;
+  }
+  .bc__hub {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+  }
+}
+
+/* ── Below 1024px: the halves stack, the bubble takes its place in the flow ── */
+@media (max-width: 63.9375rem) {
+  .bc {
+    --tile: 56px;
+    --size: 320px;
+    --pad: 24px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .bc__stage {
+    min-height: 0;
+    gap: 32px;
+    box-shadow: inset 0 -1px 0 rgba(22, 34, 43, 0.08);
+  }
+  .bc__stage {
+    padding-top: var(--room);
+    padding-bottom: 40px;
+  }
+  .bc__bubble p {
+    font-size: 14px;
+  }
+  .bc__photo {
+    flex: none;
+    aspect-ratio: 3 / 2;
+    min-height: 0;
+  }
+  /* Stacked, the reading's height is the card's, so every passage shares one cell again. */
+  .bc__passage {
+    display: block;
+    grid-area: 1 / 1;
+    visibility: hidden;
+  }
+  .bc__passage[data-on='true'] {
+    visibility: visible;
+  }
+  .bc__hub {
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bc__tile,
+  .bc__label,
+  .bc__bubble,
+  .bc__photo img {
+    transition: none;
+  }
+  .bc__passage[data-on='true'] {
+    animation: none;
+  }
+}

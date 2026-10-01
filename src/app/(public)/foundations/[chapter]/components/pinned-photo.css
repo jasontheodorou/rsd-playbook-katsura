@@ -81,6 +81,44 @@
   padding-top: 6px;
 }
 
+/* The Design Landscape's pulse on the quote mark: a soft blue disc under a ring that spreads to
+   about 64px and fades, three in turn 0.35 seconds apart, every 5 seconds, until the quote is
+   first opened. */
+.pin__tab-mark {
+  position: relative;
+}
+.pin__pulse {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  translate: -50% -50%;
+  pointer-events: none;
+}
+.pin__pulse span {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(97, 156, 186, 0.28);
+  box-shadow: 0 0 0 3px rgba(97, 156, 186, 0.9);
+  animation: pin-pulse 5s cubic-bezier(0.2, 0, 0, 1) infinite backwards;
+}
+@keyframes pin-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  28%,
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
 .pin[data-open='true'] .pin__tab-mark {
   padding-top: 0;
   font-family: inherit;

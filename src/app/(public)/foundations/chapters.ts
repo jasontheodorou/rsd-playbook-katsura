@@ -23,7 +23,7 @@ export const chapters: Chapter[] = [
   { slug: 'head-heart-and-hands', title: 'Head, heart and hands', Mark: HeadHeartHandsMark },
   // Marks keep their original names; each went to the chapter it suits best.
   { slug: 'how-we-think', title: 'How we think', Mark: OurDifferenceMark },
-  { slug: 'what-we-care-about', title: 'What we care about', Mark: OurValuesMark },
+  { slug: 'what-we-care-about', title: 'How we tell stories', Mark: OurValuesMark },
   { slug: 'how-we-deliver', title: 'How we deliver', Mark: OurMethodsMark },
 ]
 

@@ -17,6 +17,7 @@ export type PlaneTone = 'paleblue' | 'terracotta' | 'blue' | 'yellow' | 'grey'
 export function PartSection({
   eyebrow,
   heading,
+  lead,
   photo,
   alt,
   paragraphs,
@@ -33,6 +34,8 @@ export function PartSection({
   /** A small label above the heading. Optional: a drawn mark can do its job. */
   eyebrow?: string
   heading: string
+  /** A lead-in straight under the heading, above the photograph, as body text. */
+  lead?: ReactNode
   /** Optional: a short part (a lead-in and a set of notes) can go without a photograph. */
   photo?: string
   alt?: string
@@ -41,7 +44,7 @@ export function PartSection({
   /** A boxout of points set between the paragraphs, after the paragraph numbered `after`. */
   boxout?: { after: number; items: string[]; accent?: string }
   /** Up to three short points as a fanned stack of sticky notes, after the text. */
-  fan?: { label: string; notes: FanNote[]; tints?: string[] }
+  fan?: { label: string; notes: FanNote[]; tints?: string[]; prompt?: string }
   /** A short list as a small accordion after the text: each item's lead-in as its title. */
   items?: { title: string; body: ReactNode }[]
   /** The offset plane's colour, from the original build's plane tones. */
@@ -69,6 +72,11 @@ export function PartSection({
           <img className="part__mark" src={mark} alt="" aria-hidden="true" />
         )}
       </h2>
+      {lead && (
+        <BodyText className="part__lead">
+          <p>{lead}</p>
+        </BodyText>
+      )}
       {photo && <PartMedia photo={photo} alt={alt ?? ''} plane={plane} side={side} drift={drift} />}
       {boxout ? (
         <>
@@ -111,7 +119,13 @@ export function PartSection({
       )}
       {fan && (
         <div className="part__fan">
-          <NoteFan label={fan.label} notes={fan.notes} accent={accent} tints={fan.tints} />
+          <NoteFan
+            label={fan.label}
+            notes={fan.notes}
+            accent={accent}
+            tints={fan.tints}
+            prompt={fan.prompt}
+          />
         </div>
       )}
       {items && (

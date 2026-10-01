@@ -1,0 +1,277 @@
+/* Four data sketches for "Data-driven decision-making" (chapter 04). One hue on white: the
+   section's pale blue plane (#cbd9da) for fills, deepened to #2f77a6 for marks; ink for text. */
+.dd {
+  --dd-mark: #2f77a6;
+  --dd-fill: #cbd9da;
+  --dd-ink: #16222b;
+  --dd-muted: #6b625a;
+  --dd-hair: #e2dcd3;
+}
+
+/* One shape, two zones: the control on a tinted side, the result on white. */
+.dd-card {
+  display: grid;
+  grid-template-columns: minmax(200px, 3fr) 8fr;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow:
+    0 1px 0 var(--dd-hair),
+    0 18px 40px -30px rgb(22 34 43 / 0.35);
+}
+
+.dd-card__control {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 32px 24px;
+  background: rgb(203 217 218 / 0.45);
+}
+
+.dd-step {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--dd-muted);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+.dd-step:hover {
+  color: var(--dd-ink);
+}
+
+.dd-step[aria-checked='true'] {
+  background: #ffffff;
+  color: var(--dd-ink);
+}
+
+.dd-step__n {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--dd-mark);
+}
+
+.dd-card__result {
+  display: flex;
+  flex-direction: column;
+  padding: 32px 40px 28px;
+}
+
+.dd-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.dd-axes line {
+  stroke: #efe9e0;
+  stroke-width: 1;
+}
+
+.dd-axes text,
+.dd-label {
+  font-size: 13px;
+  fill: var(--dd-muted);
+}
+
+.dd-label {
+  font-weight: 600;
+  fill: var(--dd-ink);
+  /* A white halo, so a label stays readable where a line runs behind it. */
+  paint-order: stroke;
+  stroke: #ffffff;
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+.dd-label--muted {
+  font-weight: 400;
+  fill: var(--dd-muted);
+}
+
+.dd-dot {
+  fill: var(--dd-mark);
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+.dd-dot--quiet {
+  fill: #9fb9c8;
+}
+
+.dd-line {
+  fill: none;
+  stroke: var(--dd-mark);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.dd-base {
+  stroke: var(--dd-ink);
+  stroke-width: 2;
+  stroke-dasharray: 6 5;
+}
+
+.dd-proj {
+  fill: none;
+  stroke: var(--dd-mark);
+  stroke-width: 2;
+  stroke-dasharray: 2 6;
+  stroke-linecap: round;
+}
+
+.dd-band {
+  fill: var(--dd-fill);
+  opacity: 0.6;
+}
+
+.dd-bar {
+  fill: var(--dd-mark);
+}
+
+.dd-change {
+  stroke: var(--dd-hair);
+  stroke-width: 1;
+}
+
+.dd-lift {
+  stroke: var(--dd-fill);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+/* The words under a chart: every state in one cell, so the height never changes. */
+.dd-says {
+  display: grid;
+  margin-top: 20px;
+}
+
+.dd-says p {
+  grid-area: 1 / 1;
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--dd-ink);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease;
+}
+
+.dd-says p[data-on='true'] {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dd-note {
+  margin: 12px 0 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dd-muted);
+}
+
+/* 2. The table and the chart share one cell, sized to the table. */
+.dd-cell {
+  display: grid;
+}
+
+.dd-cell > * {
+  grid-area: 1 / 1;
+  align-self: center;
+}
+
+.dd-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--dd-ink);
+}
+
+.dd-table caption {
+  margin-bottom: 8px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.dd-table th,
+.dd-table td {
+  padding: 3px 8px;
+  text-align: right;
+}
+
+.dd-table th:first-child {
+  text-align: left;
+}
+
+.dd-table thead th {
+  color: var(--dd-muted);
+  font-weight: 600;
+}
+
+.dd-table tbody tr:nth-child(odd) {
+  background: #f8f6f2;
+}
+
+/* 3. One chart on white, no control: scroll is the control. */
+.dd-solo {
+  padding: 40px;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow:
+    0 1px 0 var(--dd-hair),
+    0 18px 40px -30px rgb(22 34 43 / 0.35);
+}
+
+.dd-headline {
+  margin: 20px 0 0;
+  min-height: 1.5em;
+  font-size: 20px;
+  color: var(--dd-ink);
+}
+
+.dd-headline strong {
+  color: var(--dd-mark);
+}
+
+@media (max-width: 767px) {
+  .dd-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .dd-card__control {
+    padding: 16px;
+  }
+  .dd-card__result,
+  .dd-solo {
+    padding: 24px 16px;
+  }
+  /* The drawing scales down to about half on a phone, so its text doubles to stay readable. */
+  .dd-axes text,
+  .dd-label {
+    font-size: 22px;
+  }
+  .dd-wide {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dd-step,
+  .dd-says p {
+    transition: none;
+  }
+}

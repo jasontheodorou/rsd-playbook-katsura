@@ -83,6 +83,7 @@ const ROLES: Role[] = [
     id: 'researchers',
     label: 'Researchers',
     photo: '/photos/problem-framing.jpg',
+    art: '/illustrations/roles/research',
     alt: 'Three colleagues at a table covered in worksheets, one pointing as he explains.',
     intro: (
       <>
@@ -110,6 +111,7 @@ const ROLES: Role[] = [
     id: 'service-designers',
     label: 'Service Designers',
     photo: '/photos/journey-map-group.jpg',
+    art: '/illustrations/roles/service',
     alt: 'A group gathered around a man in an orange shirt who holds a printed map.',
     intro: (
       <>
@@ -120,7 +122,7 @@ const ROLES: Role[] = [
     ),
     methods: [
       { term: 'Systems mapping and evaluation', text: 'explained in How we think.' },
-      { term: 'Storytelling', text: 'explained in What we care about.' },
+      { term: 'Storytelling', text: 'explained in How we tell stories.' },
       { term: 'Facilitation and design sprints', text: 'explained in How we deliver.' },
     ],
   },
@@ -128,6 +130,7 @@ const ROLES: Role[] = [
     id: 'ux-designers',
     label: 'UX & Interaction Designers',
     photo: '/photos/lego-prototyping.jpg',
+    art: '/illustrations/roles/interaction',
     alt: 'A group leaning over a table piled with Lego bricks, building together.',
     intro: (
       <>
@@ -155,6 +158,7 @@ const ROLES: Role[] = [
     id: 'content-designers',
     label: 'Content Designers',
     photo: '/photos/worksheet-writing.png',
+    art: '/illustrations/roles/content',
     alt: 'Close-up of a hand holding a pen over a printed worksheet.',
     intro: (
       <>
@@ -218,6 +222,7 @@ export const whoWeAre: ChapterContent = {
         'Most of our specialists do work in four roles:',
       ],
     },
-    { kind: 'tabs', roles: ROLES },
+    // Each role's drawing on watercolour paper, chosen from /icons (1 October 2026).
+    { kind: 'tabs', roles: ROLES, art: 'paper' },
   ],
 }

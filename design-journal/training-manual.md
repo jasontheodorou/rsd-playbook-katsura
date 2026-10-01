@@ -69,3 +69,13 @@ Removing an intercepting route left the dev server answering 404 to client-navig
 ### Pattern: keep the parent view mounted and open children over it
 
 To make a child page grow out of the element that opened it, and shrink back into it, put the parent view in the route segment's layout so it stays mounted, and render each child route in a fixed frame over it. Measure the opener's position on mount for the transform origin, stop the parent scrolling and make it inert while the child is open, and navigate only after the exit animation completes. This gives the single-page-app feel with real URLs and no interception routes.
+
+## Layout
+
+### Technique: snap a drawing to a visible grid by moving the grid
+
+When a drawing sits on a dotted or squared background, lay it out in pixels in the browser and make every gap a whole number of grid steps, then shift the background (a CSS mask or background position) so a grid point sits under the first item. The drawing can then be centred by its drawn edges without ever falling off the grid, and the alignment is exact rather than judged by eye. The data path does this with `--ox` and `--oy` on its dot mask.
+
+### Lesson: measure the words, not the label's box
+
+A label given a maximum width wraps at spaces, but a single word wider than that box spills out of it, so a check of the box says the labels are apart while the words touch on screen. Measure text with a Range around its contents (`range.selectNodeContents(el).getBoundingClientRect()`), and look at the screenshot as well as the numbers.

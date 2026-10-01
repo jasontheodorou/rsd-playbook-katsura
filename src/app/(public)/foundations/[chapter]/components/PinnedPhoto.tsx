@@ -3,6 +3,8 @@
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { useEffect, useId, useState, useSyncExternalStore, type ReactNode } from 'react'
 
+import { usePromptMemory } from '../page/once'
+
 import './pinned-photo.css'
 
 const noop = () => () => {}
@@ -33,6 +35,9 @@ export function PinnedPhoto({
   const reduce = useReducedMotion()
   const enhanced = useEnhanced()
   const [open, setOpen] = useState(false)
+  // The pulse beside "Read the quote" shows until the quote is first opened, on every visit.
+  const [opened, setOpened] = useState(false)
+  const [remembered, remember] = usePromptMemory('quote')
   const id = useId()
 
   useEffect(() => {
@@ -66,9 +71,20 @@ export function PinnedPhoto({
             className="pin__tab"
             aria-expanded={open}
             aria-controls={id}
-            onClick={() => setOpen((o) => !o)}
+            onClick={() => {
+              setOpen((o) => !o)
+              setOpened(true)
+              remember()
+            }}
           >
             <span className="pin__tab-mark" aria-hidden="true">
+              {!opened && !remembered && !reduce && (
+                <span className="pin__pulse">
+                  {[0, 1, 2].map((k) => (
+                    <span key={k} style={{ animationDelay: `${0.6 + k * 0.35}s` }} />
+                  ))}
+                </span>
+              )}
               {open ? '×' : '“'}
             </span>
             <span className="pin__tab-label">{open ? 'Close quote' : 'Read the quote'}</span>

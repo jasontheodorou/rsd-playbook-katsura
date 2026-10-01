@@ -47,6 +47,8 @@ export function PhotoDiagram({
   title,
   washes,
   items,
+  look,
+  cue = 'once',
 }: {
   hub?: string
   label?: string
@@ -59,6 +61,12 @@ export function PhotoDiagram({
   title?: string
   washes?: [string, string]
   items: DiagramItem[]
+  /** A look to try on the /refine options page; the chapter uses the default. */
+  look?: string
+  /** 'once' pulses the first tile until the reader has ever chosen one; 'visit' pulses every
+      tile in turn, 0.35 seconds apart, on each visit until the first choice (the look sets the
+      pulse's own timing). */
+  cue?: 'once' | 'visit'
 }) {
   const enhanced = useEnhanced()
   const reduce = useReducedMotion()
@@ -71,7 +79,8 @@ export function PhotoDiagram({
     tile: { x: 7.5, y: 7.5 },
   })
 
-  const used = prompt.useUsed()
+  const usedEver = prompt.useUsed()
+  const used = cue === 'visit' ? active !== null || seen.length > 0 : usedEver
   useEffect(() => {
     if (active !== null) prompt.mark()
   }, [active])
@@ -133,6 +142,8 @@ export function PhotoDiagram({
   return (
     <div
       className="pd"
+      data-look={look}
+      data-used={active !== null || seen.length > 0}
       style={
         washes ? ({ '--wash-a': washes[0], '--wash-b': washes[1] } as CSSProperties) : undefined
       }
@@ -217,8 +228,12 @@ export function PhotoDiagram({
                       transition={{ duration: 0.5, ease: EASE, delay: 0.1 + i * 0.06 }}
                     >
                       <span className="pd__tile">
-                        {i === 0 && !used && active === null && !reduce && (
-                          <span className="pd__pulse" aria-hidden="true" />
+                        {(i === 0 || cue === 'visit') && !used && active === null && !reduce && (
+                          <span
+                            className="pd__pulse"
+                            aria-hidden="true"
+                            style={cue === 'visit' ? { animationDelay: `${i * 0.35}s` } : undefined}
+                          />
                         )}
                         <I size={24} weight={on ? 'regular' : 'light'} aria-hidden="true" />
                       </span>

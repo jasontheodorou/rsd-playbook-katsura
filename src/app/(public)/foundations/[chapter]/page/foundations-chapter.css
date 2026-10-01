@@ -113,7 +113,9 @@
 .fc__block--balance,
 .fc__block--landscape,
 .fc__block--voices,
-.fc__block--journey {
+.fc__block--stories,
+.fc__block--journey,
+.fc__block--dataPath {
   grid-column: 1 / 11;
 }
 
@@ -260,7 +262,9 @@
   .fc__block--landscape,
   .fc__block--polaroids,
   .fc__block--voices,
+  .fc__block--stories,
   .fc__block--journey,
+  .fc__block--dataPath,
   .fc__block--boxout,
   .fc__block--part {
     grid-column: 1;

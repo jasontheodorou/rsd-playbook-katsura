@@ -97,7 +97,7 @@ These rules decide how work happens. Most rejected work in this project came fro
 
 - **One way to move through a thing.** If the tiles are the control, do not add arrows and progress pills as well; they "create confusion over navigation and process". No separate page navigation.
 - **Separate a control from its result by surface, not by space.** One shape, two zones: the control on a tinted, ambient side and the result on plain white, meeting in a straight edge. One busy card was rejected, and so were two disconnected cards.
-- **Prompt once, then trust the reader.** A first-view cue (a soft pulse on the first tile, a small "Hover to expand" hint with a nudging arrow) shows until the reader uses the pattern once. Then it never shows again, on any copy of the pattern or any later visit. The cue disappears the moment the pattern is used.
+- **Prompt once, then trust the reader.** A first-view cue (a yellow speech bubble and soft blue pulses) shows until the reader uses that component on that page. Then it never shows again on that page, on any later visit, and the cue disappears the moment the component is used. Keep a way for a reviewer to see the cues again (in katsura, `?reset-prompts`), because a remembered cue hides itself from the person checking it.
 - **Hint words are few and exact.** "Hover to expand" was preferred to "Click to expand" on desktop. Put the hint beside the thing, not over it.
 - **A reveal rewards the gesture.** Text revealed at the good end of a slider is written in the good state. A lead-in above an interactive component sets it up without naming what it reveals.
 - **Everything works without JavaScript first.** It works by keyboard with arrow keys, and all text is in the page.

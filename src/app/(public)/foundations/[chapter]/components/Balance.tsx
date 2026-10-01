@@ -4,6 +4,8 @@ import { MaskHappy, Question, Repeat, Scales, type Icon } from '@phosphor-icons/
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { useState, useSyncExternalStore, type CSSProperties } from 'react'
 
+import { usePromptMemory } from '../page/once'
+
 import './balance.css'
 
 /**
@@ -65,20 +67,28 @@ export function Balance({
   items,
   washes = ['#f1dc93', '#eadfcf'],
   prompt = 'Move each one towards good practice',
+  look,
 }: {
   items: BalanceItem[]
   washes?: [string, string]
   /** The line above the sliders, telling the reader what to do. */
   prompt?: string
+  /** 'quiet' is the toned-down look (as the benefits card): hairline card, the prompt as a yellow
+      speech bubble, and pulses on each handle in turn until the first move. */
+  look?: 'quiet'
 }) {
   const enhanced = useEnhanced()
   const reduce = useReducedMotion()
   const [values, setValues] = useState<number[]>(() => items.map(() => 12))
+  const [moved, setMoved] = useState(false)
+  const [remembered, remember] = usePromptMemory('balance')
+  const quiet = look === 'quiet'
   if (!enhanced) return <Static items={items} />
   const balanced = values.filter((v) => v >= 50).length
   return (
     <div
-      className="sl sl2"
+      className={quiet ? 'sl sl2 sl--quiet' : 'sl sl2'}
+      data-moved={moved || remembered}
       style={{ '--wash-a': washes[0], '--wash-b': washes[1] } as CSSProperties}
     >
       <span className="sl__washes" aria-hidden="true">
@@ -118,9 +128,19 @@ export function Balance({
                   <I size={22} weight={good ? 'regular' : 'light'} aria-hidden="true" />
                 </span>
                 <span className="sl2__end sl2__end--from">{w.from}</span>
-                <div className="sl2__track" style={{ '--v': `${v}%` } as CSSProperties}>
+                <div
+                  className="sl2__track"
+                  style={{ '--v': `${v}%`, '--v-n': v / 100 } as CSSProperties}
+                >
                   <span className="sl2__fill" aria-hidden="true" />
                   <span className="sl2__mid" aria-hidden="true" />
+                  {quiet && !moved && !remembered && !reduce && (
+                    <span
+                      className="sl2__pulse"
+                      style={{ animationDelay: `${k * 0.35}s` }}
+                      aria-hidden="true"
+                    />
+                  )}
                   <input
                     className="sl2__range"
                     type="range"
@@ -133,6 +153,8 @@ export function Balance({
                       const next = [...values]
                       next[k] = Number(e.target.value)
                       setValues(next)
+                      setMoved(true)
+                      remember()
                     }}
                   />
                 </div>

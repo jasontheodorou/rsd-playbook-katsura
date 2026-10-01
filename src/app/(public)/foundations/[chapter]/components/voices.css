@@ -1,58 +1,691 @@
 /*
- * Voices: one card in the chapter's tint across page columns 2 to 11, 40px padding, a small
- * uppercase label at its top left, then the quotations side by side, a grid gap apart, each
- * under a Georgia speech mark. Below 1024px they stack.
+ * Two voices, five treatments (/quotes, 1 October 2026). Every version is the data path's card:
+ * page columns 2 to 11, 4px corners, a hairline edge, 384px tall from 1280px and 336px from 1024px
+ * to 1279px, the same inset on every side. The card stays white so the sketches stay ink on white.
+ * The drawing's side is page columns 2 to 7 and the quote's side 8 to 11, except Face to face,
+ * where the quote sits between the two people.
  */
-.vx {
-  margin: 0;
-  padding: 40px;
-  border-radius: 24px;
-  background: var(--vx-tint);
-  color: #111;
+
+.rf-demo > .qv {
+  grid-column: 1 / 11;
 }
-.vx__label {
-  margin: 0 0 32px;
+
+.qv {
+  --inset: 48px;
+  --h: 384px;
+  --ink: #16222b;
+  --ease: cubic-bezier(0.65, 0, 0.35, 1);
+
+  position: relative;
+  display: grid;
+  grid-template-columns: calc(60% + 0.6 * var(--grid-gap)) minmax(0, 1fr);
+  margin: 0;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgba(22, 34, 43, 0.12);
+  color: var(--ink);
+}
+
+/* The chapter page's card carries a thin bar in the old build's warm grey #ccc8c4 along its top,
+   inside the top inset, so the card keeps its size. */
+.qv[data-bar]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 4;
+  height: 8px;
+  background: #ccc8c4;
+  pointer-events: none;
+}
+
+/* ── The drawing's side ─────────────────────────────────────────────────────────────────── */
+
+.qv__stage {
+  position: relative;
+  height: var(--h);
+  container-type: size;
+  perspective: 1400px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.qv__scene {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--lx, 0deg)) rotateY(var(--ly, 0deg));
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.qv__scene * {
+  transform-style: preserve-3d;
+}
+
+.qv__fig {
+  position: relative;
+  display: block;
+  height: 100%;
+}
+
+/* A drawing's own layers (fill, lines, pen, pulse) lie on one plane: flatten them so they stack
+   in page order instead of being cut against one another in 3D. */
+.qv__scene .qv__fig,
+.qv__scene .qv__fig * {
+  transform-style: flat;
+}
+
+.qv__fill,
+.qv__img,
+.qv__pen {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* The drawing's height: the stage less its inset above and below. */
+.qv {
+  --fig: calc(100cqh - 2 * var(--inset));
+}
+
+/* ── The quote's side: the quote from the top inset line, the count on the bottom one ──── */
+
+.qv__side {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  padding: var(--inset);
+}
+
+.qv__quotes {
+  display: grid;
+}
+
+.qv__quote {
+  grid-area: 1 / 1;
+  margin: 0;
+  visibility: hidden;
+}
+
+.qv__quote[data-on='true'] {
+  visibility: visible;
+  animation: qv-quote 500ms cubic-bezier(0.16, 1, 0.3, 1) 150ms both;
+}
+
+@keyframes qv-quote {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.qv__mark {
+  display: block;
+  height: 32px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 64px;
+  line-height: 1;
+  color: #8a847e;
+}
+
+.qv__quote p {
+  margin: 16px 0 0;
+  font-size: clamp(1.25rem, 0.8rem + 0.6vw, 1.625rem);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  text-wrap: pretty;
+  text-box: trim-both cap alphabetic;
+}
+
+.qv__foot {
+  display: flex;
+  align-items: center;
+}
+
+.qv__count {
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  line-height: 16px;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #8a5a55;
+  color: #8a847e;
   text-box: trim-both cap alphabetic;
 }
-.vx__row {
+
+/* ── 01 Turntable: both people stand on a turning floor; the one at the front speaks ────── */
+
+.qv-tt__ring {
+  position: absolute;
+  left: 50%;
+  top: 72%;
+  transform: rotateX(-12deg) rotateY(calc(35deg + var(--turn) * 180deg));
+  transition: transform 1.1s var(--ease);
+}
+
+.qv-tt__floor {
+  position: absolute;
+  width: calc(var(--r) * 2.3);
+  height: calc(var(--r) * 2.3);
+  left: calc(var(--r) * -1.15);
+  top: calc(var(--r) * -1.15);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(22, 34, 43, 0.1);
+  background: radial-gradient(closest-side, rgba(22, 34, 43, 0.035), transparent);
+  transform: rotateX(90deg);
+}
+
+.qv {
+  --r: 22cqw;
+}
+
+/* Each person faces the viewer however the floor turns: the floor's turn is undone on the seat. */
+.qv-tt__seat {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: calc(var(--fig) * 0.8);
+  transform: rotateY(calc(var(--k) * 180deg)) translateZ(var(--r))
+    rotateY(calc(var(--k) * -180deg - 35deg - var(--turn) * 180deg)) rotateX(12deg)
+    translate(-50%, -100%);
+  transform-origin: 0 0;
+  transition:
+    transform 1.1s var(--ease);
+}
+
+.qv-tt__seat .qv__img {
+  opacity: 0.3;
+  transition-duration: 1.1s;
+}
+
+.qv-tt__seat[data-on='true'] .qv__img {
+  opacity: 1;
+}
+
+/* ── 02 Turning cube: each face is a print of one person; the cube turns a quarter ─────── */
+
+.qv[data-look='cube'] {
+  --s: calc(var(--fig) * 0.86);
+}
+
+.qv-cb__cube {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--s);
+  height: var(--s);
+  margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+  transform: translateZ(calc(var(--s) / -2)) rotateX(-8deg) rotateY(calc(var(--turn) * -90deg));
+  transition: transform 1s var(--ease);
+}
+
+.qv-cb__face,
+.qv-cb__cap {
+  position: absolute;
+  inset: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
-  grid-auto-flow: column;
-  gap: calc(var(--grid-gap) * 2);
+  place-items: center;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(22, 34, 43, 0.14);
+  backface-visibility: hidden;
 }
-.vx__quote {
+
+.qv-cb__face {
+  padding: 12%;
+  transform: rotateY(calc(var(--f) * 90deg)) translateZ(calc(var(--s) / 2));
+}
+
+/* On a face or a print, the drawing fills the padded square; both layers keep its shape. */
+.qv-cb__face .qv__fig,
+.qv-sh__print .qv__fig {
+  width: 100%;
+  height: 100%;
+}
+
+.qv-cb__cap--top {
+  transform: rotateX(90deg) translateZ(calc(var(--s) / 2));
+  background: #fbfaf8;
+}
+
+.qv-cb__cap--bottom {
+  transform: rotateX(-90deg) translateZ(calc(var(--s) / 2));
+}
+
+.qv-cb__shadow {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + var(--s) / 2);
+  width: calc(var(--s) * 1.5);
+  height: calc(var(--s) * 1.5);
+  margin: calc(var(--s) * -0.75) 0 0 calc(var(--s) * -0.75);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(22, 34, 43, 0.1), transparent 70%);
+  transform: translateZ(calc(var(--s) / -2)) rotateX(-8deg) rotateX(90deg);
+}
+
+/* ── 03 Shuffle: two prints in a stack; the front one swings aside and tucks in behind ───── */
+
+.qv-sh__print {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: calc(var(--fig) * 0.92);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  padding: 7%;
+  border-radius: 4px;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px rgba(22, 34, 43, 0.12),
+    0 18px 32px -24px rgba(22, 34, 43, 0.35);
+  transform: translate3d(calc(-50% + 9%), calc(-50% - 7%), -90px) rotateZ(3deg);
+}
+
+.qv-sh__print[data-on='true'] {
+  transform: translate3d(-50%, -50%, 0) rotateZ(-2deg);
+}
+
+
+
+/* ── 04 Face to face: both people either side of the quote; the speaker turns in and steps
+   forward, the other steps back ───────────────────────────────────────────────────────── */
+
+.qv[data-look='facing'] {
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+}
+
+.qv[data-look='facing'] .qv__stage {
+  position: absolute;
+  inset: 0;
+  height: auto;
+}
+
+.qv[data-look='facing'] .qv__side {
+  position: relative;
+  grid-column: 4 / 8;
+  height: var(--h);
+  padding-inline: 0;
+  pointer-events: none;
+}
+
+.qv-fc__person {
+  position: absolute;
+  bottom: var(--inset);
+  height: calc(var(--fig) * 0.8);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.qv-fc__person .qv__img {
+  opacity: 0.28;
+}
+
+.qv-fc__person[data-on='true'] .qv__img {
+  opacity: 1;
+}
+
+.qv-fc__person[data-side='left'] {
+  left: var(--inset);
+  transform-origin: 0 100%;
+  transform: translateZ(-90px) rotateY(-10deg);
+}
+
+.qv-fc__person[data-side='right'] {
+  right: var(--inset);
+  transform-origin: 100% 100%;
+  transform: translateZ(-90px) rotateY(10deg);
+}
+
+.qv-fc__person[data-side='left'][data-on='true'] {
+  transform: translateZ(20px) rotateY(14deg);
+}
+
+.qv-fc__person[data-side='right'][data-on='true'] {
+  transform: translateZ(20px) rotateY(-14deg);
+}
+
+/* ── 05 Pop-up: the speaker stands up from the page like a pop-up card; the other folds flat ── */
+
+.qv[data-look='popup'] .qv__stage {
+  perspective: 900px;
+  perspective-origin: 50% -20%;
+}
+
+.qv-pu__leaf {
+  position: absolute;
+  left: 50%;
+  bottom: var(--inset);
+  height: calc(var(--fig) * 0.92);
+  translate: -50% 0;
+  transform-origin: 50% 100%;
+  transform: rotateX(88deg);
+  opacity: 0;
+  transition:
+    transform 0.45s cubic-bezier(0.5, 0, 0.75, 0),
+    opacity 0.45s ease-in;
+}
+
+.qv-pu__leaf[data-on='true'] {
+  transform: rotateX(0deg);
+  opacity: 1;
+  transition:
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s,
+    opacity 0.3s ease 0.4s;
+}
+
+/* The fold's shadow on the page, under the standing card. */
+.qv-pu__shadow {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -10px;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(22, 34, 43, 0.14), transparent);
+  transform: rotateX(-90deg) translateZ(-2px);
+  transform-origin: 50% 100%;
+}
+
+/* ── The prompt: the yellow message box at the drawing's bottom left, with no tail (a tail made it
+   look as if a person were saying it), and the Design Landscape's pulse on the first person's jumper. Both show
+   until the reader first moves on, then never again on that page (see Prompt memory). ────── */
+
+.qv__stage:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: -6px;
+}
+
+.qv__bubble {
+  position: absolute;
+  left: var(--inset);
+  bottom: var(--inset);
+  z-index: 3;
+  max-width: min(232px, calc(100% - 2 * var(--inset)));
   margin: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  animation: qv-bubble 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
 }
-.vx__mark {
+
+.qv__bubble > span {
+  position: relative;
   display: block;
-  height: 0.5em;
-  overflow: hidden;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(3.5rem, 2rem + 3vw, 5rem);
-  font-weight: 700;
-  line-height: 1;
-  color: #c4121f;
+  padding: 12px 20px;
+  border-radius: 16px;
+  background: #f1d46e;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 24px;
+  filter: drop-shadow(0 6px 10px rgb(22 34 43 / 0.14));
 }
-.vx__quote p {
-  margin: 20px 0 0;
-  font-size: clamp(1.25rem, 0.8rem + 0.9vw, 1.75rem);
-  font-weight: 700;
-  line-height: 1.35;
-  letter-spacing: -0.012em;
-  text-box: trim-both cap alphabetic;
+
+.qv__bubble[data-gone='true'] {
+  opacity: 0;
 }
+
+@keyframes qv-bubble {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+.qv__pulse {
+  position: absolute;
+  left: 52%;
+  top: 91%;
+  width: 13%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: rgba(97, 156, 186, 0.28);
+  box-shadow: 0 0 0 3px rgba(97, 156, 186, 0.9);
+  pointer-events: none;
+  animation: qv-pulse 5s cubic-bezier(0.2, 0, 0, 1) 0.6s infinite backwards;
+}
+
+@keyframes qv-pulse {
+  0% {
+    width: 13%;
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  28%,
+  100% {
+    width: 24.7%;
+    opacity: 0;
+  }
+}
+
+/* ── Flourishes, tried on the Turntable (/quotes/flourish) ─────────────────────────────── */
+
+/* 1 Highlighter sweep: the quote card's yellow, swept once behind a few of the speaker's words
+   as the quote arrives. */
+.qv__hl {
+  padding: 0 0.12em;
+  margin: 0 -0.12em;
+  color: inherit;
+  background: linear-gradient(rgb(241 212 110 / 0.6), rgb(241 212 110 / 0.6)) no-repeat 0 62% / 0% 72%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.qv__quote[data-on='true'] .qv__hl {
+  background-size: 100% 72%;
+  animation: qv-hl 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.7s both;
+}
+
+@keyframes qv-hl {
+  from {
+    background-size: 0% 72%;
+  }
+}
+
+/* 2 Plane behind the speaker: the photographs' pale blue plane, here a disc behind the head,
+   one grid gap down and to the right. It arrives once the turn has settled. */
+.qv-fl__plane {
+  position: absolute;
+  left: 50%;
+  top: 2%;
+  width: 68%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #cbd9da;
+  translate: calc(-50% + var(--grid-gap)) var(--grid-gap);
+  opacity: 0;
+  scale: 0.92;
+  transition:
+    opacity 0.35s ease,
+    scale 0.35s ease;
+}
+
+.qv-tt__seat[data-on='true'] .qv-fl__plane {
+  opacity: 0.7;
+  scale: 1;
+  transition:
+    opacity 0.6s ease 0.6s,
+    scale 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s;
+}
+
+/* 3 Pencil shadow: a few hatch lines in the drawings' own ink, cast on the floor behind and to
+   the right of the speaker, drawn one after another as they arrive. They sit behind the drawing,
+   so its white fill covers them where the two meet. */
+.qv-fl__hatch {
+  position: absolute;
+  left: 86%;
+  top: 64%;
+  width: 40%;
+  height: 34%;
+  overflow: visible;
+}
+
+.qv-fl__hatch path {
+  fill: none;
+  stroke: #333333;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+  transition:
+    stroke-dashoffset 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.qv-tt__seat[data-on='true'] .qv-fl__hatch path {
+  stroke-dashoffset: 0;
+  opacity: 0.55;
+  transition:
+    stroke-dashoffset 0.35s ease-out calc(0.7s + var(--h) * 0.06s),
+    opacity 0.1s linear calc(0.7s + var(--h) * 0.06s);
+}
+
+/* 4 Sketched in: the speaker's lines are drawn in across the drawing, like a pen moving over the
+   faint copy, as they come to the front. */
+.qv[data-flourish~='sketch'] .qv-tt__seat[data-on='true'] .qv__img {
+  opacity: 0.3;
+}
+
+.qv__pen {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  -webkit-mask: linear-gradient(100deg, #000 40%, transparent 60%) 0 0 / 260% 100% no-repeat;
+  mask: linear-gradient(100deg, #000 40%, transparent 60%) 0 0 / 260% 100% no-repeat;
+}
+
+.qv-tt__seat[data-on='true'] .qv__pen {
+  opacity: 1;
+  transition: none;
+  animation: qv-pen 1.1s cubic-bezier(0.45, 0, 0.25, 1) 0.5s both;
+}
+
+/* Sketched in with the highlighter: the pen draws first, then the words are highlighted. */
+.qv[data-flourish~='sketch'][data-flourish~='highlight'] .qv__quote[data-on='true'] .qv__hl {
+  animation-delay: 1.5s;
+}
+
+@keyframes qv-pen {
+  from {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+}
+
+/* ── Without JavaScript ─────────────────────────────────────────────────────────────────── */
+
+.qv-static {
+  display: grid;
+  gap: 32px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.qv-static li {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.qv-static blockquote {
+  margin: 0;
+  font-weight: 600;
+}
+
+/* ── Widths ─────────────────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 79.9375rem) {
+  .qv {
+    --inset: 40px;
+    --h: 336px;
+  }
+  .qv__bubble {
+    max-width: 216px;
+  }
+  .qv__bubble > span {
+    padding: 10px 16px;
+    font-size: 14px;
+    line-height: 22px;
+  }
+}
+
 @media (max-width: 63.9375rem) {
-  .vx {
-    padding: 28px 24px;
-  }
-  .vx__row {
-    grid-auto-flow: row;
+  .qv {
+    --inset: 32px;
+    --h: 336px;
     grid-template-columns: minmax(0, 1fr);
-    gap: 32px;
   }
+  .qv[data-look='facing'] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .qv[data-look='facing'] .qv__stage {
+    position: relative;
+    height: var(--h);
+  }
+  .qv[data-look='facing'] .qv__side {
+    grid-column: 1;
+    height: auto;
+    padding-inline: var(--inset);
+    padding-top: 0;
+  }
+  .qv__side {
+    min-height: 240px;
+    padding-top: 0;
+  }
+}
+
+@media (max-width: 40rem) {
+  .qv {
+    --inset: 24px;
+    --h: 300px;
+  }
+  .qv__bubble > span {
+    font-size: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qv__pulse {
+    display: none;
+  }
+  .qv *,
+  .qv__scene {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ── On paper (1 October 2026): the whole card on Jason's watercolour paper, tiled at half its
+   size so it stays sharp. The speaker is black lines on a white fill; the person stepping back
+   loses the fill and is lines only, on the paper. ──────────────────────────────────────── */
+
+.qv[data-paper] {
+  background: #fbfaf8 url('/illustrations/quotes/paper.jpg') 0 0 / 370px 370px repeat;
+}
+
+.qv[data-paper] .qv-tt__seat .qv__fill {
+  opacity: 0;
+  transition-duration: 1.1s;
+}
+
+.qv[data-paper] .qv-tt__seat[data-on='true'] .qv__fill {
+  opacity: 1;
+}
+
+/* The fill fades out towards the drawing's foot, so its straight bottom edge does not show on
+   the paper (as on the ambience card). */
+.qv[data-paper] .qv__fill {
+  -webkit-mask: linear-gradient(#000 64%, transparent 90%);
+  mask: linear-gradient(#000 64%, transparent 90%);
 }

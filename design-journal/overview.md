@@ -3,7 +3,7 @@ id: overview-katsura
 type: overview
 project: katsura
 status: active
-last-updated: 2026-09-29
+last-updated: 2026-10-01
 ---
 
 # katsura: Overview
@@ -14,7 +14,7 @@ last-updated: 2026-09-29
 
 Architecture agreed on 2026-09-22 (see `artefacts/2026-09-22-architecture-plan.md` and decisions 001 to 007). Build step 1 (foundations) done the same day: Payload 3 on Next 16 skeleton, platform seams, users and media, health and jobs endpoints, first migration, Dockerfile and compose, CI and scheduler workflows. Local dev uses a downloaded Postgres (`npm run db:local`) because Docker cannot be installed here. The reference build is cloned read-only at `.reference/` (gitignored). The public site's top bar, brand tokens and page background were carried over from the reference and measured to pixel parity against it running on port 3014 (commits 71543eb, c6080e8). All four commits are local only until the GitHub login gains the `workflow` scope.
 
-Since 25 September the Foundations chapters have been designed on the `foundations-gold-standard` branch: chapters 01 to 03 are built, and chapter 04 (How we think) has its signature 3D Design Landscape with the Roll call speech bubble (pushed 29 September, commit 18312c2). Chapters 05 and 06 are drafts.
+Since 25 September the Foundations chapters have been designed on the `foundations-gold-standard` branch: chapters 01 to 03 are built, and chapter 04 (How we think) has its signature 3D Design Landscape with the Roll call speech bubble (pushed 29 September, commit 18312c2). On 1 October 2026 chapter 05 was renamed How we tell stories and reworked (decisions 030 and 031: the Turntable voices card, the story panels, new headings and lead-ins), and Who we are's roles gained drawings on paper (decision 032). Chapter 06 (How we deliver) is next: a plan was proposed with the participation model rebuilt as its signature, using Jason's drawing of the model on rings. All work since 29 September is uncommitted.
 
 ## Active goals
 

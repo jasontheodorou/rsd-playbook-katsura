@@ -7,7 +7,7 @@ import type { ChapterContent } from '../page/types'
  * re-aimed at designers (F2.67). First draft, 28 September 2026.
  */
 export const whatWeCareAbout: ChapterContent = {
-  title: 'What we care about',
+  title: 'How we tell stories',
   framework: 'heart',
   statement: {
     lead: 'Stories are a powerful way to engage people, building strong feelings of belief and connection.',
@@ -16,35 +16,91 @@ export const whatWeCareAbout: ChapterContent = {
     {
       kind: 'text',
       paragraphs: ['We use stories to:'],
-      list: [
-        'uncover hidden challenges;',
-        'describe the case for change;',
-        'highlight the human elements of our work;',
-        'share visions for the future;',
-        'show the impact of services and products.',
+    },
+    {
+      kind: 'boxout',
+      accent: '#eea0a4',
+      items: [
+        'Uncover hidden challenges.',
+        'Describe the case for change.',
+        'Highlight the human elements of our work.',
       ],
     },
     {
       kind: 'text',
+      // The boxout's last two points, written out as sentences at Jason's request (1 October 2026).
       paragraphs: [
-        'We tell immersive stories through videos, insight visualisation, personas and journey maps. This brings our clients into our work and establishes a shared storytelling language.',
+        'Stories also help us share visions for the future. They show the impact of services and products on the people who use them.',
       ],
     },
     {
       kind: 'voices',
-      label: 'In their words',
-      tint: '#fdf0ee',
-      quotes: [
-        'I have a phone but I don’t always have credit and I’m only confident using it for a few things.',
-        'I speak a little English but I struggle with reading and writing, especially legal words.',
+      voices: [
+        {
+          src: '/illustrations/quotes/person-1.svg',
+          ratio: 430.8 / 396.1,
+          quote:
+            'I have a phone but I don’t always have credit and I’m only confident using it for a few things.',
+          mark: 'only confident using it for a few things',
+        },
+        {
+          src: '/illustrations/quotes/person-2.svg',
+          ratio: 466.4 / 495.2,
+          quote:
+            'I speak a little English but I struggle with reading and writing, especially legal words.',
+          mark: 'especially legal words',
+        },
+      ],
+    },
+    {
+      kind: 'part',
+      mark: '/illustrations/hhh/heart-scribble.png',
+      // New heading, Jason's own words (1 October 2026).
+      heading: 'Revealing the stories that matter',
+      paragraphs: [
+        'We tell immersive stories through videos, insight visualisation, personas and journey maps. This brings our clients into our work and establishes a shared storytelling language.',
+        'Our designers tell these stories in three ways:',
+      ],
+    },
+    {
+      kind: 'stories',
+      label: 'Three ways our designers tell stories',
+      stories: [
+        {
+          label: 'Storytelling',
+          text: 'Helping teams “zoom in” on human detail and “zoom out” to see the big picture.',
+          photo: '/photos/three-way-conversation.png',
+          alt: 'Three people talking around a table, one of them explaining with her hands.',
+        },
+        {
+          label: 'Visualisation & storytelling',
+          text: 'Using narratives, maps, personas and prototypes to make abstract concepts tangible and persuadable.',
+          photo: '/photos/lego-show-and-tell.png',
+          alt: 'Two people at a workshop, one holding up a small Lego model while the other talks.',
+        },
+        {
+          label: 'Visual storytelling',
+          text: 'Translating research into artefacts that visualise how people interact with services, the moments of delight and the barriers they face.',
+          photo: '/photos/insight-wall-sticky.png',
+          alt: 'A man leaning in to add a sticky note to a wall of research notes.',
+        },
+      ],
+    },
+    {
+      kind: 'text',
+      // New line, approved by Jason on 1 October 2026: closes the stories and the chapter.
+      paragraphs: [
+        'Whichever way we tell it, a good story helps people see the problem, care about it and act on it.',
       ],
     },
     {
       kind: 'part',
       mark: '/illustrations/hhh/heart-scribble.png',
       heading: 'Design is for everyone',
-      photo: '/photos/audience-hands.jpg',
-      alt: 'A room full of people raising their hands at a talk, a slide glowing at the front.',
+      // New lead-in, approved by Jason on 1 October 2026: ties the part to the stories before it.
+      lead: 'The stories we hear show how differently people live, and what gets in their way. That is why we design for everyone.',
+      photo: '/photos/office-awards-wall.jpg',
+      alt: 'A framed board on an office wall of Lego figures on orange bricks, each above a card thanking a colleague or team.',
       plane: 'terracotta',
       side: 'tl',
       drift: 'diagonal',
@@ -63,30 +119,6 @@ export const whatWeCareAbout: ChapterContent = {
           'Using consequence mapping to explore the potential unintended outcomes of our work.',
           'Establishing practices designed to encourage and reward positive actions and behaviours.',
           'Measuring iteratively to ensure that we’re creating positive reinforcing loops.',
-        ],
-      },
-    },
-    {
-      kind: 'part',
-      mark: '/illustrations/hhh/heart-scribble.png',
-      heading: 'How our designers tell stories',
-      paragraphs: ['Our designers tell these stories in three ways:'],
-      fan: {
-        label: 'Three ways our designers tell stories',
-        tints: ['#fde8e9', '#fadbdd', '#fef2f2'],
-        notes: [
-          {
-            label: 'Storytelling',
-            text: 'Helping teams “zoom in” on human detail and “zoom out” to see the big picture.',
-          },
-          {
-            label: 'Visualisation & storytelling',
-            text: 'Using narratives, maps, personas and prototypes to make abstract concepts tangible and persuadable.',
-          },
-          {
-            label: 'Visual storytelling',
-            text: 'Translating research into artefacts that visualise how people interact with services, the moments of delight and the barriers they face.',
-          },
         ],
       },
     },

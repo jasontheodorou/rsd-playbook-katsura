@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import type { Layer } from '../landscape-map/Landscape'
 import '../landscape-map/landscape.css'
+import { usePromptMemory } from '../../page/once'
 import './landscape-3d.css'
 import { RollCall } from './RollCall'
 import type { EcoScene, ZoneId } from './scene'
@@ -53,7 +54,17 @@ export function Landscape3D({
   cue?: React.ReactNode
 }) {
   const [chosen, setChosen] = useState<ZoneId | null>(null)
-  const [touched, setTouched] = useState(false)
+  const [chosenOnce, setTouched] = useState(false)
+  // Once a region has been chosen on this page, its prompt and pulses stay away on later visits.
+  const [remembered, remember] = usePromptMemory('landscape')
+  const touched = chosenOnce || remembered
+  const rememberedRef = useRef(remembered)
+  const rememberRef = useRef(remember)
+  useEffect(() => {
+    rememberedRef.current = remembered
+    rememberRef.current = remember
+    if (remembered) scene.current?.setCue(false)
+  })
   const [focusZone, setFocusZone] = useState<ZoneId | null>(null)
   const root = useRef<HTMLDivElement>(null)
   const mapRef = useRef<HTMLDivElement>(null)
@@ -71,7 +82,10 @@ export function Landscape3D({
   const choose = (z: ZoneId | null) => {
     chosenRef.current = z
     setChosen(z)
-    if (z) setTouched(true)
+    if (z) {
+      setTouched(true)
+      rememberRef.current()
+    }
   }
 
   // The 3D scene lives outside React; it is made once and freed when the block leaves the page.
@@ -146,7 +160,11 @@ export function Landscape3D({
       // The pulses start once the map is in view, and stop at the first choice.
       observer = new IntersectionObserver(
         (entries, obs) => {
-          if (entries.some((e) => e.isIntersecting) && chosenRef.current === null) {
+          if (
+            entries.some((e) => e.isIntersecting) &&
+            chosenRef.current === null &&
+            !rememberedRef.current
+          ) {
             s.setCue(true)
             obs.disconnect()
           }

@@ -46,13 +46,13 @@ for (const slug of slugs) {
     const widths = await page.evaluate(() => {
       const text = [
         ...document.querySelectorAll(
-          '.fc__block--text, .fc__block--quote, .fc__block--pinned, .fc__block--diagram, .fc__block--boxout, .fc__block--balance, .fc__block--part, .fc__block--landscape, .fc__block--polaroids, .fc__block--voices, .fc__block--journey',
+          '.fc__block--text, .fc__block--quote, .fc__block--pinned, .fc__block--diagram, .fc__block--boxout, .fc__block--balance, .fc__block--part, .fc__block--landscape, .fc__block--polaroids, .fc__block--voices, .fc__block--stories, .fc__block--journey, .fc__block--dataPath',
         ),
       ].map((e) => e.getBoundingClientRect())
       const main = document.querySelector('.fc__main').getBoundingClientRect()
       const others = [
         ...document.querySelectorAll(
-          '.fc__block:not(.fc__block--text):not(.fc__block--quote):not(.fc__block--pinned):not(.fc__block--diagram):not(.fc__block--boxout):not(.fc__block--balance):not(.fc__block--part):not(.fc__block--landscape):not(.fc__block--polaroids):not(.fc__block--voices):not(.fc__block--journey)',
+          '.fc__block:not(.fc__block--text):not(.fc__block--quote):not(.fc__block--pinned):not(.fc__block--diagram):not(.fc__block--boxout):not(.fc__block--balance):not(.fc__block--part):not(.fc__block--landscape):not(.fc__block--polaroids):not(.fc__block--voices):not(.fc__block--stories):not(.fc__block--journey):not(.fc__block--dataPath)',
         ),
       ].map((e) => e.getBoundingClientRect())
       return {

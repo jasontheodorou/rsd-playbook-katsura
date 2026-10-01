@@ -1,7 +1,14 @@
 'use client'
 
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
-import { useRef, useState, useSyncExternalStore, type KeyboardEvent, type ReactNode } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type KeyboardEvent,
+  type ReactNode,
+} from 'react'
 
 import './t-shaped-tabs.css'
 
@@ -22,7 +29,20 @@ export type Role = {
   intro: ReactNode
   methods: Method[]
   more?: { summary: string; items: Method[] }
+  /** The role's drawing, without `.svg`: `<art>-ink.svg` and `<art>-accent.svg` sit beside it. */
+  art?: string
 }
+
+/**
+ * Ways to show a role's drawing, tried on /icons (1 October 2026). Pen: drawn in, ink then orange.
+ * Accent: the ink is there; the orange springs in on a soft orange bloom. Paper: the drawing on a
+ * tilted card of watercolour paper that settles straight. Sticker: the photo stays, the drawing a
+ * die-cut sticker on its corner. Plane: the drawing on a tile with the page's coloured plane.
+ */
+export type ArtLook = 'pen' | 'accent' | 'paper' | 'sticker' | 'plane'
+
+/** The plane's colour for each role in turn, from the page's own plane tones. */
+const PLANES = ['#cbd9da', '#d8b4a3', '#f1d46e', '#ccc8c4']
 
 const noop = () => () => {}
 /** False during server render and hydration, true once JavaScript is running. */
@@ -35,11 +55,47 @@ const useEnhanced = () =>
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number]
 
-function Panel({ role }: { role: Role }) {
+function Art({ role, look, index }: { role: Role; look: ArtLook; index: number }) {
+  const layers = (
+    <span className="tst-art__draw">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img className="tst-art__ink" src={`${role.art}-ink.svg`} alt="" draggable={false} />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img className="tst-art__accent" src={`${role.art}-accent.svg`} alt="" draggable={false} />
+    </span>
+  )
+  if (look === 'sticker')
+    return (
+      <div className="tst-art tst-art--sticker">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="tst__photo" src={role.photo} alt={role.alt} loading="lazy" />
+        <span className="tst-art__sticker" aria-hidden="true">
+          {layers}
+        </span>
+      </div>
+    )
+  return (
+    <div
+      className={`tst-art tst-art--${look}`}
+      role="img"
+      aria-label={`Drawing for ${role.label}`}
+      style={{ ['--plane' as string]: PLANES[index % PLANES.length] }}
+    >
+      {look === 'plane' && <span className="tst-art__plane" aria-hidden="true" />}
+      <span className="tst-art__tile">{layers}</span>
+    </div>
+  )
+}
+
+function Panel({ role, look, index = 0 }: { role: Role; look?: ArtLook; index?: number }) {
   return (
     <div className="tst__panel">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img className="tst__photo" src={role.photo} alt={role.alt} loading="lazy" />
+      {look && role.art ? (
+        <Art role={role} look={look} index={index} />
+      ) : (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img className="tst__photo" src={role.photo} alt={role.alt} loading="lazy" />
+      )}
       <div className="tst__copy">
         <p className="tst__intro">{role.intro}</p>
         <ul className="tst__methods">
@@ -66,8 +122,35 @@ function Panel({ role }: { role: Role }) {
   )
 }
 
-export function TShapedTabs({ roles, className = '' }: { roles: Role[]; className?: string }) {
+export function TShapedTabs({
+  roles,
+  className = '',
+  look,
+}: {
+  roles: Role[]
+  className?: string
+  /** Show each role's drawing this way (see ArtLook). Without it, the photograph. */
+  look?: ArtLook
+}) {
   const enhanced = useEnhanced()
+  // The drawings play their entrance only once the card is in view, and on every change after.
+  const root = useRef<HTMLDivElement>(null)
+  const [seen, setSeen] = useState(false)
+  useEffect(() => {
+    const el = root.current
+    if (!el || !look) return
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setSeen(true)
+          io.disconnect()
+        }
+      },
+      { threshold: 0.35 },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [look, enhanced])
   const reduce = useReducedMotion()
   const [[active, dir], setState] = useState<[number, number]>([0, 0])
   const tabs = useRef<(HTMLButtonElement | null)[]>([])
@@ -78,7 +161,7 @@ export function TShapedTabs({ roles, className = '' }: { roles: Role[]; classNam
         {roles.map((r) => (
           <section key={r.id} className="tst__static">
             <h3 className="tst__static-heading">{r.label}</h3>
-            <Panel role={r} />
+            <Panel role={r} look={look} />
           </section>
         ))}
       </div>
@@ -101,7 +184,7 @@ export function TShapedTabs({ roles, className = '' }: { roles: Role[]; classNam
   const role = roles[active]
 
   return (
-    <div className={`tst ${className}`.trim()}>
+    <div ref={root} className={`tst ${className}`.trim()} data-art={look} data-seen={seen || undefined}>
       <div className="tst__bar" role="tablist" aria-label="Roles" onKeyDown={onKey}>
         {roles.map((r, i) => (
           <button
@@ -136,7 +219,7 @@ export function TShapedTabs({ roles, className = '' }: { roles: Role[]; classNam
         {/* Every panel, invisible, in the same cell: the stage takes the tallest one's height. */}
         {roles.map((r) => (
           <div key={r.id} className="tst__reserve" aria-hidden="true" inert>
-            <Panel role={r} />
+            <Panel role={r} look={look} />
           </div>
         ))}
         <AnimatePresence mode="wait" initial={false} custom={dir}>
@@ -151,7 +234,7 @@ export function TShapedTabs({ roles, className = '' }: { roles: Role[]; classNam
             exit={reduce ? { opacity: 0 } : { opacity: 0, x: dir * -40 }}
             transition={{ duration: reduce ? 0.12 : 0.36, ease: EASE }}
           >
-            <Panel role={role} />
+            <Panel role={role} look={look} index={active} />
           </motion.div>
         </AnimatePresence>
       </div>

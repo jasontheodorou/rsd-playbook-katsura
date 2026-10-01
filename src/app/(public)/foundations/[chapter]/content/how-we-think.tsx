@@ -1,5 +1,49 @@
+import type { DiagramItem } from '../components/Diagram'
 import type { LandscapeLayer } from '../components/DesignLandscape'
 import type { ChapterContent } from '../page/types'
+
+/**
+ * Data-driven decision-making's five stops for the data path, in the order that tells its story:
+ * understand, set the baseline, map the system, sketch the future, evaluate. The three things
+ * understanding data includes take the section's matching sentence; the two methods keep their own.
+ */
+export const DATA_STOPS: DiagramItem[] = [
+  {
+    id: 'analytics',
+    label: 'Analytics',
+    icon: 'chartLine',
+    lead: 'Data analytics.',
+    body: 'We’ll start with our clients’ data and add our own capabilities to enrich and analyse the evidence.',
+  },
+  {
+    id: 'baselines',
+    label: 'Baselines',
+    icon: 'target',
+    lead: 'Performance metrics and baselines.',
+    body: 'This means we can measure the impact of our work from the start.',
+  },
+  {
+    id: 'frameworks',
+    label: 'Frameworks',
+    icon: 'graph',
+    lead: 'Visual frameworks.',
+    body: 'Such as systems mapping to make visible the inter-connections between people, policies, place and service.',
+  },
+  {
+    id: 'future',
+    label: 'Future sketches',
+    icon: 'binoculars',
+    lead: 'Future analysis sketches.',
+    body: 'We can identify the right changes at the right time, working efficiently to translate data into the design of scalable, sustainable experiences.',
+  },
+  {
+    id: 'evaluation',
+    label: 'Evaluation',
+    icon: 'clipboardText',
+    lead: 'Evaluation.',
+    body: 'Embedding measurement, learning and iteration that reflect experience.',
+  },
+]
 
 /** The Design Landscape's five layers, outside in (F2.46 to F2.42), in the manual's words. */
 export const LAYERS: LandscapeLayer[] = [
@@ -121,36 +165,24 @@ export const howWeThink: ChapterContent = {
       drift: 'vertical',
       paragraphs: [
         'To make decisions about future change, we need to fully and honestly understand where our clients are today.',
-        'We’ll start with our clients’ data and add our own capabilities to enrich and analyse the evidence. We can identify the right changes at the right time, working efficiently to translate data into the design of scalable, sustainable experiences.',
-        'This means we can measure the impact of our work from the start. Through every stage, we’ll use data visualisation, making the stories behind the data accessible to all.',
-        'Understanding data includes:',
+        'We’ll start with our clients’ data and add our own capabilities to enrich and analyse the evidence.',
       ],
-      list: ['Data analytics.', 'Future analysis sketches.', 'Performance metrics and baselines.'],
+    },
+    {
+      kind: 'dataPath',
+      prompt: 'Follow how we use data',
+      label: 'How we use data',
+      restTitle: 'From data to decisions',
+      restBody:
+        'To make decisions about future change, we need to fully and honestly understand where our clients are today.',
+      items: DATA_STOPS,
     },
     {
       kind: 'text',
       paragraphs: [
-        'Our service designers bring this thinking into their work through two methods:',
-      ],
-    },
-    {
-      kind: 'accordion',
-      sections: [
-        {
-          id: 'visual-frameworks',
-          title: 'Visual frameworks',
-          body: (
-            <p>
-              Such as systems mapping to make visible the inter-connections between people,
-              policies, place and service.
-            </p>
-          ),
-        },
-        {
-          id: 'evaluation',
-          title: 'Evaluation',
-          body: <p>Embedding measurement, learning and iteration that reflect experience.</p>,
-        },
+        'We can identify the right changes at the right time, working efficiently to translate data into the design of scalable, sustainable experiences.',
+        'This means we can measure the impact of our work from the start.',
+        'Through every stage, we’ll use data visualisation, making the stories behind the data accessible to all.',
       ],
     },
   ],

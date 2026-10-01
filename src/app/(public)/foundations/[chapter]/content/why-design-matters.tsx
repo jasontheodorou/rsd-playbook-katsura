@@ -3,7 +3,7 @@ import type { DiagramItem } from '../components/Diagram'
 import type { ChapterContent } from '../page/types'
 
 /** The four design watch-outs, for the balance sliders. Text as supplied by Jason. */
-const WATCHOUTS: BalanceItem[] = [
+export const WATCHOUTS: BalanceItem[] = [
   {
     id: 'ambiguity',
     short: 'Ambiguity',
@@ -43,7 +43,7 @@ const WATCHOUTS: BalanceItem[] = [
 ]
 
 /** The five benefits of good design, for the diagram. Text as supplied by Jason. */
-const BENEFITS: DiagramItem[] = [
+export const BENEFITS: DiagramItem[] = [
   {
     id: 'effectiveness',
     photo: '/photos/insight-wall-sticky.png',
@@ -135,7 +135,7 @@ export const whyDesignMatters: ChapterContent = {
       emptyBody: 'Choose one on the diagram to find out how.',
       items: BENEFITS,
       // Warmed to this chapter's yellow (the pinned photo and quote card), with the usual sand.
-      title: 'Explore the benefits of design',
+      title: 'Explore the root elements of good design',
       restPhoto: '/photos/three-way-conversation.png',
       restAlt:
         'Three colleagues in conversation at a table, one of them explaining with her hands.',

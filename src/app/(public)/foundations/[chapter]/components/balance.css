@@ -318,3 +318,190 @@
     gap: 8px;
   }
 }
+
+/* ── The quiet look (30 September 2026), as the benefits card: a hairline card with 4px corners on
+   the warm tint, white rows, white lifted handles that turn ink past the middle, the prompt as
+   the yellow speech bubble, and the Design Landscape's pulses on each handle until the first
+   move. The layout and behaviour are unchanged. ── */
+.sl--quiet {
+  --thumb: 28px;
+  border-radius: 4px;
+  background: #f6f4f0;
+  box-shadow: 0 0 0 1px rgba(22, 34, 43, 0.12);
+}
+.sl--quiet .sl__washes {
+  display: none;
+}
+.sl--quiet.sl2 {
+  padding: 24px 40px 40px;
+}
+.sl--quiet .sl2__head {
+  align-items: center;
+  /* The bubble's 24px tail, then 16px clear to the first row. */
+  margin-bottom: 40px;
+}
+/* The prompt as the yellow speech bubble, its tail leaning down towards the first row. */
+.sl--quiet .sl2__title {
+  position: relative;
+  padding: 12px 20px;
+  border-radius: 16px;
+  background: #f1d46e;
+  color: #16222b;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 24px;
+  filter: drop-shadow(0 6px 10px rgb(22 34 43 / 0.14));
+  transition: opacity 0.4s ease;
+}
+.sl--quiet .sl2__title::after {
+  content: '';
+  position: absolute;
+  top: calc(100% - 1px);
+  left: 40px;
+  border-style: solid;
+  border-width: 24px 0 0 24px;
+  border-color: #f1d46e transparent transparent transparent;
+}
+.sl--quiet[data-moved='true'] .sl2__title {
+  opacity: 0;
+}
+.sl--quiet .sl2__count {
+  padding-top: 0;
+}
+.sl--quiet .sl2__rows {
+  gap: 8px;
+}
+.sl--quiet .sl2__row {
+  border-radius: 8px;
+  background: #ffffff;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: 0 0 0 1px rgba(22, 34, 43, 0.08);
+}
+.sl--quiet .sl2__row[data-good='true'] {
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgba(22, 34, 43, 0.2);
+}
+.sl--quiet .sl__icon {
+  border-radius: 50%;
+  background: #f6f4f0;
+  box-shadow: none;
+  color: #44515a;
+}
+.sl--quiet .sl2__row[data-good='true'] .sl__icon {
+  background: #16222b;
+  color: #ffffff;
+}
+.sl--quiet .sl2__end {
+  font-size: 13px;
+  color: #8a847e;
+}
+.sl--quiet .sl2__row[data-good='false'] .sl2__end--from,
+.sl--quiet .sl2__row[data-good='true'] .sl2__end--to {
+  color: #16222b;
+}
+/* A hairline rail and a slate fill up to the handle's centre, which runs from half a handle in at
+   each end, as the native thumb's does. */
+.sl--quiet .sl2__track {
+  height: var(--thumb);
+}
+.sl--quiet .sl2__track::before {
+  left: calc(var(--thumb) / 2);
+  right: calc(var(--thumb) / 2);
+  height: 2px;
+  background: rgba(22, 34, 43, 0.12);
+}
+.sl--quiet .sl2__fill {
+  left: calc(var(--thumb) / 2);
+  width: calc((100% - var(--thumb)) * var(--v-n));
+  height: 2px;
+  opacity: 0.6;
+}
+.sl--quiet .sl2__mid {
+  width: 1px;
+  background: rgba(22, 34, 43, 0.3);
+}
+.sl--quiet .sl2__range::-webkit-slider-runnable-track {
+  height: var(--thumb);
+}
+.sl--quiet .sl2__range::-moz-range-track {
+  height: var(--thumb);
+}
+.sl--quiet .sl2__range::-webkit-slider-thumb {
+  width: var(--thumb);
+  height: var(--thumb);
+  margin-top: 0;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px rgba(22, 34, 43, 0.14),
+    0 1px 2px rgba(22, 34, 43, 0.06),
+    0 6px 12px -6px rgba(22, 34, 43, 0.34);
+  transition: background 0.3s ease;
+}
+.sl--quiet .sl2__range::-moz-range-thumb {
+  width: var(--thumb);
+  height: var(--thumb);
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px rgba(22, 34, 43, 0.14),
+    0 6px 12px -6px rgba(22, 34, 43, 0.34);
+}
+.sl--quiet .sl2__row[data-good='true'] .sl2__range::-webkit-slider-thumb {
+  background: #16222b;
+  box-shadow:
+    0 0 0 1px #16222b,
+    0 6px 12px -6px rgba(22, 34, 43, 0.4);
+}
+.sl--quiet .sl2__row[data-good='true'] .sl2__range::-moz-range-thumb {
+  background: #16222b;
+}
+.sl--quiet .sl2__range:focus-visible::-webkit-slider-thumb {
+  box-shadow:
+    0 0 0 3px #ffffff,
+    0 0 0 6px #ec671b;
+}
+/* The Design Landscape's pulses, under each handle in turn, 0.35 seconds apart, every 5 seconds,
+   until the first move. */
+.sl2__pulse {
+  position: absolute;
+  top: 0;
+  left: calc(var(--thumb) / 2 + (100% - var(--thumb)) * var(--v-n));
+  width: var(--thumb);
+  height: var(--thumb);
+  translate: -50% 0;
+  border-radius: 50%;
+  background: rgba(97, 156, 186, 0.28);
+  box-shadow: 0 0 0 3px rgba(97, 156, 186, 0.9);
+  pointer-events: none;
+  animation: sl-pulse 5s cubic-bezier(0.2, 0, 0, 1) infinite backwards;
+}
+@keyframes sl-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  28%,
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+.sl--quiet .sl2__reveal .sl__body {
+  font-size: clamp(1rem, 0.85rem + 0.2vw, 1.0625rem);
+}
+@media (max-width: 63.9375rem) {
+  .sl--quiet.sl2 {
+    padding: 24px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sl--quiet .sl2__title {
+    transition: none;
+  }
+}

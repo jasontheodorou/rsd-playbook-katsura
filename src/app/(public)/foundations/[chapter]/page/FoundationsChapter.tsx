@@ -8,6 +8,7 @@ import { Accordion } from '../components/Accordion'
 import { Balance } from '../components/Balance'
 import { BodyText } from '../components/BodyText'
 import { Boxout } from '../components/Boxout'
+import { DataPath } from '../components/DataPath'
 import { DesignLandscape } from '../components/DesignLandscape'
 import { Landscape3D } from '../components/landscape-3d/Landscape3D'
 import { Polaroids } from '../components/Polaroids'
@@ -17,12 +18,13 @@ import { HhhWall } from '../components/HhhWall'
 import { ImageTrio } from '../components/ImageTrio'
 import { Journey } from '../components/Journey'
 import { PartSection } from '../components/PartSection'
-import { PhotoDiagram } from '../components/PhotoDiagram'
+import { BenefitsCard } from '../components/BenefitsCard'
 import { PhotoWithPlane } from '../components/PhotoWithPlane'
 import { PinnedPhoto } from '../components/PinnedPhoto'
 import { QuoteCard } from '../components/QuoteCard'
 import { SpacingOverlay, type Space } from '../components/SpacingOverlay'
 import { StackCards } from '../components/StackCards'
+import { Stories } from '../components/Stories'
 import { TShapedTabs } from '../components/TShapedTabs'
 import { Voices } from '../components/Voices'
 import { ChapterScrollContext } from './scroll-context'
@@ -47,6 +49,7 @@ export function FoundationsChapter({
   /** The temporary spacing overlay, while a page is being designed. */
   showSpacing?: boolean
 }) {
+  const firstFan = content.blocks.findIndex((b) => b.kind === 'part' && Boolean(b.fan))
   const scrollRef = useRef<HTMLDivElement>(null)
   const reduce = useReducedMotion()
   const { scrollYProgress } = useScroll({ container: scrollRef })
@@ -107,7 +110,7 @@ export function FoundationsChapter({
 
             {content.blocks.map((block, i) => (
               <div key={i} className={`fc__block fc__block--${block.kind}`} data-block={i}>
-                <BlockView block={block} />
+                <BlockView block={block} firstFan={i === firstFan} />
               </div>
             ))}
 
@@ -119,7 +122,10 @@ export function FoundationsChapter({
   )
 }
 
-function BlockView({ block }: { block: Block }) {
+/** Only the page's first sticky-note stack carries the prompt and pulse. */
+const FAN_PROMPT = 'Expand the sticky notes'
+
+function BlockView({ block, firstFan = false }: { block: Block; firstFan?: boolean }) {
   switch (block.kind) {
     case 'text':
       return (
@@ -143,18 +149,17 @@ function BlockView({ block }: { block: Block }) {
     case 'trio':
       return <ImageTrio items={block.items} />
     case 'tabs':
-      return <TShapedTabs roles={block.roles} />
+      return <TShapedTabs roles={block.roles} look={block.art} />
     case 'diagram':
       if (block.items.some((it) => it.photo))
         return (
-          <PhotoDiagram
+          <BenefitsCard
+            prompt={block.title}
             hub={block.hub}
             label={block.label}
-            emptyTitle={block.emptyTitle}
-            emptyBody={block.emptyBody}
+            restTitle={block.emptyTitle}
+            restBody={block.emptyBody}
             items={block.items}
-            washes={block.washes}
-            title={block.title}
             restPhoto={block.restPhoto}
             restAlt={block.restAlt}
           />
@@ -171,7 +176,7 @@ function BlockView({ block }: { block: Block }) {
         />
       )
     case 'balance':
-      return <Balance prompt={block.prompt} items={block.items} washes={block.washes} />
+      return <Balance prompt={block.prompt} items={block.items} look="quiet" />
     case 'boxout':
       return <Boxout label={block.label} items={block.items} accent={block.accent} />
     case 'pinned':
@@ -184,7 +189,16 @@ function BlockView({ block }: { block: Block }) {
     case 'hhhWall':
       return <HhhWall alt={block.alt} />
     case 'voices':
-      return <Voices label={block.label} quotes={block.quotes} tint={block.tint} />
+      return (
+        <Voices
+          look={block.look ?? 'turntable'}
+          flourish={block.flourish ?? ['sketch', 'highlight']}
+          voices={block.voices}
+          bar
+        />
+      )
+    case 'stories':
+      return <Stories look="panels" label={block.label} stories={block.stories} prompt={block.prompt} bar />
     case 'journey':
       return (
         <Journey
@@ -218,6 +232,16 @@ function BlockView({ block }: { block: Block }) {
           layers={block.layers}
         />
       )
+    case 'dataPath':
+      return (
+        <DataPath
+          prompt={block.prompt}
+          label={block.label}
+          restTitle={block.restTitle}
+          restBody={block.restBody}
+          items={block.items}
+        />
+      )
     case 'stack':
       return <StackCards cards={block.cards} />
     case 'part':
@@ -225,12 +249,18 @@ function BlockView({ block }: { block: Block }) {
         <PartSection
           eyebrow={block.eyebrow}
           heading={block.heading}
+          lead={block.lead}
           photo={block.photo}
           alt={block.alt}
           paragraphs={block.paragraphs}
           list={block.list}
           boxout={block.boxout}
-          fan={block.fan}
+          fan={
+            block.fan && {
+              ...block.fan,
+              prompt: firstFan ? (block.fan.prompt ?? FAN_PROMPT) : undefined,
+            }
+          }
           items={block.items}
           plane={block.plane}
           side={block.side}
@@ -259,7 +289,7 @@ function edges(block: Block, i: number): { top: string; bottom: string } {
     case 'tabs':
       return { top: `${b} .tst`, bottom: `${b} .tst` }
     case 'diagram':
-      return { top: `${b} .bd, ${b} .pd`, bottom: `${b} .bd, ${b} .pd` }
+      return { top: `${b} .bd, ${b} .bc`, bottom: `${b} .bd, ${b} .bc` }
     case 'boxout':
       return { top: `${b} .boxout`, bottom: `${b} .boxout` }
     case 'balance':
@@ -279,9 +309,13 @@ function edges(block: Block, i: number): { top: string; bottom: string } {
     case 'polaroids':
       return { top: `${b} .pol`, bottom: `${b} .pol` }
     case 'voices':
-      return { top: `${b} .vx`, bottom: `${b} .vx` }
+      return { top: `${b} .qv`, bottom: `${b} .qv` }
+    case 'stories':
+      return { top: `${b} .st`, bottom: `${b} .st` }
     case 'journey':
       return { top: `${b} .jy`, bottom: `${b} .jy` }
+    case 'dataPath':
+      return { top: `${b} .dpn`, bottom: `${b} .dpn` }
     case 'stack':
       return { top: `${b} .stk__card:first-child`, bottom: `${b} .stk__card:last-child` }
     case 'part':
@@ -306,7 +340,9 @@ const NAMES: Record<Block['kind'], string> = {
   landscapeMap: 'design landscape map',
   polaroids: 'polaroids',
   voices: 'voices',
+  stories: 'story panels',
   journey: 'journey',
+  dataPath: 'data path',
   stack: 'stacking cards',
   part: 'written part',
 }

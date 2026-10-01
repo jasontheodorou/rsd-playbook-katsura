@@ -1,0 +1,373 @@
+/*
+ * The data path, rebuilt (1 October 2026). One card with 4px corners and a hairline edge, split
+ * on a page grid line: the tint on page columns 2 to 7, white on 8 to 11. Both halves keep the
+ * same inset from the card's edge (48px; 40px from 1024px to 1279px; 24px on phones), so two
+ * lines run across the card: along the top, the bubble, the highest stop and the title; along the
+ * bottom, the labels and the count. Positions come from DataPath's layout, on the dot grid.
+ */
+
+.dpn {
+  --inset: 48px;
+  --g: 24px;
+  --tile: 48px;
+  --h: 384px;
+  --ink: #16222b;
+  --tint: #f6f4f0;
+  --slate: #34566b;
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.13 0 0 0 0 0.17 0 0 0 0.7 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url%28%23n%29' opacity='0.09'/%3E%3C/svg%3E");
+
+  display: grid;
+  /* Six of the card's ten columns and their gaps: the white half starts on page column 8. */
+  grid-template-columns: calc(60% + 0.6 * var(--grid-gap)) minmax(0, 1fr);
+  overflow: hidden;
+  border-radius: 4px;
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgba(22, 34, 43, 0.12);
+  color: var(--ink);
+}
+
+/* ── The drawing's half ─────────────────────────────────────────────────────────────────── */
+
+.dpn__stage {
+  position: relative;
+  height: var(--h);
+  background:
+    var(--grain) 0 0 / 160px 160px,
+    var(--tint);
+  box-shadow: inset -1px 0 0 rgba(22, 34, 43, 0.08);
+  isolation: isolate;
+}
+
+/* The same rough dot grid as before (each dot varies a little in size, strength and place), in
+   soft cream, moved by --ox and --oy so a dot sits under every stop. */
+.dpn__stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: #bba67a;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cg fill='%23000'%3E%3Ccircle cx='11.79' cy='11.58' r='1.18' fill-opacity='0.46'/%3E%3Ccircle cx='36.04' cy='11.84' r='0.88' fill-opacity='0.57'/%3E%3Ccircle cx='59.44' cy='11.92' r='0.88' fill-opacity='0.46'/%3E%3Ccircle cx='83.91' cy='12.39' r='0.91' fill-opacity='0.51'/%3E%3Ccircle cx='12.15' cy='36.54' r='1.14' fill-opacity='0.55'/%3E%3Ccircle cx='36.57' cy='35.46' r='1.28' fill-opacity='0.51'/%3E%3Ccircle cx='59.57' cy='35.54' r='1.00' fill-opacity='0.66'/%3E%3Ccircle cx='83.62' cy='36.10' r='1.17' fill-opacity='0.53'/%3E%3Ccircle cx='12.06' cy='59.48' r='0.88' fill-opacity='0.48'/%3E%3Ccircle cx='36.22' cy='59.91' r='1.01' fill-opacity='0.59'/%3E%3Ccircle cx='59.94' cy='59.76' r='1.25' fill-opacity='0.62'/%3E%3Ccircle cx='83.69' cy='60.09' r='1.11' fill-opacity='0.68'/%3E%3Ccircle cx='12.28' cy='83.75' r='1.34' fill-opacity='0.46'/%3E%3Ccircle cx='35.90' cy='84.31' r='0.93' fill-opacity='0.57'/%3E%3Ccircle cx='59.45' cy='84.20' r='1.23' fill-opacity='0.59'/%3E%3Ccircle cx='84.45' cy='83.78' r='1.20' fill-opacity='0.59'/%3E%3C/g%3E%3C/svg%3E")
+    calc(var(--ox, 0px) - var(--g) / 2) calc(var(--oy, 0px) - var(--g) / 2) / calc(var(--g) * 4)
+    calc(var(--g) * 4);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cg fill='%23000'%3E%3Ccircle cx='11.79' cy='11.58' r='1.18' fill-opacity='0.46'/%3E%3Ccircle cx='36.04' cy='11.84' r='0.88' fill-opacity='0.57'/%3E%3Ccircle cx='59.44' cy='11.92' r='0.88' fill-opacity='0.46'/%3E%3Ccircle cx='83.91' cy='12.39' r='0.91' fill-opacity='0.51'/%3E%3Ccircle cx='12.15' cy='36.54' r='1.14' fill-opacity='0.55'/%3E%3Ccircle cx='36.57' cy='35.46' r='1.28' fill-opacity='0.51'/%3E%3Ccircle cx='59.57' cy='35.54' r='1.00' fill-opacity='0.66'/%3E%3Ccircle cx='83.62' cy='36.10' r='1.17' fill-opacity='0.53'/%3E%3Ccircle cx='12.06' cy='59.48' r='0.88' fill-opacity='0.48'/%3E%3Ccircle cx='36.22' cy='59.91' r='1.01' fill-opacity='0.59'/%3E%3Ccircle cx='59.94' cy='59.76' r='1.25' fill-opacity='0.62'/%3E%3Ccircle cx='83.69' cy='60.09' r='1.11' fill-opacity='0.68'/%3E%3Ccircle cx='12.28' cy='83.75' r='1.34' fill-opacity='0.46'/%3E%3Ccircle cx='35.90' cy='84.31' r='0.93' fill-opacity='0.57'/%3E%3Ccircle cx='59.45' cy='84.20' r='1.23' fill-opacity='0.59'/%3E%3Ccircle cx='84.45' cy='83.78' r='1.20' fill-opacity='0.59'/%3E%3C/g%3E%3C/svg%3E")
+    calc(var(--ox, 0px) - var(--g) / 2) calc(var(--oy, 0px) - var(--g) / 2) / calc(var(--g) * 4)
+    calc(var(--g) * 4);
+}
+
+.dpn__svg {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+.dpn__line {
+  fill: none;
+  stroke: rgba(22, 34, 43, 0.18);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.dpn__line--on {
+  stroke: var(--slate);
+}
+
+.dpn__drop {
+  stroke: rgba(22, 34, 43, 0.12);
+  stroke-width: 1;
+  transition: stroke 0.4s ease;
+}
+
+.dpn__drop[data-on='true'] {
+  stroke: rgba(52, 86, 107, 0.5);
+}
+
+/* The Design Landscape's speech bubble in Transform yellow, its top on the inset line, its tail
+   leaning down towards the first stop. */
+.dpn__bubble {
+  position: absolute;
+  top: var(--inset);
+  left: var(--inset);
+  z-index: 3;
+  margin: 0;
+  transition: opacity 0.4s ease;
+}
+
+.dpn__bubble > span {
+  position: relative;
+  display: block;
+  padding: 12px 20px;
+  border-radius: 16px;
+  background: #f1d46e;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 24px;
+  white-space: nowrap;
+  filter: drop-shadow(0 6px 10px rgb(22 34 43 / 0.14));
+}
+
+.dpn__bubble > span::after {
+  content: '';
+  position: absolute;
+  top: calc(100% - 1px);
+  left: 40px;
+  border-style: solid;
+  border-width: 24px 0 0 24px;
+  border-color: #f1d46e transparent transparent transparent;
+}
+
+.dpn__bubble[data-gone='true'] {
+  opacity: 0;
+}
+
+/* Each stop's circle is centred exactly on its point. */
+.dpn__stop {
+  position: absolute;
+  z-index: 1;
+  width: var(--tile);
+  height: var(--tile);
+  translate: -50% -50%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.dpn__stop:focus-visible {
+  outline: none;
+}
+
+.dpn__stop:focus-visible .dpn__tile {
+  outline: 3px solid #ec671b;
+  outline-offset: 4px;
+}
+
+.dpn__tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #44515a;
+  box-shadow:
+    0 0 0 1px rgba(22, 34, 43, 0.1),
+    0 1px 2px rgba(22, 34, 43, 0.06),
+    0 8px 16px -8px rgba(22, 34, 43, 0.28);
+  transition:
+    transform 0.4s cubic-bezier(0.2, 0, 0, 1),
+    background 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.dpn__tile svg {
+  width: calc(var(--tile) * 0.4375);
+  height: calc(var(--tile) * 0.4375);
+}
+
+.dpn__stop:hover .dpn__tile {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 1px rgba(22, 34, 43, 0.3),
+    0 2px 4px rgba(22, 34, 43, 0.08),
+    0 16px 24px -12px rgba(22, 34, 43, 0.34);
+}
+
+.dpn__stop[data-past='true'] .dpn__tile {
+  box-shadow:
+    0 0 0 1.5px rgba(52, 86, 107, 0.55),
+    0 8px 16px -8px rgba(22, 34, 43, 0.28);
+}
+
+.dpn__stop[data-on='true'] .dpn__tile {
+  transform: translateY(-2px);
+  background: var(--ink);
+  color: #ffffff;
+  box-shadow:
+    0 0 0 1px var(--ink),
+    0 16px 24px -12px rgba(22, 34, 43, 0.4);
+}
+
+/* The labels: one line along the bottom, ending on the inset line, each centred on its stop. */
+.dpn__labels {
+  position: absolute;
+  inset: auto 0 var(--inset);
+}
+
+.dpn__label {
+  position: absolute;
+  bottom: 0;
+  translate: -50% 0;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 16px;
+  width: max-content;
+  text-align: center;
+  text-wrap: balance;
+  color: #5b6670;
+  cursor: pointer;
+  text-box: trim-both cap alphabetic;
+  transition: color 0.3s ease;
+}
+
+.dpn__label[data-on='true'] {
+  color: var(--ink);
+}
+
+/* The Design Landscape's pulses, along the stops in turn, 0.35 seconds apart, every 5 seconds,
+   until the first choice on that page. */
+.dpn__pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(97, 156, 186, 0.28);
+  box-shadow: 0 0 0 3px rgba(97, 156, 186, 0.9);
+  pointer-events: none;
+  animation: dpn-pulse 5s cubic-bezier(0.2, 0, 0, 1) infinite backwards;
+}
+
+@keyframes dpn-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  28%,
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+/* ── The reading's half: the words from the top inset line, the count on the bottom one ──── */
+
+.dpn__side {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  padding: var(--inset);
+}
+
+/* Every passage shares one cell, so the card never changes height. */
+.dpn__passages {
+  display: grid;
+}
+
+.dpn__passage {
+  grid-area: 1 / 1;
+  visibility: hidden;
+}
+
+.dpn__passage[data-on='true'] {
+  visibility: visible;
+  animation: dpn-passage 400ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes dpn-passage {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.dpn__lead {
+  margin: 0;
+  font-size: clamp(1.25rem, 0.8rem + 0.6vw, 1.625rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-box: trim-both cap alphabetic;
+}
+
+.dpn__body {
+  margin: 24px 0 0;
+  font-size: clamp(1rem, 0.85rem + 0.2vw, 1.0625rem);
+  line-height: 1.6;
+  color: #44515a;
+  text-box: trim-both cap alphabetic;
+}
+
+.dpn__count {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #8a847e;
+  text-box: trim-both cap alphabetic;
+}
+
+.dpn-static {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0 0 0 1.2em;
+  line-height: 1.6;
+}
+
+/* ── From 1024px to 1279px: a size down ── */
+@media (max-width: 79.9375rem) {
+  .dpn {
+    --inset: 40px;
+    --g: 20px;
+    --h: 336px;
+  }
+  .dpn__label {
+    font-size: 12px;
+  }
+}
+
+/* ── Below 1024px: the halves stack ── */
+@media (max-width: 63.9375rem) {
+  .dpn {
+    --inset: 32px;
+    --h: 336px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .dpn__stage {
+    box-shadow: inset 0 -1px 0 rgba(22, 34, 43, 0.08);
+  }
+  .dpn__side {
+    min-height: 240px;
+  }
+}
+
+/* ── Phones: a finer dot grid, smaller stops, and labels on up to two lines ── */
+@media (max-width: 40rem) {
+  .dpn {
+    --inset: 24px;
+    --g: 20px;
+    --tile: 40px;
+  }
+  .dpn__bubble > span {
+    font-size: 14px;
+  }
+  /* The halves are stacked, so the drawing keeps a band at its top for the bubble. */
+  .dpn {
+    --room: 88px;
+    --h: 400px;
+  }
+  .dpn__label {
+    font-size: 10px;
+    line-height: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dpn__tile,
+  .dpn__label,
+  .dpn__bubble,
+  .dpn__drop {
+    transition: none;
+  }
+  .dpn__passage[data-on='true'] {
+    animation: none;
+  }
+}

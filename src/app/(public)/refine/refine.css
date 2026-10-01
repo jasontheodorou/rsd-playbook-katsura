@@ -1,0 +1,336 @@
+/* Five looks for the photo diagram, each as overrides on .pd[data-look]. The structure,
+   content and behaviour are the chapter's own; only the surface changes. */
+
+.rf-demo {
+  display: grid;
+  grid-template-columns: subgrid;
+}
+
+.rf-demo > .pd,
+.rf-demo > .bc,
+.rf-demo > .bl,
+.rf-demo > .dpn,
+.rf-demo > .rf-wide {
+  grid-column: 1 / 11;
+}
+
+/* ── Hairline, the standard: structure only ─────────────────────────────────────────────────────── */
+.pd[data-look~='hairline'] {
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px rgba(22, 34, 43, 0.12);
+}
+.pd[data-look~='hairline'] .pd__washes {
+  display: none;
+}
+.pd[data-look~='hairline'] .pd__stage {
+  background: #ffffff;
+  box-shadow: inset -1px 0 0 rgba(22, 34, 43, 0.1);
+}
+.pd[data-look~='hairline'] .pd__tile {
+  border-radius: 50%;
+  background: #ffffff;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: 0 0 0 1px rgba(22, 34, 43, 0.18);
+}
+.pd[data-look~='hairline'] .pd__node:hover .pd__tile {
+  transform: none;
+  box-shadow: 0 0 0 1px rgba(22, 34, 43, 0.4);
+}
+.pd[data-look~='hairline'] .pd__node[data-on='true'] .pd__tile {
+  transform: none;
+  background: #16222b;
+  color: #ffffff;
+  box-shadow: 0 0 0 1px #16222b;
+}
+.pd[data-look~='hairline'] .pd__pulse {
+  border-radius: 50%;
+}
+.pd[data-look~='hairline'] .pd__hub {
+  padding: 0;
+  background: #ffffff;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: 0 0 0 10px #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #6b7680;
+}
+.pd[data-look~='hairline'] .pd__line {
+  stroke: rgba(22, 34, 43, 0.14);
+}
+.pd[data-look~='hairline'] .pd__photo {
+  margin: 0;
+  border-radius: 0;
+}
+
+/* ── Five subtle elevations of Hairline. Each adds one thing to the standard. ── */
+
+/* 1. Numbered: a small slate number beside each label, echoing the reading's "02 of 05". */
+.pd[data-look~='numbered'] [role='group'] {
+  counter-reset: pd-n;
+}
+.pd[data-look~='numbered'] .pd__spot {
+  counter-increment: pd-n;
+}
+.pd[data-look~='numbered'] .pd__label::before {
+  content: counter(pd-n, decimal-leading-zero);
+  margin-right: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #34566b;
+}
+
+/* 2. Orbit: one faint ring through the five, in place of the curved lines. */
+.pd[data-look~='orbit'] .pd__lines {
+  display: none;
+}
+.pd[data-look~='orbit'] .pd__square::before {
+  content: '';
+  position: absolute;
+  inset: 15%;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(22, 34, 43, 0.1);
+}
+
+/* 3. Monochrome: the photographs rest in greyscale and take their colour when chosen. */
+.pd[data-look~='mono'] .pd__photo img {
+  filter: grayscale(1) contrast(0.96);
+  transition:
+    opacity 500ms ease,
+    filter 700ms ease;
+}
+.pd[data-look~='mono'] .pd__photo img[data-on='true']:not(:first-child) {
+  filter: none;
+}
+
+/* 4. Small capitals: labels and the title set with more care, as a printed diagram would be. */
+.pd[data-look~='caps'] .pd__label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6b7680;
+}
+.pd[data-look~='caps'] .pd__title {
+  font-size: clamp(1.125rem, 0.85rem + 0.45vw, 1.375rem);
+  letter-spacing: -0.015em;
+}
+.pd[data-look~='caps'] .pd__lead {
+  letter-spacing: -0.025em;
+}
+
+/* 5. Dot grid: a faint technical grid on the diagram's side, like squared drawing paper. */
+.pd[data-look~='grid'] .pd__stage {
+  background-color: #ffffff;
+  background-image: radial-gradient(circle, rgba(22, 34, 43, 0.12) 0.8px, transparent 1.1px);
+  background-size: 16px 16px;
+  background-position: 8px 8px;
+}
+.pd[data-look~='grid'] .pd__hub {
+  box-shadow: 0 0 0 8px #ffffff;
+}
+
+/* ── Raised, with a prompt: Hairline, clearly clickable, and not a blank white box ── */
+.pd[data-look~='raised'] .pd__stage {
+  background: #f6f4f0;
+  box-shadow: inset -1px 0 0 rgba(22, 34, 43, 0.08);
+}
+.pd[data-look~='raised'] .pd__hub {
+  background: #f6f4f0;
+  box-shadow: 0 0 0 10px #f6f4f0;
+}
+/* The circles as buttons: white, lifted, and lifting further under the pointer. */
+.pd[data-look~='raised'] .pd__tile {
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px rgba(22, 34, 43, 0.1),
+    0 1px 2px rgba(22, 34, 43, 0.06),
+    0 8px 18px -10px rgba(22, 34, 43, 0.28);
+}
+.pd[data-look~='raised'] .pd__node:hover .pd__tile {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 1px rgba(22, 34, 43, 0.3),
+    0 2px 4px rgba(22, 34, 43, 0.08),
+    0 14px 24px -12px rgba(22, 34, 43, 0.34);
+}
+.pd[data-look~='raised'] .pd__node:hover .pd__label {
+  color: #16222b;
+}
+.pd[data-look~='raised'] .pd__node[data-on='true'] .pd__tile {
+  transform: translateY(-2px);
+  background: #16222b;
+  color: #ffffff;
+  box-shadow:
+    0 0 0 1px #16222b,
+    0 14px 24px -12px rgba(22, 34, 43, 0.4);
+}
+/* The Design Landscape's pulses: under each circle, a soft blue disc with a ring that spreads
+   and fades, rising from one circle after another 0.35 seconds apart, every 5 seconds. */
+.pd[data-look~='raised'] .pd__pulse {
+  inset: 0;
+  z-index: -1;
+  border-radius: 50%;
+  background: rgba(97, 156, 186, 0.28);
+  box-shadow: 0 0 0 3px rgba(97, 156, 186, 0.9);
+  animation: rf-pulse 5s cubic-bezier(0.2, 0, 0, 1) infinite backwards;
+}
+@keyframes rf-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  28%,
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+/* The diagram, prominent and centred in the tinted side, a size up from the standard. */
+/* Half and half: the diagram on the left; on the right the reading, with the photo under it
+   in a rounded rectangle, inset by the reading's own 40px. The bubble floats over the side's
+   top left, out of the flow, so the diagram centres in the whole side and stays put when the
+   bubble fades. */
+.pd[data-look~='raised'] {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: 0;
+  min-height: 0;
+}
+.pd[data-look~='raised'] .pd__stage {
+  grid-column: 1;
+  position: relative;
+  margin-right: 0;
+}
+.pd[data-look~='raised'] .pd__result {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+}
+.pd[data-look~='raised'] .pd__read {
+  padding: 40px 40px 32px;
+}
+.pd[data-look~='raised'] .pd__photo {
+  margin: 0 40px 40px;
+  aspect-ratio: 3 / 2;
+  border-radius: 16px;
+}
+.pd[data-look~='raised'] .pd__title {
+  position: absolute !important;
+  top: 40px;
+  left: 40px;
+  z-index: 3;
+}
+.pd[data-look~='raised'] .pd__diagram {
+  padding-top: 0;
+}
+.pd[data-look~='raised'] .pd__square {
+  width: min(100%, 320px);
+  /* Measured: with its labels the drawing sits 6px high and 2px left of the side's centre. */
+  translate: 2px 6px;
+}
+.pd[data-look~='raised'] .pd__tile {
+  width: 60px;
+  height: 60px;
+}
+.pd[data-look~='raised'] .pd__tile svg {
+  width: 28px;
+  height: 28px;
+}
+.pd[data-look~='raised'] .pd__spot {
+  transform: translate(-50%, -30px);
+}
+.pd[data-look~='raised'] .pd__spot[data-label='above'] {
+  transform: translate(-50%, calc(-100% + 30px));
+}
+.pd[data-look~='raised'] .pd__node {
+  gap: 10px;
+}
+.pd[data-look~='raised'] .pd__label {
+  font-size: 13px;
+}
+.pd[data-look~='raised'] .pd__hub {
+  font-size: 12px;
+}
+/* The title as the Design Landscape's grey speech bubble, its tail leaning down into the
+   diagram. It fades once the reader has chosen. */
+.pd[data-look~='raised'] .pd__title {
+  position: relative;
+  width: fit-content;
+  padding: 12px 20px;
+  border-radius: 18px;
+  background: #ecebe8;
+  color: #5b6268;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-box: normal;
+  filter: drop-shadow(0 6px 10px rgb(22 34 43 / 0.14));
+  transition: opacity 0.4s ease !important;
+}
+.pd[data-look~='raised'] .pd__title::after {
+  content: '';
+  position: absolute;
+  top: calc(100% - 1px);
+  left: 44px;
+  border-style: solid;
+  border-width: 22px 0 0 22px;
+  border-color: #ecebe8 transparent transparent transparent;
+}
+.pd[data-look~='raised'][data-used='true'] .pd__title {
+  opacity: 0 !important;
+}
+
+@media (max-width: 79.9375rem) {
+  .pd[data-look~='raised'] .pd__square {
+    width: min(100%, 280px);
+  }
+  .pd[data-look~='raised'] .pd__read {
+    padding: 32px 32px 24px;
+  }
+  .pd[data-look~='raised'] .pd__photo {
+    margin: 0 32px 32px;
+  }
+}
+@media (max-width: 63.9375rem) {
+  .pd[data-look~='raised'] {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+  .pd[data-look~='raised'] .pd__stage,
+  .pd[data-look~='raised'] .pd__result,
+  .pd[data-look~='raised'] .pd__read,
+  .pd[data-look~='raised'] .pd__photo {
+    grid-column: 1;
+  }
+  .pd[data-look~='raised'] .pd__title {
+    position: relative !important;
+    top: 0;
+    left: 0;
+  }
+  .pd[data-look~='raised'] .pd__diagram {
+    padding-top: 32px;
+  }
+  .pd[data-look~='raised'] .pd__read {
+    padding: 24px 24px 20px;
+  }
+  .pd[data-look~='raised'] .pd__photo {
+    grid-row: auto;
+  }
+  .pd[data-look~='raised'] .pd__square {
+    width: min(100%, 300px);
+  }
+  .pd[data-look~='raised'] .pd__hub {
+    font-size: 10px;
+  }
+  .pd[data-look~='raised'] .pd__photo {
+    margin: 0 24px 24px;
+  }
+}

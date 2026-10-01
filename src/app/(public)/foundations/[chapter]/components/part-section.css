@@ -144,3 +144,6 @@
     margin-top: 32px;
   }
 }
+
+/* A lead-in straight under the heading takes the part's 48px (32px on phones, from the rule
+   above); the photograph's own 48px follows it. */

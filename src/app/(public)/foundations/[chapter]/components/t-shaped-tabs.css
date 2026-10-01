@@ -247,3 +247,206 @@
     padding-inline: 24px;
   }
 }
+
+/* ── Role drawings (/icons, 1 October 2026): five ways to give the drawings some life. Each sits
+   where the photograph sits (content columns 2 to 4, 4:5). The ink and the orange are separate
+   layers on the same frame, so they can move apart. Until the card is first in view the live
+   drawing waits, hidden; its entrance then plays, and plays again at every change of tab. ── */
+
+.tst-art {
+  grid-column: 2 / 5;
+  position: relative;
+}
+
+.tst-art__tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #f5f1ea;
+}
+
+.tst-art__draw {
+  position: relative;
+  display: grid;
+  width: 62%;
+}
+.tst-art__draw > img {
+  grid-area: 1 / 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+}
+
+.tst[data-art]:not([data-seen]) .tst__live .tst-art__draw,
+.tst[data-art]:not([data-seen]) .tst__live .tst-art__sticker {
+  opacity: 0;
+}
+
+/* 01 Pen: the ink is drawn in across the drawing, then the orange follows. */
+.tst-art--pen .tst-art__ink,
+.tst-art--pen .tst-art__accent {
+  -webkit-mask: linear-gradient(100deg, #000 40%, transparent 60%) 0 0 / 260% 100% no-repeat;
+  mask: linear-gradient(100deg, #000 40%, transparent 60%) 0 0 / 260% 100% no-repeat;
+}
+.tst[data-seen] .tst__live .tst-art--pen .tst-art__ink {
+  animation: tst-pen 1.1s cubic-bezier(0.45, 0, 0.25, 1) 0.15s both;
+}
+.tst[data-seen] .tst__live .tst-art--pen .tst-art__accent {
+  animation: tst-pen 0.6s cubic-bezier(0.45, 0, 0.25, 1) 1.05s both;
+}
+@keyframes tst-pen {
+  from {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+}
+
+/* 02 Accent: the ink is there; a soft orange bloom opens behind it and the orange springs in. */
+.tst-art--accent .tst-art__tile::before {
+  content: '';
+  position: absolute;
+  width: 78%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(236, 103, 27, 0.16), rgba(236, 103, 27, 0));
+}
+.tst[data-seen] .tst__live .tst-art--accent .tst-art__tile::before {
+  animation: tst-bloom 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+.tst[data-seen] .tst__live .tst-art--accent .tst-art__ink {
+  animation: tst-fade 0.5s ease-out both;
+}
+.tst[data-seen] .tst__live .tst-art--accent .tst-art__accent {
+  animation: tst-spring 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+}
+@keyframes tst-bloom {
+  from {
+    opacity: 0;
+    scale: 0.55;
+  }
+}
+@keyframes tst-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes tst-spring {
+  from {
+    opacity: 0;
+    scale: 0.82;
+    rotate: -8deg;
+  }
+}
+
+/* 03 Paper: the drawing on a card of the watercolour paper, a little tilted, that settles as it
+   arrives. The card is a touch narrower than the column, so its tilted corners stay inside. */
+.tst-art--paper .tst-art__tile {
+  width: 92%;
+  margin-inline: auto;
+  border-radius: 4px;
+  background: #fffdf9 url('/illustrations/roles/paper-light.jpg') 0 0 / 185px 185px repeat;
+  box-shadow:
+    0 0 0 1px rgba(22, 34, 43, 0.06),
+    0 22px 34px -22px rgba(22, 34, 43, 0.42);
+  rotate: -1.5deg;
+}
+.tst[data-seen] .tst__live .tst-art--paper .tst-art__tile {
+  animation: tst-settle 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes tst-settle {
+  from {
+    opacity: 0;
+    rotate: -6deg;
+    translate: 0 12px;
+  }
+}
+
+/* 04 Sticker: the photograph stays; the drawing is a die-cut white sticker on its lower corner. */
+.tst-art--sticker .tst__photo {
+  grid-column: auto;
+}
+.tst-art__sticker {
+  position: absolute;
+  right: -10%;
+  bottom: -7%;
+  display: grid;
+  place-items: center;
+  width: 46%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px rgba(22, 34, 43, 0.05),
+    0 14px 24px -14px rgba(22, 34, 43, 0.45);
+  rotate: -6deg;
+}
+.tst-art__sticker .tst-art__draw {
+  width: 58%;
+}
+.tst[data-seen] .tst__live .tst-art__sticker {
+  animation: tst-stick 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+}
+@keyframes tst-stick {
+  from {
+    opacity: 0;
+    scale: 0.6;
+    rotate: -24deg;
+  }
+}
+
+/* 05 Plane: the drawing on a white tile with the page's offset coloured plane one grid gap behind,
+   in a different plane colour for each role; the plane slides out from behind as it arrives. */
+.tst-art--plane {
+  padding: var(--grid-gap) 0 0 var(--grid-gap);
+}
+.tst-art__plane {
+  position: absolute;
+  inset: 0 var(--grid-gap) var(--grid-gap) 0;
+  background: var(--plane);
+}
+.tst-art--plane .tst-art__tile {
+  border-radius: 0;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(22, 34, 43, 0.08);
+}
+.tst[data-seen] .tst__live .tst-art__plane {
+  animation: tst-plane 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+.tst[data-seen] .tst__live .tst-art--plane .tst-art__draw {
+  animation: tst-fade 0.6s ease-out 0.2s both;
+}
+@keyframes tst-plane {
+  from {
+    translate: var(--grid-gap) var(--grid-gap);
+  }
+}
+
+@media (max-width: 1023px) {
+  .tst-art {
+    grid-column: 1 / -1;
+    max-width: 320px;
+  }
+  /* The card clips at its edge, so the sticker overlaps the photograph's corner from inside. */
+  .tst-art__sticker {
+    right: -4%;
+    bottom: -5%;
+    width: 40%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tst-art *,
+  .tst-art *::before,
+  .tst-art .tst-art__tile::before {
+    animation: none !important;
+  }
+}
+
+/* On an options page the card takes all 11 content columns, as on the chapter. */
+.rf-demo > .tst {
+  grid-column: 1 / -1;
+}

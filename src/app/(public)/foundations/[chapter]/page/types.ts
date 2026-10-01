@@ -12,7 +12,9 @@ import type { JourneyStep } from '../components/Journey'
 import type { Drift } from '../components/PartMedia'
 import type { PlaneTone } from '../components/PartSection'
 import type { StackCardItem } from '../components/StackCards'
-import type { Role } from '../components/TShapedTabs'
+import type { Story } from '../components/Stories'
+import type { ArtLook, Role } from '../components/TShapedTabs'
+import type { Flourish, Look, Voice } from '../components/Voices'
 
 /**
  * A Foundations chapter, as content. The page component (FoundationsChapter) turns this into a
@@ -30,7 +32,7 @@ export type Block =
   /** Three portrait photographs that fill with colour on hover, across columns 2 to 12. */
   | { kind: 'trio'; items: TrioItem[] }
   /** T-shaped tabs, for roles or options side by side, across columns 2 to 12. */
-  | { kind: 'tabs'; roles: Role[] }
+  | { kind: 'tabs'; roles: Role[]; art?: ArtLook }
   /** A square photograph on a yellow plane that settles into a slight tilt, across columns 2 to 6. */
   | { kind: 'pinned'; src: string; alt: string; quote?: ReactNode }
   /** The refined diagram: a centre idea and five items to explore, with a reading panel, across columns 2 to 12. */
@@ -86,9 +88,12 @@ export type Block =
       restBody: string
       layers: LandscapeLayer[]
     }
-  /** Short quotations from the people services are for, side by side in one tinted card,
-      across columns 2 to 11 (chapter 05). Up to three. */
-  | { kind: 'voices'; label?: string; quotes: string[]; tint?: string }
+  /** Two people's quotes, explored one at a time on a turning floor, the speaker's quote beside
+      them, across columns 2 to 11 (chapter 05). Each voice is a trimmed sketch and its quote. */
+  | { kind: 'voices'; voices: Voice[]; look?: Look; flourish?: Flourish | Flourish[] }
+  /** Story panels: three photographs side by side across columns 2 to 12; the chosen one opens
+      wide with its words on a frosted card (chapter 05's three ways of telling stories). */
+  | { kind: 'stories'; label: string; stories: Story[]; prompt?: string }
   /** A model of steps in a row on a tinted band, the chosen step's text on white below, across
       columns 2 to 11 (chapter 06's participation model). */
   | {
@@ -99,6 +104,16 @@ export type Block =
       restBody: string
       steps: JourneyStep[]
     }
+  /** The data path: five stops along a rising line on a warm tint, the chosen stop's words on
+      white; columns 2 to 11 (How we think's data-driven decision-making). */
+  | {
+      kind: 'dataPath'
+      prompt?: string
+      label: string
+      restTitle: string
+      restBody: string
+      items: DiagramItem[]
+    }
   /** Stacking cards that pin and fold over one another as the reader scrolls, across columns 2 to
       12. Each card: an eyebrow, a title and a photograph. */
   | { kind: 'stack'; cards: StackCardItem[] }
@@ -108,6 +123,8 @@ export type Block =
       kind: 'part'
       eyebrow?: string
       heading: string
+      /** A lead-in straight under the heading, above the photograph. */
+      lead?: ReactNode
       photo?: string
       alt?: string
       paragraphs: ReactNode[]
@@ -115,7 +132,7 @@ export type Block =
       /** A boxout of points between the paragraphs, after paragraph number `after`. */
       boxout?: { after: number; items: string[]; accent?: string }
       /** Up to three short points as a fanned stack of sticky notes. */
-      fan?: { label: string; notes: FanNote[]; tints?: string[] }
+      fan?: { label: string; notes: FanNote[]; tints?: string[]; prompt?: string }
       /** A short list as a small accordion: each item's lead-in as its title. */
       items?: { title: string; body: ReactNode }[]
       plane?: PlaneTone

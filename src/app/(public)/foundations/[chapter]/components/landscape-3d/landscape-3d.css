@@ -102,7 +102,8 @@
   }
 }
 
-/* Roll call: the light grey message box above the map (RollCall.tsx).
+/* Roll call: the yellow message box above the map (RollCall.tsx), in Transform yellow like
+   every prompt on the Foundations pages.
    A speech bubble on the landscape's left edge, its tail leaning right, down onto the table, so
    the map is the one speaking. The shadow
    is a drop shadow so the tail casts one too. */
@@ -116,8 +117,8 @@
   display: inline-block;
   padding: 14px 22px;
   border-radius: 18px;
-  background: #ecebe8;
-  color: #5b6268;
+  background: #f1d46e;
+  color: #16222b;
   filter: drop-shadow(0 6px 10px rgb(22 34 43 / 0.14));
 }
 
@@ -128,7 +129,7 @@
   left: var(--tail-x, 32px);
   border-style: solid;
   border-width: 26px 0 0 26px;
-  border-color: #ecebe8 transparent transparent transparent;
+  border-color: #f1d46e transparent transparent transparent;
 }
 
 .l3d-roll__slot {

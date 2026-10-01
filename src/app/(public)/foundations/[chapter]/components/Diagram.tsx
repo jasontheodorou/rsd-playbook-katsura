@@ -7,6 +7,11 @@ import {
   ShieldCheck,
   Umbrella,
   type Icon,
+  Binoculars,
+  ChartLine,
+  ClipboardText,
+  Graph,
+  Target,
 } from '@phosphor-icons/react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import {
@@ -36,6 +41,11 @@ export const DIAGRAM_ICONS = {
   shieldCheck: ShieldCheck,
   arrowsClockwise: ArrowsClockwise,
   umbrella: Umbrella,
+  chartLine: ChartLine,
+  binoculars: Binoculars,
+  target: Target,
+  graph: Graph,
+  clipboardText: ClipboardText,
 } satisfies Record<string, Icon>
 
 export type DiagramItem = {

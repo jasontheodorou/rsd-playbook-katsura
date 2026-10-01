@@ -1,9 +1,9 @@
 'use client'
 
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-import { createOnce } from '../page/once'
+import { usePromptMemory } from '../page/once'
 
 import './note-fan.css'
 
@@ -16,9 +16,6 @@ import './note-fan.css'
  * simply sit spread out.
  */
 export type FanNote = { label: string; text: string }
-
-/* The hint shows until the reader has opened any stack once, then never again. */
-const hint = createOnce('katsura:note-fan-used')
 
 const REST = [
   { x: 0, y: 0, rotate: -2 },
@@ -36,33 +33,60 @@ export function NoteFan({
   label,
   accent = '#111',
   tints = ['#f5f1ea', '#efe9e0', '#faf7f2'],
+  prompt,
 }: {
   notes: FanNote[]
   /** What the set is, for screen readers, for example "The three core principles". */
   label: string
   accent?: string
   tints?: string[]
+  /** The yellow speech bubble to the right of the stack, pointing at it, with a pulse on the top
+      note, shown on every visit until the stack is first opened. The chapter gives it to the
+      page's first stack only. */
+  prompt?: string
 }) {
   const [open, setOpen] = useState(false)
   const reduce = useReducedMotion()
-  const used = hint.useUsed()
   const spread = open || Boolean(reduce)
-  // Remember the first opening after it happens, not while React is drawing the stack.
-  useEffect(() => {
-    if (open) hint.mark()
-  }, [open])
+  const [opened, setOpened] = useState(false)
+  const [seen, remember] = usePromptMemory('note-fan')
+  // Opening the stack once puts its prompt away for this visit.
+  const show = (v: boolean) => {
+    setOpen(v)
+    if (v) {
+      setOpened(true)
+      if (prompt) remember()
+    }
+  }
   return (
     <ul
       className="nfan"
       aria-label={label}
       tabIndex={0}
       data-open={spread}
-      onPointerEnter={(e) => e.pointerType === 'mouse' && setOpen(true)}
-      onPointerLeave={(e) => e.pointerType === 'mouse' && setOpen(false)}
-      onFocus={() => setOpen(true)}
-      onBlur={() => setOpen(false)}
-      onClick={() => setOpen((o) => !o)}
+      onPointerEnter={(e) => e.pointerType === 'mouse' && show(true)}
+      onPointerLeave={(e) => e.pointerType === 'mouse' && show(false)}
+      onFocus={() => show(true)}
+      onBlur={() => show(false)}
+      onClick={() => show(!open)}
     >
+      {/* The Design Landscape's pulses on the top note: a soft blue disc and ring rising from the
+          note's empty lower half, three in turn 0.35 seconds apart, every 5 seconds, from when
+          the stack comes into view until it is first opened. */}
+      {prompt && !opened && !seen && !reduce && (
+        <motion.li
+          className="nfan__tap"
+          aria-hidden="true"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.3 }}
+        >
+          {[0, 1, 2].map((k) => (
+            <span key={k} style={{ animationDelay: `${0.6 + k * 0.35}s` }} />
+          ))}
+        </motion.li>
+      )}
       {notes.slice(0, 3).map((n, i) => (
         <motion.li
           key={n.label}
@@ -78,33 +102,19 @@ export function NoteFan({
           <span className="nfan__text">{n.text}</span>
         </motion.li>
       ))}
-      {/* The hint: beside the stack while it is closed; it slides away and fades as the notes fan
-          out, so it never sits under them. */}
       <AnimatePresence>
-        {!spread && !used && (
+        {prompt && !opened && !seen && (
           <motion.li
-            key="hint"
-            className="nfan__hint"
+            key="bubble"
+            className="nfan__bubble"
             aria-hidden="true"
-            initial={{ opacity: 0, x: -6 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{
-              opacity: 0,
-              x: 24,
-              filter: 'blur(2px)',
-              transition: { duration: 0.25, ease: 'easeIn' },
-            }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
+            initial={reduce ? false : { opacity: 0, x: 10 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            exit={{ opacity: 0, transition: { duration: 0.3 } }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
           >
-            <span>Hover to expand</span>
-            <motion.svg
-              className="nfan__arrow"
-              viewBox="0 0 24 24"
-              animate={{ x: [0, 4, 0] }}
-              transition={{ duration: 1.8, ease: 'easeInOut', repeat: Infinity, repeatDelay: 0.6 }}
-            >
-              <path d="M5 12h13M13 6l6 6-6 6" />
-            </motion.svg>
+            {prompt}
           </motion.li>
         )}
       </AnimatePresence>
