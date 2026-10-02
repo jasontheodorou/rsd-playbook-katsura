@@ -12,7 +12,7 @@
   --tile: 48px;
   --h: 384px;
   --ink: #16222b;
-  --tint: #f6f4f0;
+  --tint: #f8f7f4;
   --slate: #34566b;
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.13 0 0 0 0 0.17 0 0 0 0.7 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url%28%23n%29' opacity='0.09'/%3E%3C/svg%3E");
 

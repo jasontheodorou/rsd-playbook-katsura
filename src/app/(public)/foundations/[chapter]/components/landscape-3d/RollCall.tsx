@@ -25,11 +25,21 @@ const useReduced = () =>
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number]
 
-export function RollCall({ names, prompt }: { names: string[]; prompt: string }) {
+export function RollCall({
+  names,
+  prompt,
+  lead = 'Select a region to explore the ',
+}: {
+  names: string[]
+  prompt: string
+  /** The words before the changing name (the participation model passes its own). With no names,
+      the box shows just these words, standing still. */
+  lead?: string
+}) {
   const reduce = useReduced()
   const [i, setI] = useState(0)
   useEffect(() => {
-    if (reduce) return
+    if (reduce || names.length < 2) return
     const t = setInterval(() => setI((n) => (n + 1) % names.length), 1800)
     return () => clearInterval(t)
   }, [reduce, names.length])
@@ -44,22 +54,24 @@ export function RollCall({ names, prompt }: { names: string[]; prompt: string })
       transition={{ duration: 0.7, ease: EASE, delay: 0.3 }}
     >
       <span className="l3d-roll__sr">{prompt}</span>
-      <span aria-hidden="true">Select a region to explore the </span>
-      <span className="l3d-roll__slot" aria-hidden="true">
-        <span className="l3d-roll__hold">{longest}</span>
-        <AnimatePresence initial={false}>
-          <motion.span
-            key={names[i]}
-            className="l3d-roll__word"
-            initial={{ y: '100%', opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: '-100%', opacity: 0 }}
-            transition={{ duration: 0.45, ease: EASE }}
-          >
-            {names[i]}
-          </motion.span>
-        </AnimatePresence>
-      </span>
+      <span aria-hidden="true">{lead}</span>
+      {names.length > 0 && (
+        <span className="l3d-roll__slot" aria-hidden="true">
+          <span className="l3d-roll__hold">{longest}</span>
+          <AnimatePresence initial={false}>
+            <motion.span
+              key={names[i]}
+              className="l3d-roll__word"
+              initial={{ y: '100%', opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: '-100%', opacity: 0 }}
+              transition={{ duration: 0.45, ease: EASE }}
+            >
+              {names[i]}
+            </motion.span>
+          </AnimatePresence>
+        </span>
+      )}
     </motion.div>
   )
 }

@@ -11,6 +11,8 @@ import { Boxout } from '../components/Boxout'
 import { DataPath } from '../components/DataPath'
 import { DesignLandscape } from '../components/DesignLandscape'
 import { Landscape3D } from '../components/landscape-3d/Landscape3D'
+import { Participation } from '../components/participation/Participation'
+import { ParticipationSteps } from '../components/participation/ParticipationSteps'
 import { Polaroids } from '../components/Polaroids'
 import { Diagram } from '../components/Diagram'
 import { FrameworkPill } from '../components/FrameworkPill'
@@ -199,6 +201,10 @@ function BlockView({ block, firstFan = false }: { block: Block; firstFan?: boole
       )
     case 'stories':
       return <Stories look="panels" label={block.label} stories={block.stories} prompt={block.prompt} bar />
+    case 'participation':
+      return <Participation prompt={block.prompt} lead={block.lead} steps={block.steps} />
+    case 'participationSteps':
+      return <ParticipationSteps label={block.label} steps={block.steps} />
     case 'journey':
       return (
         <Journey
@@ -314,6 +320,10 @@ function edges(block: Block, i: number): { top: string; bottom: string } {
       return { top: `${b} .st`, bottom: `${b} .st` }
     case 'journey':
       return { top: `${b} .jy`, bottom: `${b} .jy` }
+    case 'participation':
+      return { top: `${b} .pm-stage`, bottom: `${b} .pm-stage` }
+    case 'participationSteps':
+      return { top: `${b} .pm-tabs`, bottom: `${b} .pm-tabs` }
     case 'dataPath':
       return { top: `${b} .dpn`, bottom: `${b} .dpn` }
     case 'stack':
@@ -342,6 +352,8 @@ const NAMES: Record<Block['kind'], string> = {
   voices: 'voices',
   stories: 'story panels',
   journey: 'journey',
+  participation: 'participation model',
+  participationSteps: 'participation steps',
   dataPath: 'data path',
   stack: 'stacking cards',
   part: 'written part',

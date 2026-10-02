@@ -104,6 +104,12 @@ export type Block =
       restBody: string
       steps: JourneyStep[]
     }
+  /** The participation model in 2.5D: four rings with a drawing on each, on a soft yellow wash;
+      clicking a drawing plays its small action and pops its name up; Roll call and pulses until the
+      first click; columns 2 to 10 (chapter 06). */
+  | { kind: 'participation'; prompt: string; lead: string; steps: JourneyStep[] }
+  /** The participation model's explainer: tabs, one step at a time, on columns 2 to 10 (chapter 06). */
+  | { kind: 'participationSteps'; label: string; steps: JourneyStep[] }
   /** The data path: five stops along a rising line on a warm tint, the chosen stop's words on
       white; columns 2 to 11 (How we think's data-driven decision-making). */
   | {

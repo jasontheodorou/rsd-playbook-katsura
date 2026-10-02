@@ -24,7 +24,7 @@ export const chapters: Chapter[] = [
   // Marks keep their original names; each went to the chapter it suits best.
   { slug: 'how-we-think', title: 'How we think', Mark: OurDifferenceMark },
   { slug: 'what-we-care-about', title: 'How we tell stories', Mark: OurValuesMark },
-  { slug: 'how-we-deliver', title: 'How we deliver', Mark: OurMethodsMark },
+  { slug: 'how-we-deliver', title: 'How we collaborate', Mark: OurMethodsMark },
 ]
 
 /** Stable content identity for progress. Survives the move to the read model as long as slugs do. */

@@ -123,7 +123,6 @@ const ROLES: Role[] = [
     methods: [
       { term: 'Systems mapping and evaluation', text: 'explained in How we think.' },
       { term: 'Storytelling', text: 'explained in How we tell stories.' },
-      { term: 'Facilitation and design sprints', text: 'explained in How we deliver.' },
     ],
   },
   {

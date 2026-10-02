@@ -1,0 +1,221 @@
+/* The participation model: page columns 2 to 10, about 20% narrower than the Design Landscape map
+   (Jason, 2 October 2026), as a subgrid so its wash snaps to the page's column lines. Left-aligned:
+   the wash's left edge sits on column 2, the line the body text starts on. Below 1024px, where the
+   page is one column, it takes the full width. */
+.pm {
+  grid-column: 1 / 10;
+  display: grid;
+  grid-template-columns: subgrid;
+}
+
+.pm > * {
+  grid-column: 1 / -1;
+}
+
+/* The canvas is exactly this box; the framing keeps the model, at every tilt, inside it.
+   On touch screens a vertical swipe still scrolls the page; the tilt is for a mouse or trackpad. */
+.pm-stage {
+  position: relative;
+  touch-action: pan-y;
+}
+
+.pm-wash,
+.pm-canvas,
+.pm-canvas canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Roll call (landscape-3d/RollCall.tsx) speaks from the band above the drawings, on column 2 like the
+   body text; its tail leans down onto the outer ring. It fades at the first click. */
+.pm-cue {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  transform: translateY(-100%);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.pm-cue[data-gone='true'] {
+  opacity: 0;
+}
+
+/* The explainer tabs (ParticipationSteps), their own block further down the page, on page columns 2 to
+   10 like the model, in the T-shaped tabs' style (t-shaped-tabs.css): a paper card with a hairline
+   edge, pill tabs on a faint warm bar, sand for the chosen one. */
+.pm-tabs {
+  grid-column: 1 / 10;
+  border-radius: 24px;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+  overflow: hidden;
+  color: #111;
+}
+
+.pm-tabs__bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 12px;
+  background: #f5f1ea;
+}
+
+.pm-tabs__tab {
+  appearance: none;
+  margin: 0;
+  padding: 10px 20px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: #55524e;
+  cursor: pointer;
+  transition: color 200ms ease, background-color 250ms ease;
+}
+
+.pm-tabs__tab:hover {
+  color: #111;
+}
+
+.pm-tabs__tab[aria-selected='true'] {
+  color: #111;
+  font-weight: 700;
+  background: #ece6dd;
+}
+
+.pm-tabs__tab:focus-visible {
+  outline: 3px solid #ec671b;
+  outline-offset: 2px;
+}
+
+.pm-tabs__stage {
+  display: grid;
+}
+
+.pm-tabs__panel {
+  grid-area: 1 / 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 168px;
+  column-gap: 48px;
+  align-items: center;
+  padding: 48px;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateX(16px);
+  transition: opacity 0.3s ease, transform 0.36s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0.3s;
+}
+
+.pm-tabs__panel[data-on='true'] {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.36s ease 0.08s, transform 0.36s cubic-bezier(0.16, 1, 0.3, 1) 0.08s, visibility 0s;
+}
+
+.pm-tabs__panel h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.15;
+  text-box: trim-both cap alphabetic;
+}
+
+.pm-tabs__panel p {
+  margin: 16px 0 0;
+  max-width: 34em;
+  font-size: clamp(1.125rem, 0.62rem + 0.78vw, 1.375rem);
+  line-height: 1.6;
+  color: #2a2a2e;
+}
+
+/* The drawing's reminder: the drawing as in the model, on a white card with a hairline edge and a flat
+   soft-yellow plane set off behind it, like katsura's photographs with their coloured plane. */
+.pm-tabs__art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 168px;
+  aspect-ratio: 1;
+}
+
+.pm-tabs__art::before {
+  content: '';
+  position: absolute;
+  inset: 14% 4% 4% 14%;
+  border-radius: 12px;
+  /* the same strength as the model's wash, so it echoes it (Jason, 2 October 2026; 45% was too strong) */
+  background: rgb(241 212 110 / 0.3);
+}
+
+.pm-tabs__art::after {
+  content: '';
+  position: absolute;
+  inset: 4% 14% 14% 4%;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+}
+
+.pm-tabs__art img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 62%;
+  height: 62%;
+  object-fit: contain;
+  translate: -5% -5%;
+}
+
+.pm-tabs__panel .pm-tabs__lead {
+  margin-top: 24px;
+  font-weight: 700;
+  color: #111;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-cue,
+  .pm-tabs__panel,
+  .pm-tabs__panel[data-on='true'] {
+    transform: none;
+    transition: none;
+  }
+}
+
+@media (max-width: 63.9375rem) {
+  .pm,
+  .pm-tabs {
+    grid-column: 1 / -1;
+  }
+
+  .pm-cue {
+    font-size: 0.9375rem;
+    white-space: normal;
+  }
+
+  .pm-tabs__panel {
+    padding: 32px 24px;
+  }
+}
+
+/* On a phone the drawing sits smaller, above the words. */
+@media (max-width: 39.9375rem) {
+  .pm-tabs__panel {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 16px;
+  }
+
+  .pm-tabs__art {
+    order: -1;
+    width: 104px;
+  }
+}

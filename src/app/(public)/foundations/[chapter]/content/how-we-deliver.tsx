@@ -31,13 +31,14 @@ const STEPS: JourneyStep[] = [
 
 /**
  * How we deliver: chapter 06, Hands' closing section, "Participation is our superpower" (F2.87 to
- * F2.99), then the three methods page 1 points here for (F2.14, F2.15, F2.19) and the two
- * collaboration passages from chapter 1 (F1.15, F1.28). Taken from the manual explorer's
+ * F2.99). The three methods page 1 points here for (F2.14, F2.15, F2.19, "How our designers work
+ * with others") and the two collaboration passages from chapter 1 (F1.15, F1.28, "Collaboration is
+ * also what lets design succeed") were removed at Jason's request on 2 October 2026. Taken from the manual explorer's
  * Sequencing plan; slip fixed (F2.87) and client-facing "your" re-aimed at designers (F2.93).
  * First draft, 28 September 2026.
  */
 export const howWeDeliver: ChapterContent = {
-  title: 'How we deliver',
+  title: 'How we collaborate',
   framework: 'hands',
   statement: {
     lead: 'Great design is built on great collaboration.',
@@ -48,16 +49,26 @@ export const howWeDeliver: ChapterContent = {
       kind: 'text',
       paragraphs: [
         'We want our work to be embedded into the culture of a project, programme and organisation, so it can live on and create positive change that everyone wants to sustain.',
-        'Our participation model demonstrates value and builds knowledge through doing. We invite and guide participants to experience it themselves - moving from ‘engage’ to ‘grow’ by walking through scenarios, in each other’s shoes, to develop future journeys, service maps, roles and structures. Concepts are then brought to life and tested together.',
-        'The participation model:',
+        // The manual's paragraph (F2.88) is split here so the model sits after its first sentence (Jason, 2 October 2026).
+        'Our participation model demonstrates value and builds knowledge through doing.',
       ],
     },
     {
-      kind: 'journey',
-      title: 'Explore the participation model',
+      kind: 'participation',
+      // Roll call's words (Jason, 2 October 2026)
+      lead: 'Select a step in the model',
+      prompt: 'Select a step in the model',
+      steps: STEPS,
+    },
+    {
+      kind: 'text',
+      paragraphs: [
+        'We invite and guide participants to experience it themselves - moving from ‘engage’ to ‘grow’ by walking through scenarios, in each other’s shoes, to develop future journeys, service maps, roles and structures. Concepts are then brought to life and tested together.',
+      ],
+    },
+    {
+      kind: 'participationSteps',
       label: 'The four steps of the participation model',
-      restTitle: 'Four steps, from engage to grow',
-      restBody: 'Choose a step to see what it involves.',
       steps: STEPS,
     },
     {
@@ -73,64 +84,6 @@ export const howWeDeliver: ChapterContent = {
         'Promoting strengths and assets, rather than just focussing on needs and deficits.',
         'Empowering and promoting hidden user groups, bringing their insights into focus.',
         'Nurturing in-house research and design skills to sustain ongoing innovation.',
-      ],
-    },
-    {
-      kind: 'part',
-      mark: '/illustrations/hhh/hands-scribble.png',
-      heading: 'How our designers work with others',
-      photo: '/photos/participation-people.png',
-      alt: 'Lego figures on a wall beside printed notes about the people they stand for.',
-      plane: 'yellow',
-      side: 'bl',
-      drift: 'sideways',
-      paragraphs: ['Our designers bring participation to life in three ways:'],
-      fan: {
-        label: 'Three ways our designers work with others',
-        tints: ['#f7e7ee', '#f2dce6', '#fbf0f4'],
-        notes: [
-          {
-            label: 'Facilitation',
-            text: 'With designers, consumers, frontline staff and the organisation to explore hypotheses and reveal hidden assumptions.',
-          },
-          {
-            label: 'Design sprints',
-            text: 'Participation with cross-functional teams to ideate and prioritise solutions, identify unintended consequences and build legitimacy.',
-          },
-          {
-            label: 'Co-design',
-            text: 'Intensive, short cycles leading multidisciplinary teams to explore, prototype and test ideas together.',
-          },
-        ],
-      },
-    },
-    {
-      kind: 'text',
-      paragraphs: ['Collaboration is also what lets design succeed:'],
-    },
-    {
-      kind: 'accordion',
-      sections: [
-        {
-          id: 'systemic-change',
-          title: 'Cultivating collaboration and systemic change',
-          body: (
-            <p>
-              The success of modern services depends on collaboration across professions, agencies,
-              and communities, a hallmark of design.
-            </p>
-          ),
-        },
-        {
-          id: 'cross-boundary',
-          title: 'Systems thinking and cross-boundary collaboration',
-          body: (
-            <p>
-              Systems must enable collaboration through multidisciplinary teams empowered to co-own
-              outcomes.
-            </p>
-          ),
-        },
       ],
     },
   ],

@@ -151,6 +151,13 @@
   grid-template-columns: subgrid;
 }
 
+/* The participation model takes the full 11 columns, as a subgrid, so its wash and captions snap. */
+.fc__block--participation,
+.fc__block--participationSteps {
+  display: grid;
+  grid-template-columns: subgrid;
+}
+
 /* The stacking cards take the full 11 columns, as a subgrid, so each card's inner columns snap. */
 .fc__block--stack {
   display: grid;
@@ -222,6 +229,14 @@
   margin-top: 40px;
 }
 
+/* Another exception, agreed with Jason (2 October 2026): the participation model's box carries its own
+   room above and below (its wash and the band its words pop up into), so it sits 20px from the text
+   on each side at every width (40px was tried first). */
+.fc__block--participation,
+.fc__block--participation + .fc__block {
+  margin-top: 20px;
+}
+
 /* The trio's cells pad their photographs; its margins take the padding back on both sides. */
 .fc__block--trio {
   margin-top: calc(var(--gap-block) - var(--trio-pad));
@@ -264,6 +279,8 @@
   .fc__block--voices,
   .fc__block--stories,
   .fc__block--journey,
+  .fc__block--participation,
+  .fc__block--participationSteps,
   .fc__block--dataPath,
   .fc__block--boxout,
   .fc__block--part {

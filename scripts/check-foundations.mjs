@@ -17,8 +17,13 @@ if (!slugs.length) {
 }
 
 const SCALE = new Set([96, 64, 48, 32])
-// Agreed exceptions to the scale: the gap into the Design Landscape map is 37 to 43px (40px, 29 September 2026).
-const EXCEPTIONS = [{ label: /to design landscape map$/, min: 37, max: 43 }]
+// Agreed exceptions to the scale: the gap into the Design Landscape map is 37 to 43px (40px, 29 September 2026),
+// and the gaps either side of the participation model are 17 to 23px (20px, 2 October 2026).
+const EXCEPTIONS = [
+  { label: /to design landscape map$/, min: 37, max: 43 },
+  { label: /to participation model$/, min: 17, max: 23 },
+  { label: /^participation model to /, min: 17, max: 23 },
+]
 // Diagrams: every connector must stop clear of every label, tile and the centre pill.
 const browser = await chromium.launch()
 let failures = 0
