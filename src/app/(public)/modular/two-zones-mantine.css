@@ -1,0 +1,475 @@
+/* Approach 4, Two zones with Mantine, rebuilt from scratch: a course page. */
+.cp {
+  /* The Foundations spacing scale: multiples of 8, each gap owned by the element below, measured to
+     what the eye sees (text trimmed to cap height and baseline). */
+  --cp-inset: 48px;
+  --cp-block: 64px;
+  --cp-green: #3f9a6b;
+  --cp-green-text: #2b7552;
+  display: flex;
+  flex-direction: column;
+}
+
+/* The heading: breadcrumbs, then the course's name as a plain subheading. */
+.cp-crumbs {
+  font-size: 14px;
+  line-height: 1;
+  color: #5a544e;
+}
+
+.cp-crumbs > * {
+  text-box: trim-both cap alphabetic;
+}
+
+.cp-crumbs a {
+  color: #16222b;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+
+.cp-crumbs a:hover {
+  color: #34566b;
+}
+
+.cp-crumbs [aria-current] {
+  color: #4d4843;
+}
+
+/* The course's name: the Foundations sub-chapter heading (a part's heading), 24 under the crumbs
+   as a part's heading sits under its eyebrow. */
+.cp-course {
+  /* 22 from the crumbs' line box puts 24 between their baseline and the heading's cap line */
+  margin: 22px 0 0;
+  font-size: clamp(1.75rem, 1rem + 1.6vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: #111;
+  text-box: trim-both cap alphabetic;
+}
+
+/* One hairline box in two zones: the tint on page columns 1 to 4, white on 5 to 12. */
+.cp-box {
+  margin-top: var(--cp-block);
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+  background: #fff;
+  overflow: clip;
+}
+
+.cp-zone {
+  grid-column: 1 / 5;
+  margin-right: calc(-1 * var(--grid-gap));
+  background: #f8f7f4;
+  border-right: 1px solid #e2dcd3;
+}
+
+/* The list stays in place while the card scrolls with the page. If an open part is taller than the
+   window, the list scrolls on its own, and that scroll never passes on to the page. */
+.cp-nav {
+  position: sticky;
+  top: var(--cp-bar, 64px);
+  max-height: calc(100vh - var(--cp-bar, 64px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  padding: var(--cp-inset) calc(var(--cp-inset) - 8px) var(--cp-inset) var(--cp-inset);
+}
+
+.cp-nav .cp-bar {
+  background-color: #ddd5ca;
+}
+
+.cp-bar__text {
+  margin: 16px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+  text-box: trim-both cap alphabetic;
+  color: #5a544e;
+}
+
+.cp-bar__text strong {
+  font-weight: 600;
+  color: #16222b;
+}
+
+/* The course's parts: a quiet accordion, separated by space. */
+.cp-part {
+  margin-top: 16px;
+}
+
+.cp-part:first-child {
+  margin-top: 32px;
+}
+
+.cp-part__control {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  color: #16222b;
+  cursor: pointer;
+}
+
+.cp-part__label {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.cp-part__name {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.cp-part__name {
+  transition: color 200ms ease;
+}
+
+.cp-part__control:hover .cp-part__name {
+  color: #34566b;
+}
+
+.cp-part__count {
+  font-size: 14px;
+  color: #5a544e;
+}
+
+.cp-part__count[data-complete='true'] {
+  color: var(--cp-green-text);
+  font-weight: 600;
+}
+
+.cp-part__chevron {
+  order: 2;
+  margin-left: auto;
+  display: flex;
+  color: #5a544e;
+  transition: transform 250ms ease;
+}
+
+.cp-part__chevron[data-rotate] {
+  transform: rotate(180deg);
+}
+
+/* Tasks: plain rows with round markers. */
+.cp-tasks {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cp-task {
+  width: calc(100% + 24px);
+  margin: 0 -12px;
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  font: inherit;
+  text-align: left;
+  color: #2a2a2e;
+  cursor: pointer;
+  transition: background-color 200ms ease;
+}
+
+.cp-task:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.cp-task[aria-current='true'] {
+  background: #fff;
+  box-shadow: 0 6px 16px -10px rgba(52, 60, 70, 0.25);
+}
+
+.cp-task__mark {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px #b9b1a7;
+  transition: background-color 300ms ease, box-shadow 300ms ease;
+}
+
+.cp-task__mark svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cp-task[aria-current='true'] .cp-task__mark {
+  box-shadow: inset 0 0 0 1.5px #16222b, inset 0 0 0 5px #fff, inset 0 0 0 10px #16222b;
+}
+
+.cp-task[data-done='true'] .cp-task__mark {
+  background: var(--cp-green);
+  box-shadow: none;
+}
+
+.cp-task__title {
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.cp-task[aria-current='true'] .cp-task__title {
+  font-weight: 600;
+  color: #16222b;
+}
+
+.cp-task[data-done='true'] .cp-task__title {
+  color: #5a544e;
+}
+
+.cp-task__min {
+  font-size: 13px;
+  color: #5a544e;
+}
+
+.cp-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The card, on white, kept in view while the list scrolls. */
+.cp-side {
+  grid-column: 5 / 13;
+  min-width: 0;
+}
+
+.cp-card {
+  padding: var(--cp-inset);
+  animation: tz-in 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cp-card__meta {
+  margin: 0;
+  font-size: 14px;
+  color: #5a544e;
+  text-box: trim-both cap alphabetic;
+}
+
+/* The card's title sits a step below the course's name. Gaps: meta to title 24, title to words 48
+   (the title-to-statement gap), paragraphs 32, words to the button 64 (the block gap). */
+.cp-card__title {
+  margin: 24px 0 0;
+  font-size: clamp(1.5rem, 1rem + 0.9vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #16222b;
+  text-box: trim-both cap alphabetic;
+}
+
+.cp-words {
+  margin-top: 48px;
+  color: #3a4750;
+}
+
+.cp-words > p,
+.cp-words > h3 {
+  text-box: trim-both cap alphabetic;
+}
+
+.cp-words > * + * {
+  margin-top: 32px;
+}
+
+.cp-words > h3 {
+  margin-top: 48px;
+}
+
+.cp-words > h3 + * {
+  margin-top: 24px;
+}
+
+.cp-words .p2-aside__label {
+  color: #5a544e;
+}
+
+.cp-words li::marker {
+  color: #8a847e;
+}
+
+.cp-card__end {
+  margin-top: var(--cp-block);
+}
+
+@media (max-width: 79.9375rem) {
+  .cp {
+    --cp-inset: 40px;
+  }
+}
+
+@media (max-width: 63.9375rem) {
+  .cp {
+    --cp-inset: 32px;
+    --cp-block: 56px;
+  }
+
+  .cp-box {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cp-zone,
+  .cp-side {
+    grid-column: 1;
+    margin-right: 0;
+  }
+
+  .cp-zone {
+    border-right: 0;
+    border-bottom: 1px solid #e2dcd3;
+  }
+
+  .cp-nav {
+    position: static;
+    max-height: none;
+    overflow: visible;
+    padding: var(--cp-inset);
+  }
+}
+
+@media (max-width: 39.9375rem) {
+  .cp {
+    --cp-inset: 24px;
+    --cp-block: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cp-card {
+    animation: none;
+  }
+
+  .cp-part__chevron {
+    transition: none;
+  }
+}
+
+/* The spacing overlay is drawn over the page from here. */
+.cp {
+  position: relative;
+}
+
+/* Part names trimmed to cap height and baseline, so the gap above the first (V5) is 32 + the control's 8 = 40. */
+.cp-part__name,
+.cp-part__count {
+  text-box: trim-both cap alphabetic;
+}
+
+/* Your progress: a soft green ring with its percentage, and a short summary beside it. */
+.cp-ring {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.cp-ring__pct {
+  display: block;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #16222b;
+}
+
+.cp-ring__text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+}
+
+.cp-ring__text strong,
+.cp-ring__text span {
+  text-box: trim-both cap alphabetic;
+}
+
+.cp-ring__text strong {
+  font-size: 16px;
+  font-weight: 700;
+  color: #16222b;
+}
+
+.cp-ring__text span {
+  font-size: 14px;
+  color: #5a544e;
+}
+
+/* V4: your progress to the first part, 32 + the control's 8 = 40. */
+.cp-ring + .cp-part,
+.cp-ring ~ .mantine-Accordion-root .cp-part:first-child {
+  margin-top: 32px;
+}
+
+/* Mantine draws the ring inside its box, one thickness in from each edge: pull the box out by that
+   much so the visible ring sits on the inset and its gaps (V3, V4, H1) measure to the ring itself. */
+.cp-ring__dial {
+  margin: -8px 0 -8px -8px;
+}
+
+/* The part's name and its count, 8 apart once trimmed. */
+.cp-part__label {
+  gap: 8px;
+}
+
+/* V2: the course's name to the box, 40 (Jason, 2 October 2026). */
+.cp-box {
+  margin-top: 40px;
+}
+
+/* The card opens on its title: no line above it. */
+.cp-card__title {
+  margin-top: 0;
+}
+
+
+
+/* The chevron is taller than the name's trimmed line: keep it from setting the row's height, so V4 is 40. */
+.cp-part__chevron {
+  margin-block: -4px;
+}
+
+/* Mark as complete: a plain pill with no mark (Jason: "too many ticks"). Once done, the soft green
+   of the finished tasks, with just the word. */
+.cp .tz-done {
+  padding: 0 24px;
+}
+
+.cp .tz-done__mark {
+  display: none;
+}
+
+.cp .tz-done[data-done='true'] {
+  background: #e4f2ea;
+  color: #22603f;
+}
+
+/* The card's title takes focus when a card opens; no outline for that programmatic focus. */
+.cp-card__title:focus {
+  outline: none;
+}

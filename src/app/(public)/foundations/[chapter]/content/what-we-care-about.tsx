@@ -69,8 +69,8 @@ export const whatWeCareAbout: ChapterContent = {
         {
           label: 'Storytelling',
           text: 'Helping teams “zoom in” on human detail and “zoom out” to see the big picture.',
-          photo: '/photos/three-way-conversation.png',
-          alt: 'Three people talking around a table, one of them explaining with her hands.',
+          photo: '/photos/lego-presenting-pair.jpg',
+          alt: 'Two colleagues at a workshop, one holding up a small Lego model while the other smiles and gestures.',
         },
         {
           label: 'Visualisation & storytelling',
@@ -81,8 +81,8 @@ export const whatWeCareAbout: ChapterContent = {
         {
           label: 'Visual storytelling',
           text: 'Translating research into artefacts that visualise how people interact with services, the moments of delight and the barriers they face.',
-          photo: '/photos/insight-wall-sticky.png',
-          alt: 'A man leaning in to add a sticky note to a wall of research notes.',
+          photo: '/photos/lego-bricks-drawings.jpg',
+          alt: 'Lego bricks scattered over printed sheets with hand-drawn sketches of insects.',
         },
       ],
     },

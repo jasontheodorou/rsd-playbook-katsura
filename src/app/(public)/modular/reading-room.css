@@ -1,0 +1,350 @@
+/* Approach 2, Reading room: the Foundations chapter page, with a task list in place of the rail. */
+.rr {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  align-items: start;
+}
+
+/* The task list: the rail's 8px track beside a sticky list, page columns 1 to 3. */
+.rr-nav {
+  grid-column: 1 / 4;
+  position: sticky;
+  top: 96px;
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr);
+  gap: 24px;
+  max-height: calc(100svh - 140px);
+}
+
+.rr-track {
+  display: block;
+  border-radius: 999px;
+  background: rgba(216, 180, 163, 0.28);
+  overflow: hidden;
+}
+
+.rr-track > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: #d8b4a3;
+  transform-origin: top;
+  transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rr-list {
+  overflow-y: auto;
+  padding-right: 8px;
+  scrollbar-width: thin;
+}
+
+.rr-count {
+  margin: 0 0 32px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a847e;
+}
+
+.rr-module + .rr-module {
+  margin-top: 32px;
+}
+
+.rr-module h2 {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #16222b;
+}
+
+.rr-module ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* A task: plain words. Read ones step back to grey with a small dot; the open one is ink. */
+.rr-task {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 6px 0 6px 16px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.4;
+  text-align: left;
+  color: #44515a;
+  cursor: pointer;
+}
+
+.rr-task::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 13px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px #b7b0a8;
+}
+
+.rr-task[data-done='true'] {
+  color: #8a847e;
+}
+
+.rr-task[data-done='true']::before {
+  background: #d8b4a3;
+  box-shadow: none;
+}
+
+.rr-task[aria-current='true'] {
+  color: #111;
+  font-weight: 700;
+}
+
+.rr-task:hover {
+  color: #111;
+}
+
+/* The card, read like a chapter: page columns 5 to 11. */
+.rr-page {
+  grid-column: 5 / 12;
+  min-width: 0;
+  animation: rr-in 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes rr-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+.rr-eyebrow {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a847e;
+}
+
+.rr-title {
+  margin: 32px 0 0;
+  font-size: clamp(2.5rem, 1rem + 3.2vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: #111;
+}
+
+.rr-stop {
+  display: inline-block;
+  width: 0.2em;
+  height: 0.2em;
+  margin-left: 0.06em;
+  border-radius: 50%;
+  background: #ec671b;
+}
+
+/* The chapter's body text: about 22px at 1440px, 34em measure, 32px between paragraphs. The first
+   paragraph is the statement: ink, a step larger. */
+.rr-words {
+  --size: clamp(1.125rem, 0.62rem + 0.78vw, 1.625rem);
+  max-width: 34em;
+  margin-top: 48px;
+  font-size: var(--size);
+  line-height: 1.6;
+  color: #2a2a2e;
+}
+
+.rr-words > * {
+  margin: 0;
+}
+
+.rr-words > * + * {
+  margin-top: 32px;
+}
+
+.rr-words > p:first-child {
+  font-size: 1.15em;
+  letter-spacing: -0.01em;
+  color: #111;
+}
+
+.rr-words h3 {
+  margin-top: 64px;
+  font-size: 1em;
+  font-weight: 800;
+  color: #111;
+}
+
+.rr-words h3 + * {
+  margin-top: 16px;
+}
+
+.rr-words ul,
+.rr-words ol {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-left: 1.2em;
+  font-size: 0.9em;
+}
+
+.rr-words li::marker {
+  color: #9a928a;
+}
+
+/* Asides as the boxout: white, a hairline, a short accent bar top left. */
+.rr-words .p2-aside {
+  position: relative;
+  max-width: none;
+  padding: 40px;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+  font-size: 0.85em;
+}
+
+.rr-words .p2-aside::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 40px;
+  width: 48px;
+  height: 4px;
+  background: #d8b4a3;
+}
+
+.rr-words .p2-aside[data-variant='tool']::before {
+  background: #cbd9da;
+}
+
+.rr-words .p2-aside[data-variant='best-practice']::before {
+  background: #f1d46e;
+}
+
+/* The end: a mark, outlined until the card is read, then the pastel blooms from its centre. */
+.rr-end {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-top: 96px;
+  padding-bottom: 96px;
+}
+
+.rr-mark {
+  flex: none;
+  width: 120px;
+  height: 120px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.rr-mark svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.rr-mark__disc {
+  fill: #e5e1dd;
+}
+
+.rr-mark__bloom {
+  fill: #f1c7ac;
+  transform-origin: 60px 60px;
+  transform: scale(0);
+  transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rr-mark__tick {
+  fill: none;
+  stroke: #7d8489;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 600ms ease;
+}
+
+.rr-mark:hover .rr-mark__tick {
+  stroke: #44515a;
+}
+
+.rr-end[data-done='true'] .rr-mark__bloom {
+  transform: scale(1);
+}
+
+.rr-end[data-done='true'] .rr-mark__tick {
+  stroke: #9b4e33;
+  stroke-width: 6;
+}
+
+.rr-after {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.rr-next {
+  height: 44px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  background: #111;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  animation: rr-in 500ms cubic-bezier(0.16, 1, 0.3, 1) 400ms both;
+}
+
+.rr-status {
+  margin: 0;
+  font-size: 15px;
+  color: #8a847e;
+}
+
+.rr-end[data-done='true'] .rr-status {
+  font-weight: 700;
+  color: #111;
+}
+
+@media (max-width: 63.9375rem) {
+  .rr {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 48px;
+  }
+
+  .rr-nav {
+    grid-column: 1;
+    position: static;
+    max-height: none;
+  }
+
+  .rr-page {
+    grid-column: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rr-page {
+    animation: none;
+  }
+
+  .rr-mark__bloom,
+  .rr-track > span {
+    transition: none;
+  }
+}

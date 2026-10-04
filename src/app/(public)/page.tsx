@@ -36,7 +36,7 @@ export default function HomePage() {
           />
           <PathwayCard
             eyebrow="Pathway two"
-            beforeWord="Master your "
+            beforeWord="Shape your "
             accentWord="practice"
             lede="Find the methods and tools for each stage of your work."
             Icon={Sparkles}

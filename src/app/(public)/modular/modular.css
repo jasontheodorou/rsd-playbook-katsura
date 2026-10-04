@@ -1,0 +1,81 @@
+/* /modular: the frame the three approaches share. */
+.p2 {
+  width: 100%;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.p2-switch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  font-size: 13px;
+  color: #8a847e;
+}
+
+.p2-switch__links {
+  display: flex;
+  gap: 4px;
+}
+
+.p2-switch a {
+  padding: 6px 12px;
+  border-radius: 999px;
+  color: #44515a;
+  text-decoration: none;
+}
+
+.p2-switch a[aria-current='page'] {
+  background: #ece6dd;
+  color: #111;
+  font-weight: 700;
+}
+
+.p2-switch__tools {
+  display: flex;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.p2-switch__tools button {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: #44515a;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.p2-switch__rule {
+  flex-basis: 100%;
+  padding-left: 12px;
+}
+
+.p2-head__title {
+  margin: 12px 0 0;
+  font-size: clamp(2.25rem, 1rem + 2.6vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #111;
+}
+
+.p2-stop {
+  display: inline-block;
+  width: 0.2em;
+  height: 0.2em;
+  margin-left: 0.06em;
+  border-radius: 50%;
+  background: #ec671b;
+}
+
+@media (max-width: 39.9375rem) {
+  .p2-switch__tools {
+    margin-left: 0;
+  }
+}

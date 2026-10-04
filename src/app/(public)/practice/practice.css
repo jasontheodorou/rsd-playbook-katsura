@@ -1,0 +1,2411 @@
+/*
+ * Shape your practice course pages: the cards' words and assets inside the gold standard course
+ * page template (two-zones-mantine.css). Tokens are the template's own: ink #16222b, body
+ * #3a4750, grey #5a544e, hairline #e2dcd3, tint #f8f7f4, slate #34566b, and the soft green of
+ * done (#3f9a6b, #2b7552 for text, #e4f2ea for fills). Gaps are on the 8px scale.
+ */
+
+/* Top of the page to the breadcrumbs: 96, 48 below 1024px, as on the landing page. */
+.sp-course {
+  width: 100%;
+  align-self: flex-start;
+  margin-top: 16px;
+}
+
+@media (max-width: 63.9375rem) {
+  .sp-course {
+    margin-top: -32px;
+  }
+}
+
+/* The list's cards are links here, not buttons. */
+.sp-course .cp-task {
+  text-decoration: none;
+}
+
+.sp-course .cp-task[aria-current='page'] {
+  background: #fff;
+  box-shadow: 0 6px 16px -10px rgba(52, 60, 70, 0.25);
+}
+
+.sp-course .cp-task[aria-current='page'] .cp-task__mark {
+  box-shadow:
+    inset 0 0 0 1.5px #16222b,
+    inset 0 0 0 5px #fff,
+    inset 0 0 0 10px #16222b;
+}
+
+.sp-course .cp-task[aria-current='page'][data-done='true'] .cp-task__mark {
+  box-shadow: none;
+}
+
+.sp-course .cp-task[aria-current='page'] .cp-task__title {
+  font-weight: 600;
+  color: #16222b;
+}
+
+/* ---- The card's words ---- */
+.pc-words a {
+  color: #16222b;
+  font-weight: 600;
+  text-decoration-color: rgba(22, 34, 43, 0.35);
+  text-underline-offset: 3px;
+}
+
+.pc-words a:hover {
+  color: #34566b;
+}
+
+.pc-words strong {
+  color: #16222b;
+}
+
+/* Every asset sits 48 from the words around it. */
+.cp-words.pc-words > .pc-box,
+.cp-words.pc-words > .pc-ix,
+.cp-words.pc-words > .pc-figure {
+  margin-top: 48px;
+}
+
+.cp-words.pc-words > .pc-box + *,
+.cp-words.pc-words > .pc-ix + *,
+.cp-words.pc-words > .pc-figure + * {
+  margin-top: 48px;
+}
+
+/* ---- The foot of the card: Mark as complete, then Previous and Next ---- */
+.pc-end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+}
+
+.pc-pager {
+  display: flex;
+  gap: 24px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.pc-pager a {
+  color: #16222b;
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+
+.pc-pager a:hover {
+  color: #34566b;
+}
+
+/* ---- Boxes: top tip and useful resource ---- */
+.pc-box {
+  padding: 24px 32px;
+  border-radius: 8px;
+  background: #f8f7f4;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.pc-box > * {
+  margin: 0;
+}
+
+.pc-box > * + * {
+  margin-top: 8px;
+}
+
+.pc-box__label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #16222b;
+}
+
+.pc-box__text {
+  color: #3a4750;
+}
+
+.pc-resource__title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.pc-resource__source {
+  font-size: 14px;
+  color: #5a544e;
+}
+
+/* ---- Image ---- */
+.pc-figure {
+  margin: 0;
+}
+
+.pc-figure img {
+  display: block;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.pc-figure__placeholder {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  padding: 32px;
+  border-radius: 8px;
+  background: repeating-linear-gradient(135deg, #efebe4 0 12px, #ece6dd 12px 24px);
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+  text-align: center;
+}
+
+.pc-figure__placeholder span {
+  max-width: 30em;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #4d4843;
+}
+
+.pc-figure figcaption {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #5a544e;
+}
+
+/* ---- The interactives' frame ---- */
+.pc-ix {
+  padding: 32px;
+  border-radius: 8px;
+  background: #f8f7f4;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+  font-size: 17px;
+  line-height: 1.55;
+  color: #3a4750;
+}
+
+.pc-ix > * {
+  margin: 0;
+}
+
+.pc-ix > * + * {
+  margin-top: 24px;
+}
+
+.cp-words .pc-ix h3.pc-ix__label,
+.pc-ix__label {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #16222b;
+}
+
+.pc-ix h4 {
+  margin: 24px 0 8px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #16222b;
+}
+
+.pc-ix__how {
+  font-size: 15px;
+  color: #5a544e;
+}
+
+.pc-ix__lesson {
+  padding: 16px 20px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+  font-weight: 600;
+  color: #16222b;
+  animation: pc-in 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pc-ix__note {
+  font-size: 13px;
+  color: #5a544e;
+}
+
+.pc-ix ul,
+.pc-ix ol {
+  padding-left: 22px;
+}
+
+.pc-plain {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pc-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@keyframes pc-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+/* Buttons: an ink pill for the main action, a white outlined pill otherwise. At least 44px tall. */
+.pc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+}
+
+.pc-actions__count {
+  font-size: 14px;
+  color: #5a544e;
+}
+
+.pc-button {
+  min-height: 44px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #cfc7bc;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: #16222b;
+  cursor: pointer;
+  transition:
+    box-shadow 200ms ease,
+    background-color 200ms ease;
+}
+
+.pc-button:hover {
+  box-shadow: inset 0 0 0 1.5px #16222b;
+}
+
+.pc-button--primary {
+  background: #16222b;
+  box-shadow: none;
+  color: #fff;
+}
+
+.pc-button--primary:hover {
+  background: #34566b;
+  box-shadow: none;
+}
+
+.pc-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.pc-ix button:focus-visible,
+.pc-ix input:focus-visible,
+.pc-ix label:focus-within,
+.pc-pager a:focus-visible {
+  outline: 2px solid #34566b;
+  outline-offset: 2px;
+}
+
+/* Right and wrong: a word and an icon, never colour alone. */
+.pc-mark {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  vertical-align: -4px;
+  margin-right: 8px;
+}
+
+.pc-mark circle {
+  fill: #3f9a6b;
+}
+
+.pc-mark[data-right='false'] circle {
+  fill: #a3472a;
+}
+
+.pc-mark path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.pc-table th,
+.pc-table td {
+  padding: 10px 12px 10px 0;
+  border-bottom: 1px solid #e2dcd3;
+  text-align: left;
+  vertical-align: top;
+}
+
+/* ---- Slider ---- */
+.pc-slider__picture {
+  padding: 24px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+}
+
+.pc-crowd__grid {
+  display: grid;
+  grid-template-columns: repeat(20, minmax(0, 1fr));
+  gap: 6px 4px;
+}
+
+.pc-person {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.pc-person svg {
+  width: 100%;
+  max-width: 14px;
+  fill: #ddd5ca;
+  transition: fill 300ms ease;
+}
+
+.pc-person[data-on='true'] svg {
+  fill: #34566b;
+}
+
+.pc-person[data-edge='true'] svg {
+  fill: #fff;
+  stroke: #8a847e;
+  stroke-width: 1;
+}
+
+.pc-person[data-edge='true'][data-on='true'] svg {
+  fill: #3f9a6b;
+  stroke: #3f9a6b;
+}
+
+.pc-person b {
+  position: absolute;
+  top: -10px;
+  right: -6px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #16222b;
+}
+
+.pc-crowd__key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+  color: #5a544e;
+}
+
+.pc-crowd__key b {
+  margin-right: 4px;
+  color: #16222b;
+}
+
+.pc-crowd__key li[data-on='true'] {
+  color: #2b7552;
+  font-weight: 600;
+}
+
+.pc-letter {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 160px;
+  gap: 24px;
+  align-items: center;
+}
+
+.pc-letter__sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 220px;
+  padding: 20px;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px #e2dcd3,
+    0 10px 24px -18px rgba(52, 60, 70, 0.4);
+}
+
+.pc-letter__subject {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #16222b;
+}
+
+.pc-letter__line {
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  background: #e6e0d7;
+}
+
+.pc-letter__button {
+  display: block;
+  width: 96px;
+  height: 22px;
+  margin-top: 8px;
+  border-radius: 4px;
+  background: #3f9a6b;
+}
+
+.pc-letter__calls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  font-size: 14px;
+  color: #5a544e;
+}
+
+.pc-letter__count {
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #16222b;
+}
+
+.pc-slider__control input[type='range'] {
+  width: 100%;
+  height: 28px;
+  margin: 0;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+}
+
+.pc-slider__control input[type='range']::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background:
+    linear-gradient(#34566b, #34566b) 0 / var(--pct) 100% no-repeat,
+    #ddd5ca;
+}
+
+.pc-slider__control input[type='range']::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background:
+    linear-gradient(#34566b, #34566b) 0 / var(--pct) 100% no-repeat,
+    #ddd5ca;
+}
+
+.pc-slider__control input[type='range']::-webkit-slider-thumb {
+  width: 28px;
+  height: 28px;
+  margin-top: -11px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 0 0 1.5px #16222b,
+    0 4px 10px -4px rgba(52, 60, 70, 0.4);
+  appearance: none;
+}
+
+.pc-slider__control input[type='range']::-moz-range-thumb {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 0 0 1.5px #16222b,
+    0 4px 10px -4px rgba(52, 60, 70, 0.4);
+}
+
+.pc-slider__ends {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 8px;
+  font-size: 14px;
+  color: #5a544e;
+}
+
+.pc-slider__state > * {
+  margin: 0;
+}
+
+.pc-slider__state > * + * {
+  margin-top: 8px;
+}
+
+.pc-slider__stop {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 16px;
+  color: #16222b;
+}
+
+.pc-slider__value {
+  font-weight: 700;
+  color: #2b7552;
+}
+
+/* ---- Step through ---- */
+.pc-step__chain {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pc-step__link {
+  position: relative;
+  padding: 12px 16px 12px 20px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+  color: #16222b;
+  animation: pc-in 350ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pc-step__link[data-start] {
+  font-weight: 700;
+  animation: none;
+}
+
+.pc-step__link + .pc-step__link {
+  margin-top: 20px;
+}
+
+/* A short joining line between links of the chain. */
+.pc-step__link + .pc-step__link::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 28px;
+  width: 1.5px;
+  height: 20px;
+  background: #cfc7bc;
+}
+
+.pc-step__why {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #5a544e;
+}
+
+/* ---- Flip cards ---- */
+.pc-flip__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pc-flip__card {
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  perspective: 900px;
+}
+
+.pc-flip__inner {
+  position: relative;
+  display: grid;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pc-flip__card[aria-pressed='true'] .pc-flip__inner {
+  transform: rotateY(180deg);
+}
+
+.pc-flip__face {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #3a4750;
+  backface-visibility: hidden;
+}
+
+.pc-flip__front {
+  justify-content: space-between;
+}
+
+.pc-flip__back {
+  transform: rotateY(180deg);
+}
+
+.pc-flip__name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #16222b;
+}
+
+.pc-flip__hint {
+  font-size: 14px;
+  font-weight: 600;
+  color: #5a544e;
+}
+
+.pc-flip__card:hover .pc-flip__front {
+  box-shadow: inset 0 0 0 1.5px #16222b;
+}
+
+.pc-flip__example {
+  margin-top: auto;
+  font-size: 14px;
+  color: #2b7552;
+  font-weight: 600;
+}
+
+.pc-flip__plain > * {
+  margin: 0;
+}
+
+.pc-flip__plain > * + * {
+  margin-top: 8px;
+}
+
+/* ---- Match ---- */
+.pc-match__cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.pc-match__col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0 !important;
+  list-style: none;
+}
+
+.pc-match__item {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.4;
+  text-align: left;
+  color: #16222b;
+  cursor: pointer;
+  transition:
+    box-shadow 200ms ease,
+    background-color 200ms ease;
+}
+
+.pc-match__item:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 1.5px #16222b;
+}
+
+.pc-match__item[aria-pressed='true'] {
+  background: #16222b;
+  color: #fff;
+}
+
+.pc-match__item[data-made='true'] {
+  background: #e4f2ea;
+  box-shadow: none;
+  color: #22603f;
+  cursor: default;
+}
+
+.pc-match__item:disabled:not([data-made='true']) {
+  cursor: default;
+}
+
+.pc-match__item[data-wrong='true'] {
+  box-shadow: inset 0 0 0 1.5px #a3472a;
+  animation: pc-shake 400ms ease;
+}
+
+@keyframes pc-shake {
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+.pc-match__made {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 15px;
+}
+
+.pc-match__made li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ---- Quick check, and Choose and see ---- */
+.pc-check__q {
+  font-weight: 700;
+  color: #16222b;
+}
+
+.pc-check__set {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.pc-check__set legend {
+  margin-bottom: 16px;
+  padding: 0;
+}
+
+.pc-check__option + .pc-check__option {
+  margin-top: 8px;
+}
+
+.pc-check__option label {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+  cursor: pointer;
+}
+
+.pc-check__option input {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin: 2px 0 0;
+  accent-color: #16222b;
+}
+
+.pc-check__option[data-state='right'] label {
+  box-shadow: inset 0 0 0 1.5px #3f9a6b;
+}
+
+.pc-check__option[data-state='wrong'] label {
+  box-shadow: inset 0 0 0 1.5px #a3472a;
+}
+
+.pc-check__feedback {
+  display: flex;
+  align-items: flex-start;
+  margin: 8px 0 0;
+  padding: 0 16px;
+  font-size: 15px;
+}
+
+.pc-check__feedback strong {
+  margin-right: 4px;
+}
+
+.pc-check__verdict {
+  margin: 0;
+  font-weight: 700;
+  color: #a3472a;
+}
+
+.pc-check__verdict[data-right='true'] {
+  color: #2b7552;
+}
+
+.pc-choose__options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 !important;
+  list-style: none;
+}
+
+.pc-choose__option {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+  font: inherit;
+  font-size: 16px;
+  text-align: left;
+  color: #16222b;
+  cursor: pointer;
+}
+
+.pc-choose__option:hover {
+  box-shadow: inset 0 0 0 1.5px #16222b;
+}
+
+.pc-choose__option[aria-pressed='true'] {
+  box-shadow: inset 0 0 0 2px #16222b;
+}
+
+.pc-choose__outcome p {
+  margin: 0;
+  animation: pc-in 350ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pc-verdict {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: #f6e3dc;
+  font-size: 14px;
+  font-weight: 700;
+  color: #8a3a21;
+}
+
+[data-verdict='best'] .pc-verdict {
+  background: #e4f2ea;
+  color: #22603f;
+}
+
+[data-verdict='risky'] .pc-verdict {
+  background: #f5ead2;
+  color: #6e5312;
+}
+
+/* ---- Before and after ---- */
+.pc-toggle {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+}
+
+.pc-toggle__option {
+  position: relative;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 20px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #16222b;
+  cursor: pointer;
+}
+
+.pc-toggle__option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pc-toggle__option[data-on='true'] {
+  background: #16222b;
+  color: #fff;
+}
+
+.pc-before__example {
+  padding: 24px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+}
+
+.pc-before__desc {
+  margin: 0 0 20px;
+  font-size: 15px;
+  color: #5a544e;
+}
+
+.pc-date__legend {
+  margin: 0 0 8px;
+  font-weight: 700;
+  color: #0b0c0c;
+}
+
+.pc-date__fields {
+  display: flex;
+  gap: 16px;
+}
+
+.pc-date__fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 15px;
+  color: #0b0c0c;
+}
+
+.pc-date__fields input {
+  width: 72px;
+  height: 40px;
+  padding: 0 8px;
+  border: 2px solid #0b0c0c;
+  border-radius: 0;
+  font: inherit;
+  background: #fff;
+}
+
+.pc-date__fields label:last-child input {
+  width: 96px;
+}
+
+.pc-date[data-which='before'] input[data-bad='true'] {
+  border-color: #d4351c;
+}
+
+.pc-date[data-which='after'] {
+  padding-left: 16px;
+  border-left: 5px solid #d4351c;
+}
+
+.pc-date[data-which='after'] input[data-bad='true'] {
+  border-color: #d4351c;
+}
+
+.pc-date__msg {
+  margin: 8px 0 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #d4351c;
+}
+
+.pc-date__msg--after {
+  margin: 0 0 8px;
+}
+
+.pc-before__notes-label {
+  font-weight: 700;
+  color: #16222b;
+}
+
+.pc-before__notes {
+  margin-top: 8px !important;
+}
+
+/* ---- Spot the problem ---- */
+.pc-spot__frame {
+  padding: 16px;
+  border-radius: 8px;
+  background: #ece6dd;
+}
+
+.pc-spot__frame-label {
+  margin: 0 0 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #4d4843;
+}
+
+/* The mock form, with its faults really present. */
+.pc-mock {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px;
+  background: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #0b0c0c;
+}
+
+.pc-mock > *,
+.pc-mock p {
+  margin: 0;
+}
+
+.pc-mock__timeout {
+  padding: 8px 12px;
+  background: #fff7bf;
+  font-size: 14px;
+}
+
+.pc-mock__title {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.pc-mock__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pc-mock__label {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.pc-mock__input {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 10px;
+  border: 2px solid #0b0c0c;
+  max-width: 320px;
+}
+
+.pc-mock__input--red {
+  border-color: #d4351c;
+}
+
+.pc-mock__placeholder {
+  font-size: 15px;
+  color: #a0a0a0;
+}
+
+/* About 2 to 1 on white: the fault itself. */
+.pc-mock__pale {
+  font-size: 15px;
+  color: #b3b3b3;
+}
+
+.pc-mock__continue {
+  align-self: flex-start;
+  font-size: 14px;
+  color: #1d70b8;
+  text-decoration: underline;
+}
+
+.pc-spot__part {
+  position: relative;
+  align-self: flex-start;
+}
+
+.pc-spot__part[data-wide='true'] {
+  align-self: stretch;
+}
+
+.pc-spot__hot {
+  position: absolute;
+  inset: -6px;
+  min-width: 24px;
+  min-height: 24px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    box-shadow 200ms ease,
+    background-color 200ms ease;
+}
+
+.pc-spot__hot:hover,
+.pc-spot__hot:focus-visible {
+  box-shadow: inset 0 0 0 2px #34566b;
+  background: rgba(52, 86, 107, 0.06);
+}
+
+.pc-spot__hot[data-found='true'] {
+  box-shadow: inset 0 0 0 2px #3f9a6b;
+  background: rgba(63, 154, 107, 0.06);
+  cursor: default;
+}
+
+.pc-spot__badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #3f9a6b;
+  font:
+    700 12px/1 'Open Sans',
+    sans-serif;
+  color: #fff;
+}
+
+.pc-spot__part .pc-spot__part {
+  align-self: stretch;
+}
+
+.pc-spot__notes {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pc-spot__notes li > * {
+  margin: 0;
+}
+
+.pc-spot__notes li > * + * {
+  margin-top: 4px;
+}
+
+.pc-spot__name {
+  font-weight: 700;
+  color: #16222b;
+}
+
+.pc-spot__ref {
+  font-size: 14px;
+  color: #5a544e;
+}
+
+/* ---- Map explorer ---- */
+.pc-map__stage {
+  position: relative;
+  height: 420px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+}
+
+.pc-map__centre {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  margin: 0;
+  padding: 16px;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  background: #f8f7f4;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: center;
+  color: #16222b;
+  transform: translate(-50%, -50%);
+}
+
+.pc-map__nodes {
+  margin: 0;
+  padding: 0 !important;
+  list-style: none;
+}
+
+/* Nodes clockwise from the top, on a ring around the centre. */
+.pc-map__nodes li {
+  --a: calc(var(--k) / var(--n) * 360deg - 90deg);
+  position: absolute;
+  top: calc(50% + sin(var(--a)) * 165px);
+  left: calc(50% + cos(var(--a)) * 210px);
+  transform: translate(-50%, -50%);
+}
+
+.pc-map__node {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow:
+    inset 0 0 0 1px #cfc7bc,
+    0 6px 14px -10px rgba(52, 60, 70, 0.35);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: #16222b;
+  cursor: pointer;
+}
+
+.pc-map__node[data-seen='true'] {
+  box-shadow: inset 0 0 0 1px #3f9a6b;
+}
+
+.pc-map__node[aria-pressed='true'] {
+  background: #16222b;
+  box-shadow: none;
+  color: #fff;
+}
+
+.pc-map__detail > * {
+  margin: 0;
+}
+
+.pc-map__detail ul {
+  margin: 4px 0 12px;
+}
+
+.pc-map__name {
+  font-weight: 700;
+  color: #16222b;
+}
+
+.pc-map__sub {
+  margin-top: 12px !important;
+  font-size: 14px;
+  font-weight: 700;
+  color: #5a544e;
+}
+
+.pc-map__also {
+  display: block;
+  font-size: 14px;
+  color: #2b7552;
+}
+
+/* ---- Narrower widths ---- */
+@media (max-width: 47.9375rem) {
+  .pc-ix,
+  .pc-box {
+    padding: 24px;
+  }
+
+  .pc-letter {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pc-match__cols {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The map stays one column: the centre on top, the nodes as a list. */
+  .pc-map__stage {
+    height: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .pc-map__centre {
+    position: static;
+    width: auto;
+    aspect-ratio: auto;
+    border-radius: 8px;
+    transform: none;
+  }
+
+  .pc-map__nodes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .pc-map__nodes li {
+    position: static;
+    transform: none;
+  }
+
+  .pc-map__node {
+    width: 100%;
+    white-space: normal;
+    text-align: left;
+  }
+
+  .pc-crowd__grid {
+    gap: 4px 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-flip__inner,
+  .pc-person svg,
+  .pc-spot__hot,
+  .pc-match__item {
+    transition: none;
+  }
+
+  .pc-ix__lesson,
+  .pc-step__link,
+  .pc-choose__outcome p,
+  .pc-match__item[data-wrong='true'] {
+    animation: none;
+  }
+
+  /* The flip cards swap without turning. */
+  .pc-flip__card[aria-pressed='true'] .pc-flip__inner {
+    transform: none;
+  }
+
+  .pc-flip__card[aria-pressed='true'] .pc-flip__front,
+  .pc-flip__card[aria-pressed='false'] .pc-flip__back {
+    visibility: hidden;
+  }
+
+  .pc-flip__card[aria-pressed='true'] .pc-flip__back {
+    transform: none;
+  }
+}
+
+/* ---- Fixes after the first screenshots (3 October 2026) ---- */
+
+/* Interactives and boxes use the card's full width; the words keep their reading measure. */
+.cp-words.pc-words {
+  max-width: none;
+}
+
+.cp-words.pc-words > p,
+.cp-words.pc-words > ul,
+.cp-words.pc-words > ol,
+.cp-words.pc-words > h3 {
+  max-width: 34em;
+}
+
+.pc-ix .pc-step__chain,
+.pc-ix .pc-flip__cards {
+  padding: 0;
+}
+
+.pc-flip__cards {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.pc-ix > .pc-check__set {
+  margin-top: 24px;
+}
+
+.pc-mock__input {
+  width: 320px;
+  max-width: 100%;
+}
+
+.pc-spot__part:has(.pc-mock__input) {
+  max-width: 100%;
+}
+
+/* The template's list rule (.tz-words ul: a flex column) must not reach the interactives' own lists. */
+.cp-words .pc-ix .pc-flip__cards {
+  display: grid;
+  gap: 12px;
+}
+
+.cp-words .pc-ix > .pc-flip__cards {
+  margin-top: 24px;
+}
+
+/* =====================================================================================
+   Colour (3 October 2026, Jason: the cards were "REALLY dull"). Each course takes its own
+   colour from its landing page tile (--pc-accent, --pc-deep, --pc-tint and the wash, set on
+   .sp-course by CardPage), and the cards borrow Mantine patterns in that colour: a cover with
+   the course's wash, a Timeline for headed points, List with coloured markers, a Blockquote-style
+   tip, a card-with-icon resource, and interactives on the course's tint led by an icon.
+   ===================================================================================== */
+
+/* The cover: full width across the card, the course's wash and paper grain, the title on it. */
+.pc-cover {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 176px;
+  margin: calc(-1 * var(--cp-inset)) calc(-1 * var(--cp-inset)) 0;
+  padding: 56px var(--cp-inset) 32px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at var(--w-at-a), var(--w-a) 0%, transparent 60%),
+    radial-gradient(circle at var(--w-at-b), var(--w-b) 0%, transparent 64%), var(--w-base);
+  background-size: 130% 160%;
+  background-position: 50% 50%;
+}
+
+.pc-cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.13 0 0 0 0 0.17 0 0 0 0.7 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url%28%23n%29' opacity='0.1'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.pc-cover .cp-card__title {
+  position: relative;
+  z-index: 1;
+  max-width: 22em;
+}
+
+.cp-words.pc-words {
+  margin-top: 48px;
+}
+
+/* The opening paragraph, as a lead. */
+.pc-words > .pc-lead {
+  font-size: 1.15em;
+  line-height: 1.55;
+  color: #16222b;
+}
+
+/* Lists: Mantine List with a soft coloured marker. */
+.cp-words .pc-list {
+  display: block;
+  padding: 0;
+  list-style: none;
+}
+
+.pc-list .mantine-List-itemWrapper {
+  align-items: flex-start;
+}
+
+.pc-list .mantine-List-itemIcon {
+  margin-inline-end: 14px;
+}
+
+.pc-dot {
+  display: block;
+  width: 10px;
+  height: 10px;
+  margin-top: 0.62em;
+  border-radius: 50%;
+  background: var(--pc-accent);
+  box-shadow: 0 0 0 3px var(--pc-tint);
+}
+
+/* Headed points: Mantine Timeline in the course's colour. */
+.cp-words .pc-tl {
+  margin-top: 48px;
+  max-width: none;
+}
+
+.pc-tl .mantine-Timeline-item:not(:first-of-type) {
+  margin-top: 40px;
+}
+
+.pc-tl__bullet {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.cp-words .pc-tl__title {
+  margin: 0;
+  font-size: 1.05em;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #16222b;
+}
+
+.pc-tl__body {
+  margin-top: 16px;
+}
+
+.pc-tl__body > * {
+  max-width: 34em;
+  margin: 0;
+}
+
+.pc-tl__body > .pc-ix,
+.pc-tl__body > .pc-box {
+  max-width: none;
+  margin-top: 32px;
+}
+
+/* Top tip: the Blockquote pattern, as an aside: the course's tint, a coloured rule and an icon on its edge. */
+.pc-tip {
+  position: relative;
+  padding: 28px 32px 28px 40px;
+  border-radius: 0 8px 8px 0;
+  background: var(--pc-tint);
+  box-shadow: inset 4px 0 0 var(--pc-accent);
+}
+
+.pc-box__icon {
+  position: absolute;
+  top: -14px;
+  left: -14px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 2px var(--pc-accent);
+  color: var(--pc-deep);
+}
+
+.pc-tip .pc-box__label,
+.pc-resource .pc-box__label {
+  color: var(--pc-deep);
+}
+
+/* Useful resource: a white card with an icon, the source as a badge. */
+.pc-resource {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 20px;
+  padding: 24px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px #e2dcd3,
+    0 12px 28px -22px rgba(52, 60, 70, 0.35);
+}
+
+.pc-resource__icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--pc-tint);
+  color: var(--pc-deep);
+}
+
+.pc-resource__body > * {
+  margin: 0;
+}
+
+.pc-resource__body > * + * {
+  margin-top: 6px;
+}
+
+.pc-resource__title a {
+  color: #16222b;
+  text-decoration: none;
+}
+
+.pc-resource__title a:hover {
+  color: var(--pc-deep);
+}
+
+.pc-resource__title a::after {
+  content: ' →';
+  color: var(--pc-deep);
+}
+
+.pc-resource__source {
+  display: inline-block;
+  margin-top: 10px !important;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--pc-tint);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--pc-deep);
+}
+
+/* Interactives: the course's tint, and a head with a ThemeIcon-style icon. */
+.pc-ix {
+  background: var(--pc-tint);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--pc-accent) 30%, #e2dcd3);
+}
+
+.pc-ix__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.pc-ix__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--pc-accent) 35%, #fff);
+  color: var(--pc-deep);
+}
+
+.pc-ix__lesson {
+  box-shadow:
+    inset 4px 0 0 var(--pc-accent),
+    inset 0 0 0 1px #e2dcd3;
+  padding-left: 24px;
+}
+
+/* The course's colour for chosen and filled states, and for the main button. */
+.pc-button--primary {
+  background: var(--pc-deep);
+}
+
+.pc-button--primary:hover {
+  background: #16222b;
+}
+
+.pc-slider__control input[type='range']::-webkit-slider-runnable-track {
+  background:
+    linear-gradient(var(--pc-accent), var(--pc-accent)) 0 / var(--pct) 100% no-repeat,
+    #ddd5ca;
+}
+
+.pc-slider__control input[type='range']::-moz-range-track {
+  background:
+    linear-gradient(var(--pc-accent), var(--pc-accent)) 0 / var(--pct) 100% no-repeat,
+    #ddd5ca;
+}
+
+.pc-slider__control input[type='range']::-webkit-slider-thumb {
+  box-shadow:
+    0 0 0 2px var(--pc-deep),
+    0 4px 10px -4px rgba(52, 60, 70, 0.4);
+}
+
+.pc-slider__control input[type='range']::-moz-range-thumb {
+  box-shadow:
+    0 0 0 2px var(--pc-deep),
+    0 4px 10px -4px rgba(52, 60, 70, 0.4);
+}
+
+.pc-person[data-on='true'] svg {
+  fill: var(--pc-deep);
+}
+
+.pc-step__link[data-start] {
+  box-shadow:
+    inset 4px 0 0 var(--pc-accent),
+    inset 0 0 0 1px #e2dcd3;
+}
+
+.pc-step__why {
+  color: var(--pc-deep);
+}
+
+.pc-flip__card:hover .pc-flip__front {
+  box-shadow: inset 0 0 0 1.5px var(--pc-deep);
+}
+
+.pc-flip__front {
+  background:
+    radial-gradient(
+      circle at 85% 15%,
+      color-mix(in srgb, var(--pc-accent) 22%, transparent) 0%,
+      transparent 55%
+    ),
+    #fff;
+}
+
+.pc-flip__hint {
+  color: var(--pc-deep);
+}
+
+.pc-match__item[aria-pressed='true'],
+.pc-map__node[aria-pressed='true'],
+.pc-toggle__option[data-on='true'] {
+  background: var(--pc-deep);
+}
+
+.pc-map__centre {
+  background: var(--pc-tint);
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--pc-accent) 45%, #fff);
+}
+
+.pc-choose__option[aria-pressed='true'] {
+  box-shadow: inset 0 0 0 2px var(--pc-deep);
+}
+
+.pc-check__option input {
+  accent-color: var(--pc-deep);
+}
+
+@media (max-width: 47.9375rem) {
+  .pc-cover {
+    min-height: 140px;
+    padding-top: 40px;
+    padding-bottom: 24px;
+  }
+
+  .pc-resource {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Lists take the card's own type size and the usual gap after a paragraph. */
+.pc-words .pc-list {
+  --list-fz: inherit;
+  --list-lh: 1.6;
+  font-size: inherit;
+  line-height: 1.6;
+}
+
+.cp-words.pc-words > .pc-list {
+  margin-top: 24px;
+}
+
+/* Flip cards: the front carries the course's wash, like a small cover. */
+.pc-flip__front {
+  min-height: 160px;
+  background:
+    radial-gradient(
+      circle at var(--w-at-a),
+      color-mix(in srgb, var(--w-a) 70%, transparent) 0%,
+      transparent 62%
+    ),
+    radial-gradient(
+      circle at var(--w-at-b),
+      color-mix(in srgb, var(--w-b) 70%, transparent) 0%,
+      transparent 66%
+    ),
+    var(--w-base);
+  box-shadow: none;
+}
+
+.pc-flip__card:hover .pc-flip__front {
+  box-shadow: inset 0 0 0 2px var(--pc-deep);
+}
+
+/* =====================================================================================
+   Material pass (3 October 2026, Jason: the colour was "a bit over the top"; keep it clean and
+   uncluttered, but elevate the cards and components in key places, "think Material Design").
+   White surfaces lifted by Material 3's elevation levels, tonal (pale) fills inside them, no
+   rules or tinted panels, and the course's colour kept to small accents: markers, the
+   timeline, icons and the main button. These rules come last and override the colour pass.
+   ===================================================================================== */
+.sp-course {
+  --e1: 0 1px 2px rgba(22, 34, 43, 0.1), 0 1px 3px 1px rgba(22, 34, 43, 0.05);
+  --e2: 0 1px 2px rgba(22, 34, 43, 0.1), 0 2px 6px 2px rgba(22, 34, 43, 0.06);
+  --e3: 0 1px 3px rgba(22, 34, 43, 0.1), 0 4px 10px 3px rgba(22, 34, 43, 0.08);
+  --surface: #f6f5f2;
+}
+
+/* No cover: the card opens on its title, as in the template. */
+.pc-cover {
+  display: block;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  background: none;
+}
+
+.pc-cover::after {
+  content: none;
+}
+
+/* Quieter markers: a small accent dot, no halo. */
+.pc-dot {
+  width: 8px;
+  height: 8px;
+  margin-top: 0.68em;
+  box-shadow: none;
+}
+
+/* Tip: a tonal surface, flat, its icon inline. */
+.pc-tip {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  column-gap: 16px;
+  padding: 24px;
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+.pc-tip .pc-box__icon {
+  position: static;
+  grid-row: 1 / span 2;
+  width: 24px;
+  height: 24px;
+  background: none;
+  box-shadow: none;
+}
+
+.pc-tip > .pc-box__label,
+.pc-tip > .pc-box__text {
+  grid-column: 2;
+}
+
+/* Resource: an elevated card. */
+.pc-resource {
+  border-radius: 12px;
+  box-shadow: var(--e1);
+  transition: box-shadow 250ms ease;
+}
+
+.pc-resource:hover {
+  box-shadow: var(--e3);
+}
+
+.pc-resource__icon {
+  border-radius: 50%;
+}
+
+/* Interactives: elevated white cards with a tonal icon; everything inside is flat and tonal. */
+.pc-ix {
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--e2);
+}
+
+.pc-ix__icon {
+  border-radius: 50%;
+  background: var(--pc-tint);
+  box-shadow: none;
+}
+
+.pc-ix__lesson {
+  border-radius: 12px;
+  background: var(--pc-tint);
+  box-shadow: none;
+  padding-left: 20px;
+}
+
+.pc-slider__picture,
+.pc-before__example,
+.pc-map__stage,
+.pc-spot__frame {
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+.pc-slider__picture .pc-letter__sheet {
+  box-shadow: var(--e1);
+}
+
+.pc-step__link,
+.pc-step__link[data-start],
+.pc-match__item,
+.pc-check__option label,
+.pc-choose__option {
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: none;
+}
+
+.pc-step__link[data-start] {
+  background: var(--pc-tint);
+}
+
+.pc-match__item:hover:not(:disabled),
+.pc-choose__option:hover,
+.pc-check__option label:hover {
+  box-shadow: var(--e1);
+  background: #fff;
+}
+
+.pc-choose__option[aria-pressed='true'] {
+  background: var(--pc-tint);
+  box-shadow: inset 0 0 0 2px var(--pc-deep);
+}
+
+.pc-check__option[data-state='right'] label {
+  background: #e4f2ea;
+  box-shadow: none;
+}
+
+.pc-check__option[data-state='wrong'] label {
+  background: #f6e3dc;
+  box-shadow: none;
+}
+
+.pc-map__centre {
+  background: #fff;
+  box-shadow: var(--e1);
+}
+
+.pc-map__node {
+  box-shadow: var(--e1);
+}
+
+.pc-map__node[data-seen='true'] {
+  box-shadow:
+    var(--e1),
+    inset 0 0 0 1.5px #3f9a6b;
+}
+
+/* Flip cards: white and lifted, lifting further on hover; the back is the same surface. */
+.pc-flip__face {
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--e1);
+}
+
+.pc-flip__front {
+  min-height: 140px;
+  background: #fff;
+  box-shadow: var(--e1);
+  transition: box-shadow 250ms ease;
+}
+
+.pc-flip__card:hover .pc-flip__front {
+  box-shadow: var(--e3);
+}
+
+.pc-toggle {
+  background: var(--surface);
+  box-shadow: none;
+}
+
+.pc-button {
+  box-shadow: inset 0 0 0 1px #cfc7bc;
+}
+
+.pc-button--primary {
+  box-shadow: var(--e1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-resource,
+  .pc-flip__front {
+    transition: none;
+  }
+}
+
+.pc-ix > .pc-step__chain {
+  margin-top: 24px;
+}
+
+/* =====================================================================================
+   Transform design system (3 October 2026, Jason: "make sure we are using the Transform design
+   system for these cards"). Every colour in the cards comes from the Transform palette:
+   primary grey #333333; complementary navy #213D59, purple #673D8A, teal #3E7070; accents blue
+   #619CBA, warm grey #CCC8C4, terracotta #D8B4A3, yellow #F1D46E, pale blue #CBD9DA; orange
+   #EB671B is kept for the page's single accent and not used here. Pale fills are those
+   colours mixed with white. Right and done are teal; wrong is terracotta.
+   ===================================================================================== */
+.sp-course {
+  --t-grey: #333333;
+  --t-navy: #213d59;
+  --t-teal: #3e7070;
+  --t-blue: #619cba;
+  --t-warm: #ccc8c4;
+  --t-terra: #d8b4a3;
+  --t-yellow: #f1d46e;
+  --t-pale: #cbd9da;
+  --surface: color-mix(in srgb, var(--t-warm) 22%, #fff);
+  --teal-tint: color-mix(in srgb, var(--t-teal) 14%, #fff);
+  --terra-tint: color-mix(in srgb, var(--t-terra) 40%, #fff);
+}
+
+/* Words in primary grey. */
+.sp-course .cp-card__title,
+.sp-course .pc-words,
+.sp-course .pc-words > .pc-lead,
+.sp-course .pc-words h3,
+.sp-course .pc-words strong,
+.sp-course .pc-words a,
+.sp-course .pc-ix,
+.sp-course .pc-ix__label,
+.sp-course .pc-ix__lesson,
+.sp-course .pc-box__label,
+.sp-course .pc-box__text,
+.sp-course .pc-resource__title a,
+.sp-course .pc-check__q,
+.sp-course .pc-step__link,
+.sp-course .pc-match__item,
+.sp-course .pc-choose__option,
+.sp-course .pc-flip__name,
+.sp-course .pc-map__centre,
+.sp-course .pc-map__node,
+.sp-course .pc-map__name,
+.sp-course .pc-letter__subject,
+.sp-course .pc-letter__count,
+.sp-course .pc-slider__stop,
+.sp-course .pc-spot__name,
+.sp-course .pc-before__notes-label,
+.sp-course .pc-pager a {
+  color: var(--t-grey);
+}
+
+.sp-course .pc-words a:hover,
+.sp-course .pc-pager a:hover,
+.sp-course .pc-resource__title a:hover {
+  color: var(--t-navy);
+}
+
+/* Main buttons: Mark as complete in primary grey, the interactives' main button in the course's deep colour. */
+.sp-course .tz-done {
+  background: var(--t-grey);
+}
+
+.sp-course .tz-done[data-done='true'] {
+  background: var(--teal-tint);
+  color: var(--t-teal);
+}
+
+.sp-course .pc-button--primary:hover {
+  background: var(--t-navy);
+}
+
+.sp-course .pc-button {
+  box-shadow: inset 0 0 0 1px var(--t-warm);
+}
+
+.sp-course .pc-button:hover {
+  box-shadow: inset 0 0 0 1.5px var(--t-grey);
+}
+
+/* Done and right: teal. Wrong: terracotta. */
+.sp-course .pc-slider__value,
+.sp-course .pc-map__also,
+.sp-course .pc-crowd__key li[data-on='true'],
+.sp-course .pc-check__verdict[data-right='true'] {
+  color: var(--t-teal);
+}
+
+.sp-course .pc-check__verdict {
+  color: var(--t-grey);
+}
+
+.sp-course .pc-person[data-edge='true'][data-on='true'] svg {
+  fill: var(--t-teal);
+  stroke: var(--t-teal);
+}
+
+.sp-course .pc-person svg {
+  fill: var(--t-warm);
+}
+
+.sp-course .pc-person[data-on='true'] svg {
+  fill: var(--pc-deep);
+}
+
+.sp-course .pc-letter__button {
+  background: var(--t-teal);
+}
+
+.sp-course .pc-mark circle {
+  fill: var(--t-teal);
+}
+
+.sp-course .pc-mark[data-right='false'] circle {
+  fill: var(--t-grey);
+}
+
+.sp-course .pc-check__option[data-state='right'] label {
+  background: var(--teal-tint);
+}
+
+.sp-course .pc-check__option[data-state='wrong'] label {
+  background: var(--terra-tint);
+}
+
+.sp-course .pc-match__item[data-made='true'] {
+  background: var(--teal-tint);
+  color: var(--t-teal);
+}
+
+.sp-course .pc-match__item[data-wrong='true'] {
+  box-shadow: inset 0 0 0 1.5px var(--t-terra);
+}
+
+.sp-course .pc-map__node[data-seen='true'] {
+  box-shadow:
+    var(--e1),
+    inset 0 0 0 1.5px var(--t-teal);
+}
+
+.sp-course .pc-verdict {
+  background: var(--terra-tint);
+  color: var(--t-grey);
+}
+
+.sp-course [data-verdict='best'] .pc-verdict {
+  background: var(--teal-tint);
+  color: var(--t-teal);
+}
+
+.sp-course [data-verdict='risky'] .pc-verdict {
+  background: color-mix(in srgb, var(--t-yellow) 45%, #fff);
+  color: var(--t-grey);
+}
+
+.sp-course .pc-spot__hot[data-found='true'] {
+  box-shadow: inset 0 0 0 2px var(--t-teal);
+  background: color-mix(in srgb, var(--t-teal) 8%, transparent);
+}
+
+.sp-course .pc-spot__badge {
+  background: var(--t-teal);
+}
+
+.sp-course .pc-spot__hot:hover,
+.sp-course .pc-spot__hot:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--t-navy);
+  background: color-mix(in srgb, var(--t-navy) 6%, transparent);
+}
+
+.sp-course .pc-spot__frame {
+  background: var(--surface);
+}
+
+.sp-course .pc-slider__control input[type='range']::-webkit-slider-runnable-track {
+  background:
+    linear-gradient(var(--pc-accent), var(--pc-accent)) 0 / var(--pct) 100% no-repeat,
+    var(--t-warm);
+}
+
+.sp-course .pc-slider__control input[type='range']::-moz-range-track {
+  background:
+    linear-gradient(var(--pc-accent), var(--pc-accent)) 0 / var(--pct) 100% no-repeat,
+    var(--t-warm);
+}
+
+.sp-course .pc-ix button:focus-visible,
+.sp-course .pc-ix input:focus-visible,
+.sp-course .pc-ix label:focus-within,
+.sp-course .pc-pager a:focus-visible {
+  outline-color: var(--t-navy);
+}
+
+/* Secondary text: primary grey, a step lighter, still AA. */
+.sp-course .pc-ix__how,
+.sp-course .pc-ix__note,
+.sp-course .pc-slider__ends,
+.sp-course .pc-actions__count,
+.sp-course .pc-resource__source,
+.sp-course .pc-spot__ref,
+.sp-course .pc-map__sub,
+.sp-course .pc-step__why,
+.sp-course .pc-flip__hint,
+.sp-course .pc-crowd__key,
+.sp-course .pc-letter__calls,
+.sp-course .pc-before__desc {
+  color: color-mix(in srgb, var(--t-grey) 82%, #fff);
+}
+
+.sp-course .cp-words,
+.sp-course .cp-words .pc-ix h3.pc-ix__label,
+.sp-course .pc-person b,
+.sp-course .pc-crowd__key b,
+.sp-course .pc-button,
+.sp-course .pc-flip__face,
+.sp-course .pc-match__made,
+.sp-course .pc-spot__notes,
+.sp-course .pc-map__detail,
+.sp-course .pc-check__feedback,
+.sp-course .pc-choose__outcome,
+.sp-course .pc-toggle__option {
+  color: var(--t-grey);
+}
+
+.sp-course .pc-button--primary,
+.sp-course .pc-toggle__option[data-on='true'],
+.sp-course .pc-match__item[aria-pressed='true'],
+.sp-course .pc-map__node[aria-pressed='true'] {
+  color: #fff;
+}
+
+.sp-course .pc-flip__example {
+  color: var(--t-teal);
+}
+
+.sp-course .pc-letter__line {
+  background: color-mix(in srgb, var(--t-warm) 55%, #fff);
+}
+
+.sp-course .pc-mark {
+  fill: none;
+}
+
+.sp-course .pc-figure__placeholder span,
+.sp-course .pc-spot__frame-label {
+  color: var(--t-grey);
+}
+
+.sp-course .pc-figure__placeholder {
+  background: repeating-linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--t-warm) 30%, #fff) 0 12px,
+    color-mix(in srgb, var(--t-warm) 45%, #fff) 12px 24px
+  );
+  box-shadow: none;
+}
+
+/* Top bar to the breadcrumbs, halved at Jason's request (3 October 2026): 48 on desktop, 24 below
+   1024px. The site layout gives 80. */
+.sp-course {
+  margin-top: -34px;
+}
+
+@media (max-width: 63.9375rem) {
+  .sp-course {
+    margin-top: -58px;
+  }
+}
+
+/* =====================================================================================
+   Photos (3 October 2026): the six formats Jason chose on /syp-images, in components/Photos.tsx.
+   Each sits 48 from the words around it, like every other asset.
+   ===================================================================================== */
+.cp-words.pc-words > .pc-photo,
+.cp-words.pc-words > .pc-photo + * {
+  margin-top: 48px;
+}
+
+.pc-photo {
+  margin: 0;
+}
+
+.pc-photo__cap {
+  margin: 12px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: color-mix(in srgb, #333 82%, #fff);
+}
+
+/* 13: tonal frame */
+.pc-photo--frame {
+  background: color-mix(in srgb, #ccc8c4 22%, #fff);
+}
+
+/* 3: card with image, lifted */
+.pc-photo--card {
+  box-shadow: var(--e2);
+}
+
+.pc-photo__title {
+  margin: 16px 0 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+}
+
+.pc-photo__text {
+  margin: 6px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: color-mix(in srgb, #333 82%, #fff);
+}
+
+/* 11: tabbed photos */
+.pc-photo__tabs .mantine-Tabs-list {
+  margin-bottom: 16px;
+}
+
+.pc-photo__tabs .mantine-Tabs-tab {
+  font-weight: 600;
+  color: #333;
+}
+
+.pc-photo__tabs .mantine-Tabs-tab[data-active] {
+  color: #fff;
+}
+
+/* 5: background image with a navy gradient and words */
+.pc-photo--bg {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 340px;
+}
+
+.pc-photo__over {
+  position: relative;
+  z-index: 2;
+  padding: 24px 28px;
+}
+
+.pc-photo__over p {
+  margin: 0;
+  color: #fff;
+}
+
+.pc-photo__over-title {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.pc-photo__over-text {
+  margin-top: 6px !important;
+  font-size: 16px;
+}
+
+/* 6: badged image */
+.pc-photo--badged {
+  position: relative;
+}
+
+.pc-photo__badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  text-transform: none;
+  letter-spacing: 0.01em;
+}
+
+/* The plan's own images (still to commission) take the tonal frame too. */
+.pc-figure {
+  padding: 16px;
+  border-radius: 16px;
+  background: color-mix(in srgb, #ccc8c4 22%, #fff);
+}
+
+.pc-figure .pc-figure__placeholder {
+  border-radius: 8px;
+}
+
+/* Tabbed photos: the chosen tab in the course's deep colour; the others quiet until pointed at. */
+.pc-photo__tabs .mantine-Tabs-tab {
+  padding: 8px 16px;
+  border-radius: 999px;
+}
+
+.pc-photo__tabs .mantine-Tabs-tab:hover:not([data-active]) {
+  background: var(--surface, #f2f1f0);
+}
+
+.pc-photo__tabs .mantine-Tabs-tab[data-active],
+.pc-photo__tabs .mantine-Tabs-tab[data-active]:hover {
+  background: var(--pc-deep);
+  color: #fff;
+}
+
+/* Mantine's own typeface never shows in the cards: photos, tabs and badges use the playbook's. */
+.pc-photo,
+.pc-photo .mantine-Tabs-tab,
+.pc-photo .mantine-Badge-root {
+  font-family: inherit;
+}
+
+.pc-figure img {
+  border-radius: 8px;
+}
+
+/* The plan's images share one wide shape, whatever the photo's own. */
+.pc-figure img {
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  object-position: 50% 35%;
+}
+
+/* Flip card fronts: a Mantine ThemeIcon with a Phosphor icon, in the course's colours. */
+.pc-flip__front {
+  justify-content: flex-start;
+  gap: 16px;
+}
+
+.pc-flip__front .pc-flip__hint {
+  margin-top: auto;
+}
+
+.pc-flip__icon.mantine-ThemeIcon-root {
+  --ti-bg: var(--pc-tint);
+  --ti-color: var(--pc-deep);
+  --ti-bd: none;
+  flex: none;
+}
+
+/* Mantine sets the ThemeIcon's colours on the element; the course's colours win here. */
+.pc-flip__icon.mantine-ThemeIcon-root {
+  background: var(--pc-tint) !important;
+  color: var(--pc-deep) !important;
+}

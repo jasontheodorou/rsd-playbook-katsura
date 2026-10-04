@@ -22,6 +22,8 @@
     "check": "npm run lint && npm run typecheck && npm run build"
   },
   "dependencies": {
+    "@mantine/core": "^9.6.3",
+    "@mantine/hooks": "^9.6.3",
     "@payloadcms/db-postgres": "3.90.1",
     "@payloadcms/drizzle": "3.90.1",
     "@payloadcms/next": "3.90.1",

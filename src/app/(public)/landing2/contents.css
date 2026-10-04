@@ -1,0 +1,297 @@
+/*
+ * Landing option 1, Course: modular learning in the playbook's design system. Type, paper, hairlines
+ * (#e2dcd3), the warm tint (#f8f7f4), slate (#34566b) and the one orange full stop; the signature is
+ * the module view's small square marker, one per card.
+ */
+.mc {
+  --mc-slate: #34566b;
+  width: 100%;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 96px;
+}
+
+.ml-stop {
+  display: inline-block;
+  width: 0.2em;
+  height: 0.2em;
+  margin-left: 0.06em;
+  border-radius: 50%;
+  background: #ec671b;
+}
+
+.mc-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a847e;
+}
+
+/* ---- Opening ---- */
+.mc-hero {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  align-items: end;
+}
+
+.mc-hero__text {
+  grid-column: 1 / 8;
+}
+
+.mc-title {
+  margin: 24px 0 0;
+  font-size: clamp(2.75rem, 1rem + 3.6vw, 5.25rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #111;
+}
+
+.mc-statement {
+  max-width: 30em;
+  margin: 40px 0 0;
+  font-size: clamp(1.125rem, 0.7rem + 0.8vw, 1.625rem);
+  line-height: 1.6;
+  color: #8a847e;
+}
+
+.mc-statement span {
+  color: #111;
+}
+
+/* Your learning: every card as a square, a count, and the way back in. */
+.mc-you {
+  grid-column: 9 / 13;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 32px;
+  border-radius: 4px;
+  background: #f8f7f4;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+}
+
+.mc-you__count {
+  margin: 0;
+  font-size: 14px;
+  color: #8a847e;
+}
+
+.mc-you__count strong {
+  color: #16222b;
+}
+
+.mc-you__go {
+  font-size: 15px;
+  font-weight: 700;
+  color: #16222b;
+  text-decoration: none;
+}
+
+.mc-you__go:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.mc-squares {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.mc-squares > span {
+  width: 8px;
+  height: 8px;
+  border-radius: 1px;
+  background: #d9d2c8;
+  transition: background-color 400ms ease;
+}
+
+.mc-squares > span[data-done='true'] {
+  background: var(--mc-slate);
+}
+
+.mc-squares--all {
+  flex-wrap: nowrap;
+  gap: 3px;
+}
+
+.mc-squares--all > span {
+  flex: 1;
+  max-width: 12px;
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 2px;
+}
+
+/* ---- The modules: three equal course tiles, joined in order ---- */
+.mc-modules {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--grid-gap);
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The line that joins them, through the middle of their bands. */
+.mc-modules::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 27px;
+  height: 1px;
+  background: #e2dcd3;
+}
+
+.mc-tile {
+  position: relative;
+}
+
+.mc-tile__link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid #e2dcd3;
+  border-radius: 4px;
+  background: #fff;
+  color: #16222b;
+  text-decoration: none;
+  transition: box-shadow 250ms ease, border-color 250ms ease, transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mc-tile__link:hover {
+  border-color: #c9c2b9;
+  box-shadow: 0 18px 32px -24px rgba(52, 60, 70, 0.35);
+  transform: translateY(-2px);
+}
+
+.mc-tile__band {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 28px;
+  background: #f8f7f4;
+  border-bottom: 1px solid #e2dcd3;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8a847e;
+}
+
+.mc-tile[data-complete='true'] .mc-tile__band span:first-child {
+  color: var(--mc-slate);
+}
+
+.mc-tile__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 32px 28px 24px;
+}
+
+.mc-tile__title {
+  font-size: clamp(1.5rem, 1rem + 0.8vw, 2rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+}
+
+.mc-tile__desc {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #44515a;
+}
+
+.mc-tile__foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: 'squares squares' 'count cta';
+  row-gap: 14px;
+  align-items: center;
+  padding: 0 28px 28px;
+}
+
+.mc-tile__foot .mc-squares {
+  grid-area: squares;
+}
+
+.mc-tile__count {
+  grid-area: count;
+  font-size: 13px;
+  color: #8a847e;
+}
+
+.mc-tile__cta {
+  grid-area: cta;
+  font-size: 15px;
+  font-weight: 700;
+  transition: transform 200ms ease;
+}
+
+.mc-tile__link:hover .mc-tile__cta {
+  transform: translateX(3px);
+}
+
+/* ---- How it works: three short steps in one line ---- */
+.mc-how ol {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--grid-gap);
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mc-how li {
+  display: flex;
+  gap: 16px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #44515a;
+}
+
+.mc-how li span {
+  flex: none;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.85;
+  color: var(--mc-slate);
+}
+
+@media (max-width: 63.9375rem) {
+  .mc-hero__text,
+  .mc-you {
+    grid-column: 1 / -1;
+  }
+
+  .mc-you {
+    margin-top: 40px;
+  }
+
+  .mc-modules,
+  .mc-how ol {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .mc-modules::before {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mc-tile__link,
+  .mc-tile__cta,
+  .mc-squares > span {
+    transition: none;
+  }
+}

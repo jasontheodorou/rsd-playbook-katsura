@@ -1,0 +1,322 @@
+/* Approach 1, Two zones: the benefits card's and data path's hairline card in two surfaces. */
+.tz {
+  --tz-inset: 48px;
+  --tz-slate: #34566b;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+  background: #fff;
+  overflow: hidden;
+}
+
+/* The tasks, on the warm tint: page columns 1 to 4. */
+.tz-nav {
+  grid-column: 1 / 5;
+  margin-right: calc(-1 * var(--grid-gap));
+  padding: var(--tz-inset);
+  background: #f8f7f4;
+  border-right: 1px solid #e2dcd3;
+}
+
+.tz-count {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a847e;
+}
+
+.tz-count span {
+  color: #16222b;
+}
+
+.tz-progress {
+  display: block;
+  height: 2px;
+  margin: 16px 0 40px;
+  background: #e2dcd3;
+}
+
+.tz-progress > span {
+  display: block;
+  height: 100%;
+  background: var(--tz-slate);
+  transition: width 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tz-module + .tz-module {
+  margin-top: 40px;
+}
+
+.tz-module__name {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #16222b;
+}
+
+.tz-module__name span {
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #8a847e;
+}
+
+.tz-module ol {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Each task is a small white rectangle on the tint (from Paper desk's rows), with the quiet
+   accordion's square marker: grey while open, slate once complete. */
+.tz-task {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.6);
+  font: inherit;
+  text-align: left;
+  color: #2a2a2e;
+  cursor: pointer;
+  transition: background-color 200ms ease, box-shadow 200ms ease;
+}
+
+.tz-task:hover {
+  background: #fff;
+}
+
+.tz-task[aria-current='true'] {
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(52, 60, 70, 0.1), 0 8px 16px -12px rgba(52, 60, 70, 0.22);
+  color: #16222b;
+}
+
+.tz-task__mark {
+  width: 8px;
+  height: 8px;
+  border-radius: 1px;
+  background: #c9c2b9;
+  transition: background-color 300ms ease;
+}
+
+.tz-task[aria-current='true'] .tz-task__mark {
+  background: #16222b;
+}
+
+.tz-task[data-done='true'] .tz-task__mark {
+  background: var(--tz-slate);
+}
+
+.tz-task__title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.tz-task[data-done='true'] .tz-task__title {
+  color: #8a847e;
+  font-weight: 400;
+}
+
+.tz-task[aria-current='true'] .tz-task__title {
+  font-weight: 700;
+}
+
+.tz-task__min {
+  font-size: 12px;
+  color: #8a847e;
+}
+
+/* The card, on white: page columns 5 to 12. */
+.tz-card {
+  grid-column: 5 / 13;
+  padding: var(--tz-inset);
+  min-width: 0;
+  animation: tz-in 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes tz-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+.tz-card__count {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a847e;
+}
+
+.tz-card__title {
+  margin: 24px 0 0;
+  font-size: clamp(1.75rem, 1rem + 1.2vw, 2.25rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: #16222b;
+}
+
+.tz-words {
+  max-width: 34em;
+  margin-top: 32px;
+  font-size: clamp(1.0625rem, 0.8rem + 0.4vw, 1.25rem);
+  line-height: 1.6;
+  color: #44515a;
+}
+
+.tz-words > * {
+  margin: 0;
+}
+
+.tz-words > * + * {
+  margin-top: 20px;
+}
+
+.tz-words h3 {
+  margin-top: 36px;
+  font-size: 1.05em;
+  font-weight: 600;
+  color: #16222b;
+}
+
+.tz-words ul,
+.tz-words ol {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 22px;
+}
+
+.tz-words li::marker {
+  color: #9a928a;
+}
+
+.tz-words .p2-aside {
+  padding: 24px 28px;
+  border-radius: 4px;
+  background: #f8f7f4;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+}
+
+.p2-aside > * {
+  margin: 0;
+}
+
+.p2-aside > * + * {
+  margin-top: 10px;
+}
+
+.p2-aside__label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8a847e;
+}
+
+.p2-aside__link {
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 600;
+  color: #16222b;
+  text-underline-offset: 3px;
+}
+
+.tz-card__end {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.tz-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 20px 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: #16222b;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 300ms ease, color 300ms ease;
+}
+
+.tz-done__mark {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.7);
+}
+
+.tz-done[data-done='true'] {
+  background: #eef2f4;
+  color: var(--tz-slate);
+}
+
+.tz-done[data-done='true'] .tz-done__mark {
+  background: var(--tz-slate) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.2l2.3 2.3 4.7-4.9' fill='none' stroke='%23fff' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% no-repeat;
+  box-shadow: none;
+}
+
+.tz-card__min {
+  font-size: 14px;
+  color: #8a847e;
+}
+
+@media (max-width: 63.9375rem) {
+  .tz {
+    --tz-inset: 32px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tz-nav,
+  .tz-card {
+    grid-column: 1;
+    margin-right: 0;
+  }
+
+  .tz-nav {
+    border-right: 0;
+    border-bottom: 1px solid #e2dcd3;
+  }
+
+  .tz-card {
+    padding: var(--tz-inset);
+  }
+}
+
+@media (max-width: 39.9375rem) {
+  .tz {
+    --tz-inset: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tz-card {
+    animation: none;
+  }
+}

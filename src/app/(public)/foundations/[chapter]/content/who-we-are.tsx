@@ -82,9 +82,9 @@ const ROLES: Role[] = [
   {
     id: 'researchers',
     label: 'Researchers',
-    photo: '/photos/problem-framing.jpg',
+    photo: '/photos/lego-hands-yellow.jpg',
     art: '/illustrations/roles/research',
-    alt: 'Three colleagues at a table covered in worksheets, one pointing as he explains.',
+    alt: 'Hands fitting small yellow Lego pieces together over a pile of bricks.',
     intro: (
       <>
         Research provides the foundation. It allows us to understand needs, wants, motivations,
@@ -110,9 +110,9 @@ const ROLES: Role[] = [
   {
     id: 'service-designers',
     label: 'Service Designers',
-    photo: '/photos/journey-map-group.jpg',
+    photo: '/photos/serious-play-kit.jpg',
     art: '/illustrations/roles/service',
-    alt: 'A group gathered around a man in an orange shirt who holds a printed map.',
+    alt: 'A Lego Serious Play box with a handful of bricks, a wheel and a ladder laid on top.',
     intro: (
       <>
         Service designers connect research, UX, technology, operations, business and policy. They
@@ -128,9 +128,9 @@ const ROLES: Role[] = [
   {
     id: 'ux-designers',
     label: 'UX & Interaction Designers',
-    photo: '/photos/lego-prototyping.jpg',
+    photo: '/photos/lego-baseplate-ladder.jpg',
     art: '/illustrations/roles/interaction',
-    alt: 'A group leaning over a table piled with Lego bricks, building together.',
+    alt: 'Hands building a ladder of Lego bricks on a blue baseplate.',
     intro: (
       <>
         UX designers make digital interactions clear, inclusive, and evidence-driven — ensuring
@@ -156,9 +156,9 @@ const ROLES: Role[] = [
   {
     id: 'content-designers',
     label: 'Content Designers',
-    photo: '/photos/worksheet-writing.png',
+    photo: '/photos/transform-library.jpg',
     art: '/illustrations/roles/content',
-    alt: 'Close-up of a hand holding a pen over a printed worksheet.',
+    alt: 'A shelf of books beside a Transform Library sign showing a Lego figure.',
     intro: (
       <>
         Content designers help people get things done quickly and accurately. They turn complex

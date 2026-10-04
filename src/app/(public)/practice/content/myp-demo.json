@@ -1,0 +1,1764 @@
+{
+  "title": "MYP demo: build plan for courses 1 and 2",
+  "version": "2026-10-03",
+  "purpose": "Everything needed to build the first two courses of Shaping your practice as a working demo: the exact text of every card, and a full spec and data for every tip, resource, image and interactive. Another Claude session should be able to build the demo from this file alone.",
+  "howToUse": [
+    "Read this whole file before writing any code. It is the single source for the demo. Do not use the MYP or Patterns tabs as sources; they are earlier drafts.",
+    "Ask Jason which repository the demo is built in before starting. Do not guess, and do not read other project folders until they name one.",
+    "Build in the order under buildOrder. Build each pattern once as a component that takes the data shown here as props, then place it on cards. Never hard-code a card's data inside a component.",
+    "Use card text exactly as given in each card's blocks. The only changes to the manual are listed in edits and are already applied here. Do not reword, shorten or add copy.",
+    "Any copy marked new (course summaries, tips, interactive labels and feedback) is approved draft. Use it as written, and list anything you change in your summary to Jason.",
+    "When a card is done, check it against acceptance on the card and the definition of done. Run the project's verification and take screenshots at 1440, 1280 and 390 pixels wide before reporting it done."
+  ],
+  "constraints": [
+    "Pages are linear, like GOV.UK: one element after another, top to bottom, in one column. No split screens, side columns, rows of cards or sticky side panels.",
+    "1140px container and a reading measure of about 65 characters.",
+    "One orange circle per page, the full stop of the page title. Use square markers everywhere else, and no orange rectangles.",
+    "Motion is entrance only. Interactives respond to the user, but nothing moves on its own after it appears. Respect prefers-reduced-motion.",
+    "Every interactive works with a keyboard alone and with a screen reader, and has a no-JavaScript render that shows its key point as plain content.",
+    "Text meets WCAG 2.2 AA contrast. Tap targets are at least 24 by 24 pixels.",
+    "Numbers inside interactives are illustrative. Each interactive that shows numbers says so in small text under it: 'Illustrative figures.'"
+  ],
+  "card": {
+    "description": "A card is the unit of learning. It shows, in order: the lesson name (small, above), the card title, the card's blocks, then its assets in the order listed.",
+    "parts": [
+      "Lesson: small eyebrow text above the title. Shown on every card.",
+      "Title: the card title. It is a heading one level below the course title.",
+      "Blocks: heading blocks are subheadings inside the card. Paragraph blocks are paragraphs. Bullet blocks form one list per run of bullets. Text marked **like this** is bold, and [text](address) is a link.",
+      "Content ID: each paragraph and bullet carries a content ID such as M8.2. Store it as a data-cid attribute on the element. Do not show it.",
+      "Assets: after the blocks, in the order listed on the card, unless the asset gives a placement.",
+      "Progress: 'Card 3 of 5' and Previous and Next links at the foot of every card."
+    ]
+  },
+  "components": [
+    {
+      "id": "tip",
+      "name": "Top tip box",
+      "props": "{ text: string }",
+      "behaviour": "A boxout with the label 'Top tip' and the text. No title. Static.",
+      "noJs": "Renders as is.",
+      "acceptance": [
+        "Label and text are read in that order by a screen reader.",
+        "Box style is the same on every card."
+      ]
+    },
+    {
+      "id": "resource",
+      "name": "Resource box",
+      "props": "{ title: string; url: string; summary: string; source: string }",
+      "behaviour": "A boxout labelled 'Useful resource' with the title as a link, the source in small text and a one-line summary. The link opens in the same tab.",
+      "noJs": "Renders as is.",
+      "acceptance": [
+        "The link text is the resource title, never 'click here'.",
+        "The source name shows, for example GOV.UK or Nielsen Norman Group."
+      ]
+    },
+    {
+      "id": "image",
+      "name": "Image",
+      "props": "{ kind: 'photo' | 'diagram'; brief: string; alt: string; caption?: string }",
+      "behaviour": "A full-width image with optional caption. Photos come from rsd-playbook/public/photos. If none fits the brief, show a grey placeholder with the brief written on it and list it as a photo to commission.",
+      "noJs": "Renders as is.",
+      "acceptance": [
+        "Every image has the alt text given here.",
+        "Every photo uses the same treatment as the Foundations build."
+      ]
+    },
+    {
+      "id": "slider",
+      "name": "Slider",
+      "props": "{ label: string; ends: [string, string]; stops: { label: string; state: string; value?: number; valueLabel?: string }[]; lesson: string }",
+      "behaviour": "A range input with one position per stop. Moving it shows that stop's label, describes its state and updates the picture and the value. The lesson appears once the last stop is reached.",
+      "keyboard": "Arrow keys move one stop, Home and End jump to the ends. The input's accessible name is label; aria-valuetext is the stop label.",
+      "noJs": "Every stop as a numbered list, each with its state and value, then the lesson.",
+      "acceptance": [
+        "Each stop can be reached by keyboard.",
+        "The value is announced on change through a polite live region.",
+        "The no-JavaScript render shows all stops."
+      ]
+    },
+    {
+      "id": "step",
+      "name": "Step through",
+      "props": "{ label: string; start: string; steps: { button: string; text: string }[]; end: string }",
+      "behaviour": "Shows start. A button labelled with the next step's button text reveals each step in turn, keeping earlier steps visible so the chain builds. A Previous control removes the last step. After the last step, end appears.",
+      "keyboard": "Buttons are native buttons. Focus stays on the button after each press.",
+      "noJs": "Start, all steps as an ordered list, then end.",
+      "acceptance": [
+        "Each new step is announced through a polite live region.",
+        "Previous never removes start."
+      ]
+    },
+    {
+      "id": "flip",
+      "name": "Flip cards",
+      "props": "{ label: string; cards: { front: string; back: { cid?: string; text: string; example: string } }[] }",
+      "behaviour": "A set of cards. Pressing a card turns it to show its back: the manual's text, then a line starting 'What it looks like:'. Pressing again turns it back.",
+      "keyboard": "Each card is a button with aria-pressed. Enter and Space turn it.",
+      "noJs": "A list: each front as a subheading with its back underneath.",
+      "acceptance": [
+        "With reduced motion, the card swaps without turning.",
+        "The back's manual text is verbatim and carries its content ID."
+      ]
+    },
+    {
+      "id": "match",
+      "name": "Match",
+      "props": "{ label: string; left: { id: string; text: string }[]; right: { id: string; text: string }[]; pairs: { left: string; right: string; why: string }[] }",
+      "behaviour": "Choose an item on the left, then its partner on the right. A correct pair locks together and shows why. A wrong pair shakes once (none with reduced motion) and clears. When all are matched, a summary line appears.",
+      "keyboard": "Every item is a button. Choose left, then right. Escape clears a half-made pair.",
+      "noJs": "A two-column table of the correct pairs with why.",
+      "acceptance": [
+        "The right-hand list is shuffled once on load, the same way on every visit.",
+        "Each result is announced through a polite live region."
+      ]
+    },
+    {
+      "id": "spot",
+      "name": "Spot the problem",
+      "props": "{ label: string; scene: string; hotspots: { id: string; label: string; problem: string; excludes: string; fix: string; ref?: string }[] }",
+      "behaviour": "A mock screen built in HTML (not an image) with the faults in place. Each fault is a button over its part of the screen. Pressing one marks it found and opens a note under the scene with problem, who it excludes, the fix and the reference. A counter shows 'Found 2 of 6'. A 'Show all' button reveals any left.",
+      "keyboard": "Hotspots are in reading order. Each has an accessible name such as 'Problem: the label'.",
+      "noJs": "The scene description, then every hotspot as a list item with its note.",
+      "acceptance": [
+        "The mock screen is real HTML, so its faults are genuinely present (for example the real low contrast).",
+        "Show all works at any point."
+      ]
+    },
+    {
+      "id": "before",
+      "name": "Before and after",
+      "props": "{ label: string; before: { title: string; content: string }; after: { title: string; content: string }; notes: string[] }",
+      "behaviour": "A toggle with two positions, Before and After, swaps the example. Under it, the notes say what changed.",
+      "keyboard": "A two-option radio group.",
+      "noJs": "Before, then After, then the notes.",
+      "acceptance": [
+        "Only the example swaps. The notes stay put.",
+        "The swap is instant with reduced motion."
+      ]
+    },
+    {
+      "id": "map",
+      "name": "Map explorer",
+      "props": "{ label: string; centre: string; nodes: { id: string; name: string; moments: string[]; asksFor: string[] }[]; insight: string }",
+      "behaviour": "The centre item with nodes around it. Selecting a node highlights it and shows its moments and what it asks for. Any 'asks for' item shared with other nodes is marked 'also asked by …'. After three nodes are selected, insight appears.",
+      "keyboard": "Nodes are buttons in a list, in clockwise order.",
+      "noJs": "A table: one row per node, with its moments and what it asks for, then insight.",
+      "acceptance": [
+        "Shared items are worked out from the data, not typed in.",
+        "The layout stays one column on phones: the centre on top, nodes as a list."
+      ]
+    },
+    {
+      "id": "check",
+      "name": "Quick check",
+      "props": "{ question: string; multiple: boolean; options: { text: string; correct: boolean; feedback: string }[]; after?: string }",
+      "behaviour": "Choose one option (or several when multiple is true), then press Check. Each chosen option shows its feedback, and wrong choices are marked. Try again clears. After a correct answer, after appears.",
+      "keyboard": "A radio group, or checkboxes when multiple is true, then a Check button.",
+      "noJs": "The question, each option with its feedback, and after.",
+      "acceptance": [
+        "Feedback is announced through a polite live region.",
+        "Correct and wrong are shown by text and icon, not by colour alone."
+      ]
+    },
+    {
+      "id": "choose",
+      "name": "Choose and see",
+      "props": "{ setup: string; prompt: string; options: { text: string; outcome: string; verdict: 'best' | 'risky' | 'wrong' }[]; lesson: string }",
+      "behaviour": "Shows setup and prompt with the options as buttons. Choosing one plays out its outcome under the options. The user can try the others. Once the best option has been seen, lesson appears.",
+      "keyboard": "Options are buttons. The outcome region is a polite live region.",
+      "noJs": "Setup, each option with its outcome and verdict, then lesson.",
+      "acceptance": [
+        "The verdict shows as a word (Best, Risky, Wrong), not only a colour.",
+        "Every outcome can be reached in any order."
+      ]
+    }
+  ],
+  "buildOrder": [
+    "1. The card shell: lesson, title, blocks, content IDs, progress, Previous and Next. Build course 1 card 4 with it first, since it is text plus a tip and a resource.",
+    "2. Tip, resource and image boxes.",
+    "3. The nine interactive patterns, in this order: Before and after, Quick check, Choose and see, Step through, Flip cards, Slider, Match, Spot the problem, Map explorer. That runs from simplest to most complex.",
+    "4. Course 1, cards 1 to 5.",
+    "5. Course 2, cards 1 to 13.",
+    "6. A course landing page for each course: title, summary and a list of its cards with links."
+  ],
+  "definitionOfDone": [
+    "All 18 cards are built with their text exactly as in this file, and all their assets.",
+    "Every interactive meets its component acceptance and its card acceptance.",
+    "Keyboard only: every card can be completed without a mouse.",
+    "The no-JavaScript render shows every card's text and every asset's key point.",
+    "No console errors and no sideways scrolling at 1440, 1280 and 390 pixels wide.",
+    "Screenshots of every card at all three widths have been looked at, not just taken.",
+    "A list of photos to commission, if any, has been given to Jason."
+  ],
+  "openQuestions": [
+    "Which repository should the demo be built in?",
+    "Should the course landing pages show the learner's progress, or is that for later?",
+    "Are the illustrative numbers in the sliders acceptable for a demo, or should they be replaced with real figures from a project?"
+  ],
+  "edits": [
+    {
+      "where": "Heading above M8.14",
+      "from": "5. We Strive to Make Makes the Complex Legible",
+      "to": "5. We Strive to Make the Complex Legible",
+      "why": "Repeated word."
+    },
+    {
+      "cid": "M8.19",
+      "from": "Address on the ecosystem, not isolated touchpoints.",
+      "to": "Address the ecosystem, not isolated touchpoints.",
+      "why": "Stray word."
+    },
+    {
+      "cid": "M3.18",
+      "from": "the small details that captures real-world use",
+      "to": "the small details that capture real-world use",
+      "why": "Grammar."
+    },
+    {
+      "cid": "M3.34",
+      "from": "the elements that allow enable designs to support that",
+      "to": "the elements that enable designs to support that",
+      "why": "Repeated verb."
+    },
+    {
+      "cid": "M3.53",
+      "from": "the impact designs elements have",
+      "to": "the impact design elements have",
+      "why": "Typing error."
+    },
+    {
+      "cid": "M3.61",
+      "from": "we signup to the MRS Code of Conduct",
+      "to": "we sign up to the MRS Code of Conduct",
+      "why": "Spelling: 'sign up' is a verb."
+    },
+    {
+      "cid": "M3.63",
+      "from": "We committ to all of our researchers abiding by the MRS Code.and its guiding principles.",
+      "to": "We commit to all of our researchers abiding by the MRS Code and its guiding principles.",
+      "why": "Spelling and a stray full stop."
+    },
+    {
+      "cid": "M3.76",
+      "from": "Link to the full MRS Code: https://www.mrs.org.uk/pdf/MRS-code-of-conduct-2023.pdf",
+      "to": "Link to the full MRS Code: [MRS Code of Conduct (PDF)](https://www.mrs.org.uk/pdf/MRS-code-of-conduct-2023.pdf)",
+      "why": "A bare web address becomes a link with descriptive text. The address is unchanged."
+    }
+  ],
+  "courses": [
+    {
+      "n": 1,
+      "title": "Guiding principles",
+      "summary": "The commitments and principles behind expert practice.",
+      "summaryNew": true,
+      "cards": [
+        {
+          "n": 1,
+          "id": "M8.1",
+          "lesson": "The manifesto",
+          "title": "Our RSD Manifesto",
+          "contentIds": [
+            "M8.1",
+            "M8.2",
+            "M8.3",
+            "M8.4",
+            "M8.5",
+            "M8.6",
+            "M8.7",
+            "M8.8",
+            "M8.9",
+            "M8.10"
+          ],
+          "blocks": [
+            {
+              "type": "paragraph",
+              "cid": "M8.1",
+              "text": "A declaration of principles for our design practice that is human, ethical, systemic and transformational — built on evidence, lived experience and best practice."
+            },
+            {
+              "type": "heading",
+              "text": "1. We Start with Lived Experience"
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.2",
+              "text": "Look beyond what people say to what they do."
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.3",
+              "text": "Seek out those who are least heard and most affected."
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.4",
+              "text": "Design from the edges inward."
+            },
+            {
+              "type": "heading",
+              "text": "2. We Are Evidence-Based and Outcome-Driven"
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.5",
+              "text": "Avoid guesswork; design choices must be justifiable and measurable."
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.6",
+              "text": "Ground design in research, data, observation and evaluation."
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.7",
+              "text": "Challenge design theatre and cargo-cult adoption with evidence of impact."
+            },
+            {
+              "type": "heading",
+              "text": "3. We Must Be Inclusive and Accessible by Default"
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.8",
+              "text": "Build accessibility into every step and every interaction."
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.9",
+              "text": "Remove barriers that create inequity, confusion or exclusion."
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.10",
+              "text": "Work to the principle “Nothing about us without us” in design decisions."
+            }
+          ],
+          "assets": [
+            {
+              "component": "slider",
+              "new": true,
+              "props": {
+                "label": "Design from the edges inward",
+                "ends": ["Design for the average", "Design from the edges"],
+                "stops": [
+                  {
+                    "label": "Designed for the average",
+                    "state": "The service suits the people in the middle of the crowd. Five people at the edges cannot use it: a wheelchair user, someone who reads English as a second language, a carer with five spare minutes, someone with low vision and someone with no smartphone.",
+                    "value": 62,
+                    "valueLabel": "62 of 100 people can use it"
+                  },
+                  {
+                    "label": "Add step-free access",
+                    "state": "The wheelchair user can now get in. So can parents with buggies and people making deliveries.",
+                    "value": 70,
+                    "valueLabel": "70 of 100 people can use it"
+                  },
+                  {
+                    "label": "Use plain words and short sentences",
+                    "state": "The second-language reader can now follow it. So can anyone tired, stressed or in a hurry.",
+                    "value": 81,
+                    "valueLabel": "81 of 100 people can use it"
+                  },
+                  {
+                    "label": "Let people save and come back",
+                    "state": "The carer can now finish in two sittings. So can anyone who gets interrupted.",
+                    "value": 89,
+                    "valueLabel": "89 of 100 people can use it"
+                  },
+                  {
+                    "label": "Offer large text, phone and paper routes",
+                    "state": "The person with low vision and the person with no smartphone can now use it. So can people whose phone has run out of data.",
+                    "value": 96,
+                    "valueLabel": "96 of 100 people can use it"
+                  }
+                ],
+                "lesson": "Every change made for someone at the edge also helped people in the middle. That is what designing from the edges inward means."
+              },
+              "acceptance": [
+                "A crowd of 100 small figures sits above the slider. Figures change from grey to filled as they are served, and the five edge figures are labelled.",
+                "Under the slider: 'Illustrative figures.'"
+              ],
+              "placement": "After M8.4, the end of point 1, which it illustrates."
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "id": "M8.11",
+          "lesson": "The manifesto",
+          "title": "Iterative, legible and across boundaries",
+          "contentIds": [
+            "M8.11",
+            "M8.12",
+            "M8.13",
+            "M8.14",
+            "M8.15",
+            "M8.16",
+            "M8.17",
+            "M8.18",
+            "M8.19"
+          ],
+          "blocks": [
+            {
+              "type": "heading",
+              "text": "4. Our Work Is Iterative — It Learns Its Way Forward"
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.11",
+              "text": "Do not wait for perfect answers, we make ideas tangible early."
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.12",
+              "text": "Prototype, test, learn and improve."
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.13",
+              "text": "Embrace uncertainty as a chance to discover what works."
+            },
+            {
+              "type": "heading",
+              "text": "5. We Strive to Make the Complex Legible"
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.14",
+              "text": "Designs must reduce unnecessary barriers."
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.15",
+              "text": "Aim to reduce failure demand through design that clarifies."
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.16",
+              "text": "Reduce cognitive load and emotional burdens."
+            },
+            {
+              "type": "heading",
+              "text": "6. We Work Across Boundaries"
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.17",
+              "text": "Collaborate across professions, departments, sectors and communities."
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.18",
+              "text": "Use design methods that break down silos."
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.19",
+              "text": "Address the ecosystem, not isolated touchpoints."
+            }
+          ],
+          "assets": [
+            {
+              "component": "slider",
+              "new": true,
+              "props": {
+                "label": "Clear design cuts failure demand",
+                "ends": ["Original letter", "Clear letter"],
+                "stops": [
+                  {
+                    "label": "The original letter",
+                    "state": "Subject: 'Council Tax Reduction Scheme: notification of change in circumstances assessment.' The deadline is on page 2, and the letter offers three possible actions.",
+                    "value": 240,
+                    "valueLabel": "240 calls for every 1,000 letters"
+                  },
+                  {
+                    "label": "Plain words",
+                    "state": "Jargon replaced with everyday words. 'Change in circumstances assessment' becomes 'We need to check your income'.",
+                    "value": 180,
+                    "valueLabel": "180 calls for every 1,000 letters"
+                  },
+                  {
+                    "label": "Deadline first",
+                    "state": "The deadline moves to the first line: 'Send us your payslips by 14 March.'",
+                    "value": 120,
+                    "valueLabel": "120 calls for every 1,000 letters"
+                  },
+                  {
+                    "label": "One clear action",
+                    "state": "One action, one way to do it and a link to do it online. Subject: 'Send us your payslips by 14 March to keep your discount.'",
+                    "value": 70,
+                    "valueLabel": "70 calls for every 1,000 letters"
+                  }
+                ],
+                "lesson": "Most of those calls were failure demand: contact caused by something unclear. Design that clarifies removes them before they happen."
+              },
+              "acceptance": [
+                "The letter on the left changes at each stop. A helpline counter on the right shows the calls.",
+                "Under the slider: 'Illustrative figures.'"
+              ],
+              "placement": "After M8.16, the end of point 5, which it illustrates."
+            },
+            {
+              "component": "tip",
+              "new": true,
+              "props": {
+                "text": "Ask the client for their top five reasons people call or email. Most are failure demand: contact caused by something unclear earlier in the journey."
+              }
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "id": "M8.20",
+          "lesson": "The manifesto",
+          "title": "Prevention, partnership and innovation",
+          "contentIds": [
+            "M8.20",
+            "M8.21",
+            "M8.22",
+            "M8.23",
+            "M8.24",
+            "M8.25",
+            "M8.26",
+            "M8.27",
+            "M8.28"
+          ],
+          "blocks": [
+            {
+              "type": "heading",
+              "text": "7. Our Goal Is to Prevent Problems Before They Arise"
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.20",
+              "text": "Aim for long-term value and sustainability by reducing unnecessary future need."
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.21",
+              "text": "Focus on understanding the root causes, not just the symptoms."
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.22",
+              "text": "Consider the consequences of interventions to avoid creating new burdens."
+            },
+            {
+              "type": "heading",
+              "text": "8. We Are Partners with Those We Are Designing For"
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.23",
+              "text": "Embed co-design and participatory practices at scale."
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.24",
+              "text": "Work openly, sharing methods, evidence and failures."
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.25",
+              "text": "Build communities of practice that strengthen capability."
+            },
+            {
+              "type": "heading",
+              "text": "9. We Embrace Innovation with Intent and Responsibility"
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.26",
+              "text": "Focus on the human experience when designing with new technologies."
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.27",
+              "text": "Ensure innovation occurs where it delivers the greatest value."
+            },
+            {
+              "type": "bullet",
+              "cid": "M8.28",
+              "text": "Be bold in exploring hypotheses, potential and risks on technological change."
+            }
+          ],
+          "assets": [
+            {
+              "component": "step",
+              "new": true,
+              "props": {
+                "label": "From symptom to root cause",
+                "start": "People miss their hospital appointments.",
+                "steps": [
+                  {
+                    "button": "Why?",
+                    "text": "They forget the date."
+                  },
+                  {
+                    "button": "Why?",
+                    "text": "The reminder text is the main prompt, and many people do not see it."
+                  },
+                  {
+                    "button": "Why?",
+                    "text": "It arrives at 10am, when many people are at work and cannot check their phone."
+                  },
+                  {
+                    "button": "Why?",
+                    "text": "The system sends every reminder in one morning batch."
+                  },
+                  {
+                    "button": "Why?",
+                    "text": "The batch time was set years ago to suit an old system, and nobody owns it."
+                  }
+                ],
+                "end": "Fixing the symptom means sending more letters. Fixing the root cause means giving someone ownership of reminders and testing a text the evening before. That is 'root causes, not just the symptoms'."
+              },
+              "acceptance": [
+                "Five presses reach the root cause. The end text appears only after the fifth."
+              ],
+              "placement": "After M8.22, the end of point 7, which it illustrates."
+            }
+          ]
+        },
+        {
+          "n": 4,
+          "id": "M3.1",
+          "lesson": "Our design principles",
+          "title": "Start with the needs of users",
+          "contentIds": ["M3.1", "M3.2"],
+          "blocks": [
+            {
+              "type": "paragraph",
+              "cid": "M3.1",
+              "text": "The best and most effective digital experiences begin with a simple principle — **start with the needs of users in mind**. Our design principles and standards act as a guide throughout our work and ensure we stay true to our vision."
+            },
+            {
+              "type": "paragraph",
+              "cid": "M3.2",
+              "text": "We measure the quality of our work against the core principles and standards in the following sections."
+            }
+          ],
+          "assets": [
+            {
+              "component": "tip",
+              "new": true,
+              "props": {
+                "text": "Write the user need before anyone suggests a solution: 'As a [person], I need [something], so that [outcome].' If you cannot fill in the 'so that', you do not understand the need yet."
+              }
+            },
+            {
+              "component": "resource",
+              "new": true,
+              "props": {
+                "title": "Writing user stories",
+                "url": "https://www.gov.uk/service-manual/agile-delivery/writing-user-stories",
+                "summary": "How to write user needs as stories a whole team can work from.",
+                "source": "GOV.UK Service Manual"
+              }
+            }
+          ]
+        },
+        {
+          "n": 5,
+          "id": "M3.3",
+          "lesson": "Our design principles",
+          "title": "Our Design Principles",
+          "contentIds": ["M3.3", "M3.4", "M3.5", "M3.6", "M3.7"],
+          "blocks": [
+            {
+              "type": "heading",
+              "text": "Human-Centred"
+            },
+            {
+              "type": "paragraph",
+              "cid": "M3.3",
+              "text": "Always use research and insight to inform design. Nothing should be left to guess work."
+            },
+            {
+              "type": "heading",
+              "text": "Participatory"
+            },
+            {
+              "type": "paragraph",
+              "cid": "M3.4",
+              "text": "Multi-disciplinary teams, working in the open, bringing clients, stakeholders, staff and customers, into the centre of the design."
+            },
+            {
+              "type": "heading",
+              "text": "Visualised"
+            },
+            {
+              "type": "paragraph",
+              "cid": "M3.5",
+              "text": "A picture tells a thousand words. Everything we produce should be a work of art - considered, cared for and something we are proud of."
+            },
+            {
+              "type": "heading",
+              "text": "Holistic"
+            },
+            {
+              "type": "paragraph",
+              "cid": "M3.6",
+              "text": "Think beyond the product or service and look at the whole environment - how people engage with the service, how they feel and what challenges they face along the journey."
+            },
+            {
+              "type": "heading",
+              "text": "Iterative"
+            },
+            {
+              "type": "paragraph",
+              "cid": "M3.7",
+              "text": "Build, test, iterate and repeat. Continue for as long as time allows. It will lead to a better outcome."
+            }
+          ],
+          "assets": [
+            {
+              "component": "flip",
+              "new": true,
+              "props": {
+                "label": "The five principles",
+                "cards": [
+                  {
+                    "front": "Human-Centred",
+                    "back": {
+                      "cid": "M3.3",
+                      "text": "Always use research and insight to inform design. Nothing should be left to guess work.",
+                      "example": "Every design decision in the deck points back to something research found."
+                    }
+                  },
+                  {
+                    "front": "Participatory",
+                    "back": {
+                      "cid": "M3.4",
+                      "text": "Multi-disciplinary teams, working in the open, bringing clients, stakeholders, staff and customers, into the centre of the design.",
+                      "example": "Clients, staff and users sit in the same workshop, not separate ones."
+                    }
+                  },
+                  {
+                    "front": "Visualised",
+                    "back": {
+                      "cid": "M3.5",
+                      "text": "A picture tells a thousand words. Everything we produce should be a work of art - considered, cared for and something we are proud of.",
+                      "example": "The team can explain the whole journey from one wall."
+                    }
+                  },
+                  {
+                    "front": "Holistic",
+                    "back": {
+                      "cid": "M3.6",
+                      "text": "Think beyond the product or service and look at the whole environment - how people engage with the service, how they feel and what challenges they face along the journey.",
+                      "example": "The journey map includes what happens before and after the screen."
+                    }
+                  },
+                  {
+                    "front": "Iterative",
+                    "back": {
+                      "cid": "M3.7",
+                      "text": "Build, test, iterate and repeat. Continue for as long as time allows. It will lead to a better outcome.",
+                      "example": "Version 2 is planned before version 1 ships."
+                    }
+                  }
+                ]
+              },
+              "acceptance": [
+                "This card replaces the card's blocks: the five principles are shown only inside the flip cards, so the text does not appear twice. The no-JavaScript render shows each principle in full.",
+                "Every principle's text is verbatim from the manual."
+              ],
+              "placement": "Instead of the blocks."
+            }
+          ],
+          "replaceBlocks": true
+        }
+      ]
+    },
+    {
+      "n": 2,
+      "title": "Working to the standards",
+      "summary": "The standards your work is measured against, and the research code you sign up to.",
+      "summaryNew": true,
+      "cards": [
+        {
+          "n": 1,
+          "id": "M3.8",
+          "lesson": "Transformational Design Standards",
+          "title": "Transformational Design Standards",
+          "contentIds": ["M3.8", "M3.9", "M3.10", "M3.11", "M3.12", "M3.13", "M3.14", "M3.15"],
+          "blocks": [
+            {
+              "type": "paragraph",
+              "cid": "M3.8",
+              "text": "Transformational Design is a governing framework for how we do things, how we measure ourselves and our work. It is not a set of tools but system stewardship — a way of designing services that aligns human dignity with operational reality. Services that:"
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.9",
+              "text": "Work for everyone, including those most excluded."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.10",
+              "text": "Are grounded in real lived experience."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.11",
+              "text": "Are ethical, accessible, and equitable."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.12",
+              "text": "Integrate across policy, services and place."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.13",
+              "text": "Adapt continuously based on evidence."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.14",
+              "text": "Prevent harm and reduce long-term cost."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.15",
+              "text": "Build public trust and legitimacy."
+            }
+          ],
+          "assets": [
+            {
+              "component": "match",
+              "new": true,
+              "props": {
+                "label": "From commitment to standard",
+                "left": [
+                  {
+                    "id": "m1",
+                    "text": "1. We start with lived experience"
+                  },
+                  {
+                    "id": "m2",
+                    "text": "2. We are evidence-based and outcome-driven"
+                  },
+                  {
+                    "id": "m3",
+                    "text": "3. We must be inclusive and accessible by default"
+                  },
+                  {
+                    "id": "m4",
+                    "text": "4. Our work is iterative"
+                  },
+                  {
+                    "id": "m5",
+                    "text": "5. We strive to make the complex legible"
+                  },
+                  {
+                    "id": "m6",
+                    "text": "6. We work across boundaries"
+                  },
+                  {
+                    "id": "m7",
+                    "text": "7. Our goal is to prevent problems before they arise"
+                  },
+                  {
+                    "id": "m8",
+                    "text": "8. We are partners with those we are designing for"
+                  },
+                  {
+                    "id": "m9",
+                    "text": "9. We embrace innovation with intent and responsibility"
+                  }
+                ],
+                "right": [
+                  {
+                    "id": "s1",
+                    "text": "Insight built on lived experience"
+                  },
+                  {
+                    "id": "s2",
+                    "text": "Accessibility-first"
+                  },
+                  {
+                    "id": "s3",
+                    "text": "Ethical, equitable and legitimate"
+                  },
+                  {
+                    "id": "s4",
+                    "text": "Design that spans the whole system"
+                  },
+                  {
+                    "id": "s5",
+                    "text": "Iterative, adaptive and future-ready"
+                  },
+                  {
+                    "id": "s6",
+                    "text": "Preventative design and system value"
+                  },
+                  {
+                    "id": "s7",
+                    "text": "Co-design with communities"
+                  },
+                  {
+                    "id": "s8",
+                    "text": "Transparency, evidence and impact"
+                  },
+                  {
+                    "id": "s9",
+                    "text": "Fresh perspectives and innovations"
+                  }
+                ],
+                "pairs": [
+                  {
+                    "left": "m1",
+                    "right": "s1",
+                    "why": "Both start from real lives: research into the full range of people, and advocacy for groups who are hidden."
+                  },
+                  {
+                    "left": "m2",
+                    "right": "s8",
+                    "why": "Both ask for measurable criteria and evidence of impact, not guesswork."
+                  },
+                  {
+                    "left": "m3",
+                    "right": "s2",
+                    "why": "Both use the same words: 'Nothing about us without us.'"
+                  },
+                  {
+                    "left": "m4",
+                    "right": "s5",
+                    "why": "Both expect services to keep learning and changing as needs change."
+                  },
+                  {
+                    "left": "m5",
+                    "right": "s3",
+                    "why": "Both aim to cut failure demand with clear, plain information."
+                  },
+                  {
+                    "left": "m6",
+                    "right": "s4",
+                    "why": "Both look at the whole ecosystem, not one touchpoint."
+                  },
+                  {
+                    "left": "m7",
+                    "right": "s6",
+                    "why": "Both focus on root causes and on mapping the consequences of a design."
+                  },
+                  {
+                    "left": "m8",
+                    "right": "s7",
+                    "why": "Both put co-design and participation at the centre."
+                  },
+                  {
+                    "left": "m9",
+                    "right": "s9",
+                    "why": "Both test new technology for its value to people, not for its own sake."
+                  }
+                ]
+              },
+              "acceptance": [
+                "The summary line when all nine are matched: 'Each commitment in the manifesto becomes a standard you can be measured against.'"
+              ]
+            }
+          ]
+        },
+        {
+          "n": 2,
+          "id": "M3.16",
+          "lesson": "Transformational Design Standards",
+          "title": "1. Insight Built on Lived Experience",
+          "contentIds": ["M3.16", "M3.17", "M3.18", "M3.19", "M3.20"],
+          "blocks": [
+            {
+              "type": "paragraph",
+              "cid": "M3.16",
+              "text": "Great design begins with understanding human experiences and contexts."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.17",
+              "text": "Conduct research that explores the full range of human motivations, capabilities, opportunities, behaviours, cultures and contexts."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.18",
+              "text": "Map the whole system while designing for the small details that capture real-world use."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.19",
+              "text": "Advocate for needs of hidden user groups, skills and experience."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.20",
+              "text": "Build shared visions that connect user needs to business and policy goals."
+            }
+          ],
+          "assets": [
+            {
+              "component": "image",
+              "new": true,
+              "props": {
+                "kind": "photo",
+                "brief": "A researcher sitting with someone in their own home or workplace, listening and taking notes. Natural light, no meeting room.",
+                "alt": "A researcher listens to a participant at their kitchen table, notebook open."
+              }
+            },
+            {
+              "component": "tip",
+              "new": true,
+              "props": {
+                "text": "Recruit at least one participant from a group the service usually misses. Ask the client who never calls, never complains and never takes part. Start there."
+              }
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "id": "M3.21",
+          "lesson": "Transformational Design Standards",
+          "title": "2. Accessibility-First",
+          "contentIds": ["M3.21", "M3.22", "M3.23", "M3.24", "M3.25"],
+          "blocks": [
+            {
+              "type": "paragraph",
+              "cid": "M3.21",
+              "text": "Design to meet people where they are — usability is not a layer applied later - it is a foundational principle."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.22",
+              "text": "“Nothing about us without us” — adopt design principles built on rights-based obligations, not a nice to have."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.23",
+              "text": "From the start, explicitly focus on people most at risk of exclusion (disability, age, income, language, gender, etc.)."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.24",
+              "text": "Ensure designs address cognitive accessibility as much as physical disabilities — reducing unnecessary demand on users."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.25",
+              "text": "Prioritise approaches and methods that go beyond compliance and will deliver holistic experiences."
+            }
+          ],
+          "assets": [
+            {
+              "component": "spot",
+              "new": true,
+              "props": {
+                "label": "Find the barriers",
+                "scene": "A one-page form called 'Apply for a resident parking permit', with a vehicle question, a date question, an error message, a timeout warning and a Continue link.",
+                "hotspots": [
+                  {
+                    "id": "h1",
+                    "label": "The hint inside the box",
+                    "problem": "The question is written as grey placeholder text inside the box, and it disappears when you start typing.",
+                    "excludes": "People with memory or attention difficulties, who lose the question halfway through. This is a cognitive barrier.",
+                    "fix": "Put the question in a visible label above the box.",
+                    "ref": "WCAG 2.2: 3.3.2 Labels or Instructions"
+                  },
+                  {
+                    "id": "h2",
+                    "label": "The pale text",
+                    "problem": "Light grey text on white, at a contrast of about 2 to 1.",
+                    "excludes": "People with low vision, and anyone reading on a phone in sunlight.",
+                    "fix": "Use text with a contrast of at least 4.5 to 1.",
+                    "ref": "WCAG 2.2: 1.4.3 Contrast (Minimum)"
+                  },
+                  {
+                    "id": "h3",
+                    "label": "The red box",
+                    "problem": "The only sign of an error is the box turning red.",
+                    "excludes": "People who cannot tell red from other colours, and screen reader users, who hear nothing.",
+                    "fix": "Add an error message in words next to the box, and a summary at the top.",
+                    "ref": "WCAG 2.2: 1.4.1 Use of Color"
+                  },
+                  {
+                    "id": "h4",
+                    "label": "'Enter your VRM'",
+                    "problem": "The question uses the term VRM instead of 'vehicle registration number'.",
+                    "excludes": "Anyone who does not know the term, including many people reading in a second language. This is a cognitive barrier.",
+                    "fix": "Use the words people use: 'What is your vehicle registration number?'",
+                    "ref": "WCAG 2.2: 3.1.3 Unusual Words (AAA)"
+                  },
+                  {
+                    "id": "h5",
+                    "label": "The 10-minute timeout",
+                    "problem": "'Your session will end in 10 minutes', with no way to ask for more time.",
+                    "excludes": "People who need longer: disabled people, carers who are interrupted and people looking for documents.",
+                    "fix": "Warn before time runs out and let people extend it, or remove the limit.",
+                    "ref": "WCAG 2.2: 2.2.1 Timing Adjustable"
+                  },
+                  {
+                    "id": "h6",
+                    "label": "The tiny Continue link",
+                    "problem": "Continue is a small text link about 14 pixels tall.",
+                    "excludes": "People with tremors or limited movement, and anyone using a touch screen.",
+                    "fix": "Use a full-size button at least 24 by 24 pixels, ideally larger.",
+                    "ref": "WCAG 2.2: 2.5.8 Target Size (Minimum)"
+                  }
+                ]
+              },
+              "acceptance": [
+                "Two of the six barriers (h1 and h4) are labelled cognitive in their notes, which shows the point of M3.24.",
+                "The mock form is real HTML with the faults really present, inside a frame labelled 'Example of a form with problems'. Screen readers must hear that label before the form, so nobody mistakes it for a real form."
+              ]
+            },
+            {
+              "component": "resource",
+              "new": true,
+              "props": {
+                "title": "Designing for accessibility",
+                "url": "https://ukhomeoffice.github.io/accessibility-posters/",
+                "summary": "Dos and don'ts for designing for users with different access needs, one poster per need.",
+                "source": "Home Office"
+              }
+            }
+          ]
+        },
+        {
+          "n": 4,
+          "id": "M3.26",
+          "lesson": "Transformational Design Standards",
+          "title": "3. Ethical, Equitable & Legitimate",
+          "contentIds": ["M3.26", "M3.27", "M3.28", "M3.29", "M3.30"],
+          "blocks": [
+            {
+              "type": "paragraph",
+              "cid": "M3.26",
+              "text": "Adopt methods that build confidence and trust in how services are conceived, designed and delivered."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.27",
+              "text": "Design for user error, supporting correction and adjustment on the path to successful completion of tasks."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.28",
+              "text": "Respect dignity by minimising assumptions about user abilities and designing service paths that build confidence and reduce anxiety."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.29",
+              "text": "Ensure that information is clear, empathetic, accessible and accurate, so it is easily understandable without needing expert help."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.30",
+              "text": "Prioritise plain-language and coherent structures to reduce “failure demand”, exclusion and mistrust."
+            }
+          ],
+          "assets": [
+            {
+              "component": "before",
+              "new": true,
+              "props": {
+                "label": "Design for user error",
+                "before": {
+                  "title": "Before",
+                  "content": "A date of birth field with the day and month filled in and the year left empty. Under it, in red: 'Invalid input.'"
+                },
+                "after": {
+                  "title": "After",
+                  "content": "The same field. Above it, in words: 'Date of birth must include a year.' The day and month the person typed are still there."
+                },
+                "notes": [
+                  "The message says what is wrong.",
+                  "It says how to put it right.",
+                  "It sits next to the field it is about.",
+                  "It keeps what the person already typed, so they only fix one thing."
+                ]
+              },
+              "acceptance": [
+                "Both versions are rendered as real form fields, not images, so screen readers hear the actual messages."
+              ]
+            },
+            {
+              "component": "resource",
+              "new": true,
+              "props": {
+                "title": "Error message",
+                "url": "https://design-system.service.gov.uk/components/error-message/",
+                "summary": "How to write error messages that help people fix the problem.",
+                "source": "GOV.UK Design System"
+              }
+            }
+          ]
+        },
+        {
+          "n": 5,
+          "id": "M3.31",
+          "lesson": "Transformational Design Standards",
+          "title": "4. Design That Spans the Whole System",
+          "contentIds": ["M3.31", "M3.32", "M3.33", "M3.34", "M3.35"],
+          "blocks": [
+            {
+              "type": "paragraph",
+              "cid": "M3.31",
+              "text": "Be bold in designing 360° experiences that are desirable, feasible and viable, to improve lives."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.32",
+              "text": "Ensure design visions align with organisational structures, people’s reality, their communities and operation of wider public services."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.33",
+              "text": "Identify what affects and shapes peoples’ lives and organisational goals."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.34",
+              "text": "Understand the moments and spaces where change can commence and the elements that enable designs to support that."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.35",
+              "text": "Ensure services work in complex, real-world and multi-agency environments — not for hypothetical ideal users, in ideal systems."
+            }
+          ],
+          "assets": [
+            {
+              "component": "map",
+              "new": true,
+              "props": {
+                "label": "One life, many services",
+                "centre": "Sam, a single parent with two children, working part time",
+                "nodes": [
+                  {
+                    "id": "gp",
+                    "name": "GP surgery",
+                    "moments": ["A child's asthma flares up", "Sam needs a sick note"],
+                    "asksFor": ["Proof of address", "Date of birth"]
+                  },
+                  {
+                    "id": "school",
+                    "name": "School",
+                    "moments": ["A child's asthma flares up", "Applying for free school meals"],
+                    "asksFor": ["Proof of address", "Income details"]
+                  },
+                  {
+                    "id": "housing",
+                    "name": "Housing association",
+                    "moments": ["The rent goes up", "Reporting damp"],
+                    "asksFor": ["Proof of address", "Income details"]
+                  },
+                  {
+                    "id": "jobcentre",
+                    "name": "Jobcentre",
+                    "moments": ["Starting a new part-time job", "The rent goes up"],
+                    "asksFor": ["Proof of address", "Income details", "Date of birth"]
+                  },
+                  {
+                    "id": "foodbank",
+                    "name": "Food bank charity",
+                    "moments": ["Money runs out before payday"],
+                    "asksFor": ["Income details"]
+                  }
+                ],
+                "insight": "Sam gives the same information over and over to services that never talk to each other. A design for any one of them works better when it fits the whole week."
+              },
+              "acceptance": [
+                "Shared 'asks for' items are worked out from the data: proof of address is asked for by four services, income details by four and date of birth by two."
+              ]
+            },
+            {
+              "component": "resource",
+              "new": true,
+              "props": {
+                "title": "Systemic Design Framework",
+                "url": "https://www.designcouncil.org.uk/our-resources/systemic-design-framework/",
+                "summary": "A framework for designing across whole systems rather than single services.",
+                "source": "Design Council"
+              }
+            }
+          ]
+        },
+        {
+          "n": 6,
+          "id": "M3.36",
+          "lesson": "Transformational Design Standards",
+          "title": "5. Iterative, Adaptive & Future-Ready",
+          "contentIds": ["M3.36", "M3.37", "M3.38", "M3.39", "M3.40"],
+          "blocks": [
+            {
+              "type": "paragraph",
+              "cid": "M3.36",
+              "text": "Practice that evolves in partnership with people, communities, organisations and environments."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.37",
+              "text": "Design in ways that allow services and products to adapt and evolve as people’s needs, technology and conditions change."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.38",
+              "text": "Start with the end in mind, adopting practices that support reuse, repair, adaptation and end-of-life retirement that minimises waste."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.39",
+              "text": "Monitor and evaluate emerging trends so services can evolve and new design applied at the right time to meet the needs of future citizens."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.40",
+              "text": "Establish open and continuous feedback loops to provide early warning signs of failure."
+            }
+          ],
+          "assets": [
+            {
+              "component": "tip",
+              "new": true,
+              "props": {
+                "text": "Before launch, agree with the client the three signals that would show the service is starting to fail, for example rising calls, falling completion or more complaints. Watch them from day one. That is your early warning loop."
+              }
+            }
+          ]
+        },
+        {
+          "n": 7,
+          "id": "M3.41",
+          "lesson": "Transformational Design Standards",
+          "title": "6. Preventative Design & System Value",
+          "contentIds": ["M3.41", "M3.42", "M3.43", "M3.44", "M3.45"],
+          "blocks": [
+            {
+              "type": "paragraph",
+              "cid": "M3.41",
+              "text": "Focus on impact, preventing problems before they arise and reducing long-term demand."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.42",
+              "text": "Challenge design theatre, ‘cargo-cult adoption’ and overclaiming with approaches that demonstrate how and why design improves outcomes."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.43",
+              "text": "Harness multi-disciplinary teams and expert insights to share practices, knowledge and evidence the value delivered by research and design."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.44",
+              "text": "Focus on addressing root causes and solving the right problems to reduce the unnecessary need for future services."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.45",
+              "text": "Map the consequences, intended and unintended, of potential solutions to avoid creating new burdens on users and operational structures."
+            }
+          ],
+          "assets": [
+            {
+              "component": "check",
+              "new": true,
+              "props": {
+                "question": "Which of these show how and why design improves outcomes? Choose all that apply.",
+                "multiple": true,
+                "options": [
+                  {
+                    "text": "A workshop fills a wall with 60 sticky notes. They are photographed and never looked at again.",
+                    "correct": false,
+                    "feedback": "This is design theatre: activity that looks like design but changes nothing."
+                  },
+                  {
+                    "text": "A team tests a new letter with 2,000 people. Repeat calls fall by 18%.",
+                    "correct": true,
+                    "feedback": "Yes. It names the change, tests it and shows the effect."
+                  },
+                  {
+                    "text": "A team runs a design sprint because a competitor did, without a question to answer.",
+                    "correct": false,
+                    "feedback": "This is cargo-cult adoption: copying a method without knowing why."
+                  },
+                  {
+                    "text": "Before moving a form online, a team maps who it would leave out, and keeps a phone route for the 12% who need it.",
+                    "correct": true,
+                    "feedback": "Yes. It maps the consequences of a change and avoids a new burden."
+                  }
+                ],
+                "after": "Design earns trust when it can show what changed and why. That is the heart of this standard."
+              },
+              "acceptance": [
+                "Two options are correct. Choosing only one of them shows 'Partly right' with the feedback for each choice."
+              ]
+            }
+          ]
+        },
+        {
+          "n": 8,
+          "id": "M3.46",
+          "lesson": "Transformational Design Standards",
+          "title": "7. Co-Design with Communities",
+          "contentIds": ["M3.46", "M3.47", "M3.48", "M3.49", "M3.50"],
+          "blocks": [
+            {
+              "type": "paragraph",
+              "cid": "M3.46",
+              "text": "Use facilitation that elevates the voices of those who will feel the impact of new or re-designed services."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.47",
+              "text": "Build human-centred design strategies to scale and strengthen community engagement and participatory practices."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.48",
+              "text": "Adopt design practices that facilitate diverse groups to become co-designers and evaluators."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.49",
+              "text": "Build legitimacy, trust and impact through participation that surfaces systemic issues and otherwise unheard groups."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.50",
+              "text": "Utilise iteration, prototyping and experimentation as core practices to de-risk delivery."
+            }
+          ],
+          "assets": [
+            {
+              "component": "image",
+              "new": true,
+              "props": {
+                "kind": "photo",
+                "brief": "A community co-design session: residents and staff working side by side at one table, with no presenter at the front.",
+                "alt": "Residents and council staff working together around a table covered in paper and pens."
+              }
+            },
+            {
+              "component": "resource",
+              "new": true,
+              "props": {
+                "title": "Design Justice principles",
+                "url": "https://designjustice.org/read-the-principles",
+                "summary": "Ten principles for design led by the communities most affected by it.",
+                "source": "Design Justice Network"
+              }
+            }
+          ]
+        },
+        {
+          "n": 9,
+          "id": "M3.51",
+          "lesson": "Transformational Design Standards",
+          "title": "8. Transparency, Evidence & Impact",
+          "contentIds": ["M3.51", "M3.52", "M3.53", "M3.54", "M3.55"],
+          "blocks": [
+            {
+              "type": "paragraph",
+              "cid": "M3.51",
+              "text": "Use continuous monitoring to prevent harm and support learning across the system."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.52",
+              "text": "Embrace Agile methods and work in the open, share progress, embrace feedback and continuously deliver outcomes."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.53",
+              "text": "Adopt test-driven design approaches that set objectives and goals to measure the impact design elements have in achieving them."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.54",
+              "text": "Set measurable criteria to monitor performance over time and benchmark outcomes."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.55",
+              "text": "Assess development and progression of projects against Transformational Design Standards."
+            }
+          ],
+          "assets": [
+            {
+              "component": "tip",
+              "new": true,
+              "props": {
+                "text": "Write the measure before the design: which number should move, by how much and by when. If the team cannot agree on it, the objective is not clear yet."
+              }
+            },
+            {
+              "component": "resource",
+              "new": true,
+              "props": {
+                "title": "Measuring success",
+                "url": "https://www.gov.uk/service-manual/measuring-success",
+                "summary": "Choosing measures, setting benchmarks and tracking a service over time.",
+                "source": "GOV.UK Service Manual"
+              }
+            }
+          ]
+        },
+        {
+          "n": 10,
+          "id": "M3.56",
+          "lesson": "Transformational Design Standards",
+          "title": "9. Fresh Perspectives & Innovations",
+          "contentIds": ["M3.56", "M3.57", "M3.58", "M3.59", "M3.60"],
+          "blocks": [
+            {
+              "type": "paragraph",
+              "cid": "M3.56",
+              "text": "Design for a rapidly converging technological and physical world and the uncertainty it brings."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.57",
+              "text": "Pay attention to human experience in designing services that embrace the innovation of experiences, technologies, operations and systems."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.58",
+              "text": "Ensure that innovation is happening in the right places, where the most value is delivered."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.59",
+              "text": "Set ambitious hypotheses in harnessing new technologies, to test how we achieve greater impact for users and productivity for organisations."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.60",
+              "text": "Take time to explore and try things that could re-define the way design practice can address rapid technological, social and economic change."
+            }
+          ],
+          "assets": [
+            {
+              "component": "tip",
+              "new": true,
+              "props": {
+                "text": "Frame every new technology as a test, not a promise: 'We believe [technology] will help [people] to [outcome]. We will know it worked when [measure].'"
+              }
+            },
+            {
+              "component": "resource",
+              "new": true,
+              "props": {
+                "title": "AI Playbook for the UK Government",
+                "url": "https://www.gov.uk/government/publications/ai-playbook-for-the-uk-government",
+                "summary": "Guidance on using AI safely, effectively and responsibly in public services.",
+                "source": "GOV.UK"
+              }
+            }
+          ]
+        },
+        {
+          "n": 11,
+          "id": "M3.61",
+          "lesson": "Research and design governance",
+          "title": "MRS Code of Conduct",
+          "contentIds": ["M3.61", "M3.62", "M3.63"],
+          "blocks": [
+            {
+              "type": "paragraph",
+              "cid": "M3.61",
+              "text": "We are members of the Market Research Society. As members, we sign up to the MRS Code of Conduct."
+            },
+            {
+              "type": "paragraph",
+              "cid": "M3.62",
+              "text": "The Code of Conduct was created to support all those engaged in market, opinion, social research, insight and data analytics in maintaining professional standards."
+            },
+            {
+              "type": "paragraph",
+              "cid": "M3.63",
+              "text": "We commit to all of our researchers abiding by the MRS Code and its guiding principles."
+            }
+          ],
+          "assets": [
+            {
+              "component": "resource",
+              "new": true,
+              "props": {
+                "title": "MRS Code of Conduct",
+                "url": "https://www.mrs.org.uk/standards/code-of-conduct",
+                "summary": "The full code, with guidance notes on applying it.",
+                "source": "Market Research Society"
+              }
+            },
+            {
+              "component": "tip",
+              "new": true,
+              "props": {
+                "text": "Read the code before every new piece of fieldwork, not just once when you join. The situation in front of you is what makes it make sense."
+              }
+            }
+          ]
+        },
+        {
+          "n": 12,
+          "id": "M3.64",
+          "lesson": "Research and design governance",
+          "title": "Being honest and open",
+          "contentIds": ["M3.64", "M3.65", "M3.66", "M3.67", "M3.68", "M3.69"],
+          "blocks": [
+            {
+              "type": "bullet",
+              "cid": "M3.64",
+              "text": "Ensure that their professional activities can be understood in a transparent manner."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.65",
+              "text": "Be straightforward and honest in all professional and business relationships."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.66",
+              "text": "Be transparent as to the subject and purpose of data collection."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.67",
+              "text": "Ensure that their professional activities are not used to unfairly influence views and opinions of participants."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.68",
+              "text": "Respect the confidentiality of information collected in their professional activities."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.69",
+              "text": "Respect the rights and well-being of all individuals."
+            }
+          ],
+          "assets": [
+            {
+              "component": "choose",
+              "new": true,
+              "props": {
+                "setup": "You are halfway through an interview about applying for a parking permit.",
+                "prompt": "The participant asks: 'Who is this research actually for?' What do you say?",
+                "options": [
+                  {
+                    "text": "'I can't really say, but it's for a big organisation.'",
+                    "outcome": "The participant goes quiet and gives shorter answers for the rest of the session. They are no longer sure what their words will be used for.",
+                    "verdict": "wrong"
+                  },
+                  {
+                    "text": "'It's for the council. They want to make applying for permits easier. What you tell me helps them decide what to change, and you can stop at any time.'",
+                    "outcome": "The participant relaxes and says, 'Oh good, then I'll tell you about the time it went wrong.' The session gets better.",
+                    "verdict": "best"
+                  },
+                  {
+                    "text": "'Don't worry about that, it's just a chat.'",
+                    "outcome": "The participant carries on, but they have agreed to something they do not understand. That is not informed consent.",
+                    "verdict": "wrong"
+                  }
+                ],
+                "lesson": "Be open about who the research is for and what the data will be used for. If the client has to stay unnamed, say so, say why, and still be clear about the purpose."
+              },
+              "acceptance": ["The lesson appears once the best option has been opened."]
+            }
+          ]
+        },
+        {
+          "n": 13,
+          "id": "M3.70",
+          "lesson": "Research and design governance",
+          "title": "Protecting people and the profession",
+          "contentIds": ["M3.70", "M3.71", "M3.72", "M3.73", "M3.74", "M3.75", "M3.76"],
+          "blocks": [
+            {
+              "type": "bullet",
+              "cid": "M3.70",
+              "text": "Ensure that individuals are not harmed or adversely affected by their professional activities."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.71",
+              "text": "Balance the needs of individuals, clients, and their professional activities."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.72",
+              "text": "Exercise independent professional judgement in the design, conduct and reporting of their professional activities."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.73",
+              "text": "Ensure that their professional activities are conducted by persons with appropriate training, qualifications and experience."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.74",
+              "text": "Protect the reputation and integrity of the profession."
+            },
+            {
+              "type": "bullet",
+              "cid": "M3.75",
+              "text": "Take responsibility for promoting and reinforcing the principles and rules of the MRS Code of Conduct."
+            },
+            {
+              "type": "paragraph",
+              "cid": "M3.76",
+              "text": "Link to the full MRS Code: [MRS Code of Conduct (PDF)](https://www.mrs.org.uk/pdf/MRS-code-of-conduct-2023.pdf)"
+            }
+          ],
+          "assets": [
+            {
+              "component": "check",
+              "new": true,
+              "props": {
+                "question": "A participant becomes upset talking about their benefits claim. What should you do first?",
+                "multiple": false,
+                "options": [
+                  {
+                    "text": "Carry on, so you get through all your questions.",
+                    "correct": false,
+                    "feedback": "This puts your research before the person. The code asks you to make sure nobody is harmed by taking part."
+                  },
+                  {
+                    "text": "Pause, acknowledge how they feel and offer to take a break or stop.",
+                    "correct": true,
+                    "feedback": "Yes. Their wellbeing comes first, and they choose what happens next."
+                  },
+                  {
+                    "text": "Move on to another topic without saying anything.",
+                    "correct": false,
+                    "feedback": "Better than carrying on, but it ignores what just happened and takes the choice away from them."
+                  },
+                  {
+                    "text": "Give them advice about their claim.",
+                    "correct": false,
+                    "feedback": "Well meant, but it is outside your training and could be wrong. Point them to people who can help instead."
+                  }
+                ],
+                "after": "Then: point them to support services, leave out anything they ask you not to record, and talk it through with a colleague afterwards."
+              },
+              "acceptance": [
+                "The 'after' text appears only after the correct answer, as the rest of the right sequence."
+              ]
+            },
+            {
+              "component": "tip",
+              "new": true,
+              "props": {
+                "text": "Prepare a distress plan and a list of support services before fieldwork starts. Agree who on the team the researcher calls afterwards."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "passages": 104,
+    "note": "Every passage from courses 1 and 2 of the MYP order is on exactly one card here, in manual order."
+  }
+}

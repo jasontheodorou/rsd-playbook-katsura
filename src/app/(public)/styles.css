@@ -509,9 +509,13 @@ body {
 .landing__intro {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 16px;
-  text-align: center;
+  text-align: left;
+  /* The same box as the chapter grid below, so the title lines up with the cards' left edge. */
+  width: 100%;
+  max-width: 1108px;
+  margin-inline: auto;
 }
 
 .landing__title {
@@ -523,7 +527,7 @@ body {
 }
 
 .landing__blurb {
-  margin: 0 auto;
+  margin: 0;
   max-width: 560px;
   font-size: 18px;
   line-height: 1.6;

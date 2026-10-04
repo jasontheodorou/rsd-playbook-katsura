@@ -1,0 +1,316 @@
+/* Approach 3, Paper desk: a sheet of paper on its module's plane, over the pile still to read. */
+.pd {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--grid-gap);
+  align-items: start;
+}
+
+/* The tasks, in the quiet accordion's tinted rows: page columns 1 to 4. */
+.pd-nav {
+  grid-column: 1 / 5;
+  position: sticky;
+  top: 96px;
+  max-height: calc(100svh - 140px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.pd-total {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 32px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #8a847e;
+}
+
+.pd-squares {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  max-width: 260px;
+}
+
+.pd-squares > span {
+  width: 8px;
+  height: 8px;
+  border-radius: 1px;
+  background: #e2dcd3;
+  transition: background-color 400ms ease;
+}
+
+.pd-squares > span[data-done='true'] {
+  background: #2a2a2e;
+}
+
+.pd-module + .pd-module {
+  margin-top: 32px;
+}
+
+.pd-module h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #16222b;
+}
+
+.pd-module__swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background: var(--plane);
+}
+
+.pd-module ol {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pd-task {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 4px;
+  background: #f7f4ef;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: left;
+  color: #2a2a2e;
+  cursor: pointer;
+  transition: background-color 200ms ease;
+}
+
+.pd-task:hover {
+  background: #f1ece4;
+}
+
+.pd-task[aria-current='true'] {
+  background: #ece6dd;
+  color: #111;
+}
+
+/* The accordion's small grey square; ink once done. */
+.pd-task__mark {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 1px;
+  background: #c9c2b9;
+  transition: background-color 300ms ease;
+}
+
+.pd-task[data-done='true'] .pd-task__mark {
+  background: #2a2a2e;
+}
+
+.pd-task[data-done='true'] span:last-child {
+  color: #8a847e;
+  font-weight: 400;
+}
+
+/* The desk: page columns 5 to 12. */
+.pd-desk {
+  grid-column: 5 / 13;
+  min-width: 0;
+}
+
+.pd-desk__note {
+  margin: 0 0 24px;
+  font-size: 13px;
+  color: #8a847e;
+}
+
+.pd-stack {
+  position: relative;
+  margin-right: var(--grid-gap);
+  margin-bottom: calc(var(--grid-gap) + 24px);
+}
+
+/* The module's plane, one grid gap below and to the right, as behind a photograph. */
+.pd-plane {
+  position: absolute;
+  inset: var(--grid-gap) calc(-1 * var(--grid-gap)) calc(-1 * var(--grid-gap)) var(--grid-gap);
+  border-radius: 4px;
+  background: var(--plane);
+}
+
+/* The pile still to read: sheets peeking out below the card, each a little lower and turned. */
+.pd-sheet {
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(42, 42, 46, 0.12);
+  transform: translateY(calc(var(--k) * 6px)) rotate(calc(var(--k) * 0.35deg));
+}
+
+.pd-card {
+  position: relative;
+  padding: 56px 64px;
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(42, 42, 46, 0.08), 0 18px 36px -24px rgba(42, 42, 46, 0.28);
+  animation: pd-arrive 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* A new sheet is laid down: from a slight turn, settling straight (the role drawings' settle). */
+@keyframes pd-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) rotate(-1.5deg);
+  }
+}
+
+.pd-card__eyebrow {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a847e;
+}
+
+.pd-card__title {
+  margin: 20px 0 0;
+  font-size: clamp(2rem, 1.1rem + 1.6vw, 3rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: #111;
+}
+
+.pd-words {
+  max-width: 34em;
+  margin-top: 32px;
+  font-size: clamp(1.0625rem, 0.7rem + 0.5vw, 1.375rem);
+  line-height: 1.6;
+  color: #2a2a2e;
+}
+
+.pd-words > * {
+  margin: 0;
+}
+
+.pd-words > * + * {
+  margin-top: 24px;
+}
+
+.pd-words h3 {
+  margin-top: 40px;
+  font-size: 1em;
+  font-weight: 800;
+  color: #111;
+}
+
+.pd-words h3 + * {
+  margin-top: 12px;
+}
+
+.pd-words ul,
+.pd-words ol {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 1.2em;
+  font-size: 0.92em;
+}
+
+.pd-words li::marker {
+  color: #9a928a;
+}
+
+/* Asides as sticky notes on the sheet, in the module's own plane colour. */
+.pd-words .p2-aside {
+  padding: 28px 32px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--plane) 55%, #fff);
+  font-size: 0.9em;
+  transform: rotate(-0.4deg);
+}
+
+.pd-card__end {
+  margin-top: 48px;
+}
+
+.pd-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 44px;
+  padding: 0 22px 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: #111;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+}
+
+.pd-done__box {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.75);
+}
+
+.pd-done[data-done='true'] {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px #e2dcd3;
+  color: #2a2a2e;
+}
+
+.pd-done[data-done='true'] .pd-done__box {
+  background: #2a2a2e url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3.5 7.2l2.1 2.1 4.6-4.7' fill='none' stroke='%23fff' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% no-repeat;
+  box-shadow: none;
+}
+
+@media (max-width: 63.9375rem) {
+  .pd {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 40px;
+  }
+
+  .pd-nav {
+    grid-column: 1;
+    position: static;
+    max-height: none;
+  }
+
+  .pd-desk {
+    grid-column: 1;
+  }
+
+  .pd-card {
+    padding: 40px 32px;
+  }
+}
+
+@media (max-width: 39.9375rem) {
+  .pd-card {
+    padding: 32px 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pd-card {
+    animation: none;
+  }
+}

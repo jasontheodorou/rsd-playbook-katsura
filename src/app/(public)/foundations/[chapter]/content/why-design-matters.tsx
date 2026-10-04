@@ -74,8 +74,8 @@ export const BENEFITS: DiagramItem[] = [
   },
   {
     id: 'learning',
-    photo: '/photos/board-review.jpg',
-    alt: 'Four colleagues leaning in to look at something one of them holds, beside a whiteboard.',
+    photo: '/photos/transform-library-shelves.jpg',
+    alt: 'White shelves of books, mugs and awards, with Transform Library signs and a trailing plant.',
     label: 'Learning',
     icon: 'arrowsClockwise',
     lead: 'Strengthens organisational learning and adaptability.',
