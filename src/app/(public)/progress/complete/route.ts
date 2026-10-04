@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 
 import { LEARNER_COOKIE, decodeLearnerCookie, newLearnerId, setLearnerCookieHeader } from '@/learning/cookie'
+import { progressStore, readProgressFromHeader, setProgressCookieHeader } from '@/learning/cookie-progress'
 import { ensureLearner, recordCompletion } from '@/learning/progress'
 import { siteUrl } from '@/platform/site-url'
 
@@ -38,13 +39,21 @@ export const POST = async (request: Request) => {
   const cookieHeader = request.headers.get('cookie') ?? ''
   const existing = decodeLearnerCookie(cookieHeader.match(new RegExp(`${LEARNER_COOKIE}=([^;]+)`))?.[1])
   const learnerId = existing ?? newLearnerId()
-  await ensureLearner(learnerId)
-  await recordCompletion(learnerId, pageId, action === 'complete')
+  const cookieStore = progressStore() === 'cookie'
+  const completed = readProgressFromHeader(cookieHeader)
+  if (cookieStore) {
+    if (action === 'complete') completed.add(pageId)
+    else completed.delete(pageId)
+  } else {
+    await ensureLearner(learnerId)
+    await recordCompletion(learnerId, pageId, action === 'complete')
+  }
 
   const safeReturn = returnTo.startsWith('/') && !returnTo.startsWith('//') ? returnTo : '/'
   const response = json
     ? NextResponse.json({ ok: true, completed: action === 'complete' })
     : NextResponse.redirect(new URL(safeReturn, request.url), 303)
   if (!existing) response.headers.append('set-cookie', setLearnerCookieHeader(learnerId))
+  if (cookieStore) response.headers.append('set-cookie', setProgressCookieHeader(completed))
   return response
 }

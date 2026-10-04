@@ -13,6 +13,7 @@ Each row is one environment variable. Change the value, redeploy, and the app ru
 | Email | `EMAIL_DRIVER` | `log` (no email service) | `smtp` to the company relay, if wanted |
 | Site origin | `SITE_URL` | the Vercel URL | the company URL |
 | Learner cookie | `LEARNER_COOKIE_SECRET` | set once | carried across unchanged |
+| Reading progress | `PROGRESS_STORE` | `cookie` while hosted as front end only (decision 033), then `database` | `database` |
 
 ## Things deliberately not used
 
