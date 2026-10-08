@@ -638,6 +638,7 @@
   position: relative;
   display: grid;
   height: 100%;
+  -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
   transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -658,11 +659,14 @@
   font-size: 15px;
   line-height: 1.5;
   color: #3a4750;
+  /* Safari needs the prefixed rule, and a 3D transform on both faces, or it shows the back mirrored. */
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 
 .pc-flip__front {
   justify-content: space-between;
+  transform: rotateY(0deg);
 }
 
 .pc-flip__back {
@@ -2408,4 +2412,32 @@
 .pc-flip__icon.mantine-ThemeIcon-root {
   background: var(--pc-tint) !important;
   color: var(--pc-deep) !important;
+}
+
+/* Flip cards: each face hides itself halfway through the turn (250ms of 500ms), so a card never
+   shows its other side mirrored, whether or not the browser honours backface-visibility. */
+.pc-flip__back {
+  visibility: hidden;
+  transition: visibility 0s linear 250ms;
+}
+
+.pc-flip__front {
+  transition:
+    box-shadow 250ms ease,
+    visibility 0s linear 250ms;
+}
+
+.pc-flip__card[aria-pressed='true'] .pc-flip__back {
+  visibility: visible;
+}
+
+.pc-flip__card[aria-pressed='true'] .pc-flip__front {
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-flip__front,
+  .pc-flip__back {
+    transition: none;
+  }
 }
