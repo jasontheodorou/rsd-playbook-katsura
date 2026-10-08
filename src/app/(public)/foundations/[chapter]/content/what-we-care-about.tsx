@@ -67,19 +67,19 @@ export const whatWeCareAbout: ChapterContent = {
       label: 'Three ways our designers tell stories',
       stories: [
         {
-          label: 'Storytelling',
+          label: 'Zooming in and out',
           text: 'Helping teams “zoom in” on human detail and “zoom out” to see the big picture.',
           photo: '/photos/lego-presenting-pair.jpg',
           alt: 'Two colleagues at a workshop, one holding up a small Lego model while the other smiles and gestures.',
         },
         {
-          label: 'Visualisation & storytelling',
+          label: 'Making ideas tangible',
           text: 'Using narratives, maps, personas and prototypes to make abstract concepts tangible and persuadable.',
           photo: '/photos/lego-show-and-tell.png',
           alt: 'Two people at a workshop, one holding up a small Lego model while the other talks.',
         },
         {
-          label: 'Visual storytelling',
+          label: 'Mapping real experiences',
           text: 'Translating research into artefacts that visualise how people interact with services, the moments of delight and the barriers they face.',
           photo: '/photos/lego-bricks-drawings.jpg',
           alt: 'Lego bricks scattered over printed sheets with hand-drawn sketches of insects.',

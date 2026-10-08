@@ -13,19 +13,19 @@ export const metadata = { title: 'Three ways to tell stories. The RSD Playbook' 
 
 const STORIES: Story[] = [
   {
-    label: 'Storytelling',
+    label: 'Zooming in and out',
     text: 'Helping teams “zoom in” on human detail and “zoom out” to see the big picture.',
     photo: '/photos/three-way-conversation.png',
     alt: 'Three people talking around a table, one of them explaining with her hands.',
   },
   {
-    label: 'Visualisation & storytelling',
+    label: 'Making ideas tangible',
     text: 'Using narratives, maps, personas and prototypes to make abstract concepts tangible and persuadable.',
     photo: '/photos/lego-show-and-tell.png',
     alt: 'Two people at a workshop, one holding up a small Lego model while the other talks.',
   },
   {
-    label: 'Visual storytelling',
+    label: 'Mapping real experiences',
     text: 'Translating research into artefacts that visualise how people interact with services, the moments of delight and the barriers they face.',
     photo: '/photos/insight-wall-sticky.png',
     alt: 'A man leaning in to add a sticky note to a wall of research notes.',
