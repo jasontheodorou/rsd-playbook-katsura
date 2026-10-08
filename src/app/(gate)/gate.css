@@ -1,0 +1,66 @@
+.gate {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 96px 16px 48px;
+}
+
+.gate__title {
+  margin: 0;
+  font-size: clamp(2rem, 1.4rem + 2vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: #111;
+}
+
+.gate__dot {
+  color: #ec671b;
+}
+
+.gate__form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 48px;
+}
+
+.gate__label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111;
+}
+
+.gate__error {
+  margin: 8px 0 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #b3261e;
+}
+
+.gate__input {
+  margin-top: 8px;
+  height: 48px;
+  padding: 0 16px;
+  font: inherit;
+  font-size: 16px;
+  color: #111;
+  background: #fff;
+  border: 1px solid #8a847e;
+  border-radius: 8px;
+}
+
+.gate__button {
+  margin-top: 24px;
+  height: 48px;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  background: #111;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.gate__button:hover {
+  background: #34566b;
+}
