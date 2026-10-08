@@ -89,8 +89,10 @@ export function ChapterEnd({
     const complete = async () => {
       if (done) return
       done = true
+      // Fill the mark at once; the server only records it. Put it back if recording fails.
+      setRead(true)
       const ok = await post(pageId, 'complete')
-      if (ok) setRead(true)
+      if (!ok) setRead(false)
     }
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -113,11 +115,10 @@ export function ChapterEnd({
   const undo = async (event: React.FormEvent<HTMLFormElement>) => {
     if (!enhanced) return
     event.preventDefault()
+    setArmed(false)
+    setRead(false)
     const ok = await post(pageId, 'uncomplete')
-    if (ok) {
-      setArmed(false)
-      setRead(false)
-    }
+    if (!ok) setRead(true)
   }
 
   if (!chapter) return null

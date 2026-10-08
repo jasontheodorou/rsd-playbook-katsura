@@ -93,13 +93,18 @@ function visibleBox(
   }
 }
 
-export function SpacingOverlay({
-  root,
-  spaces,
-}: {
+type OverlayProps = {
   root: RefObject<HTMLElement | null>
   spaces: Space[]
-}) {
+}
+
+/** A design tool only: it never ships in a production build, so readers never see it. */
+export function SpacingOverlay(props: OverlayProps) {
+  if (process.env.NODE_ENV === 'production') return null
+  return <Overlay {...props} />
+}
+
+function Overlay({ root, spaces }: OverlayProps) {
   const [boxes, setBoxes] = useState<Box[]>([])
   const [on, setOn] = useState(true)
 

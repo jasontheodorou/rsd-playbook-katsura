@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server'
 
 import { LEARNER_COOKIE, clearLearnerCookieHeader, decodeLearnerCookie } from '@/learning/cookie'
 import { clearProgressCookieHeader, progressStore } from '@/learning/cookie-progress'
-import { forgetLearner } from '@/learning/progress'
 
 export const dynamic = 'force-dynamic'
 
@@ -13,7 +12,10 @@ export const POST = async (request: Request) => {
   const cookieHeader = request.headers.get('cookie') ?? ''
   if (progressStore() === 'database') {
     const learnerId = decodeLearnerCookie(cookieHeader.match(new RegExp(`${LEARNER_COOKIE}=([^;]+)`))?.[1])
-    if (learnerId) await forgetLearner(learnerId)
+    if (learnerId) {
+      const { forgetLearner } = await import('@/learning/progress')
+      await forgetLearner(learnerId)
+    }
   }
   const safeReturn = returnTo.startsWith('/') && !returnTo.startsWith('//') ? returnTo : '/'
   const response = NextResponse.redirect(new URL(safeReturn, request.url), 303)

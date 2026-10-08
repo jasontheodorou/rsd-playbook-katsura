@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server'
 
 import { LEARNER_COOKIE, decodeLearnerCookie, newLearnerId, setLearnerCookieHeader } from '@/learning/cookie'
 import { progressStore, readProgressFromHeader, setProgressCookieHeader } from '@/learning/cookie-progress'
-import { ensureLearner, recordCompletion } from '@/learning/progress'
 import { siteUrl } from '@/platform/site-url'
 
 export const dynamic = 'force-dynamic'
@@ -48,6 +47,8 @@ export const POST = async (request: Request) => {
     const existing = decodeLearnerCookie(cookieHeader.match(new RegExp(`${LEARNER_COOKIE}=([^;]+)`))?.[1])
     const learnerId = existing ?? newLearnerId()
     if (!existing) newLearner = learnerId
+    // Loaded only here, so the cookie store never loads Payload (slow on a cold start).
+    const { ensureLearner, recordCompletion } = await import('@/learning/progress')
     await ensureLearner(learnerId)
     await recordCompletion(learnerId, pageId, action === 'complete')
   }
