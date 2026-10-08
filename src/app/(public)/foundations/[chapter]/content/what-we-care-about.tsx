@@ -69,8 +69,8 @@ export const whatWeCareAbout: ChapterContent = {
         {
           label: 'Zooming in and out',
           text: 'Helping teams “zoom in” on human detail and “zoom out” to see the big picture.',
-          photo: '/photos/lego-presenting-pair.jpg',
-          alt: 'Two colleagues at a workshop, one holding up a small Lego model while the other smiles and gestures.',
+          photo: '/photos/lego-figures-upright.jpg',
+          alt: 'Close-up of hands fixing small Lego figures onto a model, with loose bricks on the table below.',
         },
         {
           label: 'Making ideas tangible',
