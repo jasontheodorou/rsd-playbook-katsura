@@ -11,14 +11,17 @@ import { env, isProduction, oneOf } from '@/platform/env'
 export const progressStores = ['database', 'cookie'] as const
 export type ProgressStore = (typeof progressStores)[number]
 
-export const progressStore = (): ProgressStore => oneOf('PROGRESS_STORE', progressStores, 'database')
+// With no database configured, fall back to the cookie so the front end runs with no settings at all.
+export const progressStore = (): ProgressStore =>
+  oneOf('PROGRESS_STORE', progressStores, env('DATABASE_URL') ? 'database' : 'cookie')
 
 export const PROGRESS_COOKIE = 'katsura_progress'
 const ONE_YEAR = 60 * 60 * 24 * 365
 
 const sign = (value: string): string => {
-  const secret = env('LEARNER_COOKIE_SECRET')
-  if (!secret) throw new Error('LEARNER_COOKIE_SECRET is not set')
+  // Built-in fallback for the settings-free preview (Jason, 8 October 2026). It is public, so a
+  // reader could forge their own ticks; that only changes what their own browser shows.
+  const secret = env('LEARNER_COOKIE_SECRET', 'katsura-front-end-preview')
   return createHmac('sha256', secret).update(value).digest('base64url')
 }
 
