@@ -37,14 +37,17 @@ export const POST = async (request: Request) => {
   }
 
   const cookieHeader = request.headers.get('cookie') ?? ''
-  const existing = decodeLearnerCookie(cookieHeader.match(new RegExp(`${LEARNER_COOKIE}=([^;]+)`))?.[1])
-  const learnerId = existing ?? newLearnerId()
   const cookieStore = progressStore() === 'cookie'
   const completed = readProgressFromHeader(cookieHeader)
+  // The cookie store needs no learner id, so it never touches the learner cookie or its secret.
+  let newLearner: string | null = null
   if (cookieStore) {
     if (action === 'complete') completed.add(pageId)
     else completed.delete(pageId)
   } else {
+    const existing = decodeLearnerCookie(cookieHeader.match(new RegExp(`${LEARNER_COOKIE}=([^;]+)`))?.[1])
+    const learnerId = existing ?? newLearnerId()
+    if (!existing) newLearner = learnerId
     await ensureLearner(learnerId)
     await recordCompletion(learnerId, pageId, action === 'complete')
   }
@@ -53,7 +56,7 @@ export const POST = async (request: Request) => {
   const response = json
     ? NextResponse.json({ ok: true, completed: action === 'complete' })
     : NextResponse.redirect(new URL(safeReturn, request.url), 303)
-  if (!existing) response.headers.append('set-cookie', setLearnerCookieHeader(learnerId))
+  if (newLearner) response.headers.append('set-cookie', setLearnerCookieHeader(newLearner))
   if (cookieStore) response.headers.append('set-cookie', setProgressCookieHeader(completed))
   return response
 }

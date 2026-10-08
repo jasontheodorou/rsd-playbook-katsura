@@ -11,8 +11,10 @@ export const POST = async (request: Request) => {
   const form = await request.formData().catch(() => null)
   const returnTo = String(form?.get('returnTo') ?? '/')
   const cookieHeader = request.headers.get('cookie') ?? ''
-  const learnerId = decodeLearnerCookie(cookieHeader.match(new RegExp(`${LEARNER_COOKIE}=([^;]+)`))?.[1])
-  if (learnerId && progressStore() === 'database') await forgetLearner(learnerId)
+  if (progressStore() === 'database') {
+    const learnerId = decodeLearnerCookie(cookieHeader.match(new RegExp(`${LEARNER_COOKIE}=([^;]+)`))?.[1])
+    if (learnerId) await forgetLearner(learnerId)
+  }
   const safeReturn = returnTo.startsWith('/') && !returnTo.startsWith('//') ? returnTo : '/'
   const response = NextResponse.redirect(new URL(safeReturn, request.url), 303)
   response.headers.append('set-cookie', clearLearnerCookieHeader())
