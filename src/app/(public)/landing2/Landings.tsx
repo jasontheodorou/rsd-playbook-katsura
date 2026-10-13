@@ -19,7 +19,7 @@ const OPTIONS = [
   { n: 4, name: 'Decks', rule: 'Built from the content: each module a deck of cards on one warm band, thinning as you read. Few words.' },
   { n: 5, name: 'Eight decks', rule: 'Option 4 for the eight chapters, each named in three words or fewer, in two rows of four. Card counts and drawings are stand-ins.' },
   { n: 6, name: 'Courses', rule: 'Five required courses as a list, each a row with a status mark, its length, a simple progress bar and one action. The eight chapters are grouped into five (a proposal); progress is a stand-in.' },
-  { n: 7, name: 'Courses, richer', rule: 'Option 6 with Mantine UI patterns in the playbook style: a quiet Mantine progress bar under the opening, and each course with its own quiet ambience, an Up next badge, chips, a progress ring and one action.' },
+  { n: 7, name: 'Courses, richer', rule: 'Option 6 with Mantine UI patterns in the playbook style: a quiet Mantine progress bar under the opening, and each course with its own quiet ambience, an Up next badge, chips and one action.' },
 ] as const
 
 /** Shape your practice's landing page: three options (?o=1 to 3). */

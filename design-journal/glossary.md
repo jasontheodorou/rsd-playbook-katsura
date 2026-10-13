@@ -41,3 +41,7 @@ A point where a host-specific concern (auth, database, storage, jobs, email) is 
 
 The act of writing a page's published edition into the read model, inside the same database transaction as the publish so a failed publish leaves nothing behind.
 
+
+## Playbook Publisher
+
+The name for the playbook's backend content management system (CMS), still to be built: where editors draft, review and publish pages, with a second person approving each change and every past version kept. Named by Jason on 6 October 2026. It is the publisher half of this build (Payload at `/admin`), and will at some point feed the playbook directly. It is separate from Manual Explorer.

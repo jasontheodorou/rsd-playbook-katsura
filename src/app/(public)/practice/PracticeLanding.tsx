@@ -1,8 +1,7 @@
 'use client'
 
-import { MantineProvider, RingProgress } from '@mantine/core'
+import { MantineProvider } from '@mantine/core'
 import '@mantine/core/styles/default-css-variables.css'
-import '@mantine/core/styles/RingProgress.css'
 import Link from 'next/link'
 import { useRef } from 'react'
 
@@ -29,22 +28,14 @@ const SPACES: Space[] = [
   },
   {
     id: 'V3',
-    label: 'Blurb to progress',
-    from: '.landing__blurb',
-    fromEdge: 'bottom',
-    to: '.progress-line',
-    toEdge: 'top',
-  },
-  {
-    id: 'V4',
     label: 'Opening to the first course',
-    from: '.progress-line',
+    from: '.landing__blurb',
     fromEdge: 'bottom',
     to: '.pl-list > li:nth-child(1) .pl-row',
     toEdge: 'top',
   },
   {
-    id: 'V5',
+    id: 'V4',
     label: 'Course to course',
     from: '.pl-list > li:nth-child(1) .pl-row',
     fromEdge: 'bottom',
@@ -98,7 +89,6 @@ export function PracticeLanding({ live }: { live: LiveCourse[] }) {
     const d = doneMap[c.slug] ?? new Set<number>()
     return `/practice/${c.slug}/${c.ns.find((n) => !d.has(n)) ?? c.ns[0]}`
   }
-  const complete = courses.filter((c) => c.done === c.cards).length
   const next = courses.find((c) => c.done < c.cards && hrefOf(c))
 
   return (
@@ -112,23 +102,6 @@ export function PracticeLanding({ live }: { live: LiveCourse[] }) {
           </h1>
           <p className="landing__blurb">
             Eight short courses every designer at Transform takes, in order and at your own pace.
-          </p>
-          <p
-            className="progress-line"
-            aria-label={`${complete} of ${courses.length} courses complete`}
-          >
-            <span className="progress-line__dots" aria-hidden>
-              {courses.map((c) => (
-                <span
-                  key={c.title}
-                  className="progress-line__dot"
-                  data-state={c.done === c.cards ? 'read' : 'unread'}
-                />
-              ))}
-            </span>
-            <span className="progress-line__text">
-              {complete} of {courses.length} complete
-            </span>
           </p>
         </div>
 
@@ -165,15 +138,7 @@ export function PracticeLanding({ live }: { live: LiveCourse[] }) {
                     </svg>
                   </span>
                 ) : (
-                  <RingProgress
-                    className="pl-ring"
-                    size={52}
-                    thickness={5}
-                    roundCaps
-                    rootColor="#e4f2ea"
-                    sections={c.done ? [{ value: pct, color: '#3f9a6b' }] : []}
-                    label={<span className="pl-ring__pct">{pct}%</span>}
-                  />
+                  <span aria-hidden />
                 )}
                 {href ? (
                   <span className={isNext ? 'cr-cta cr-cta--primary' : 'cr-cta'}>

@@ -1,0 +1,97 @@
+import Link from 'next/link'
+import type { ComponentType, CSSProperties } from 'react'
+
+import { ArrowRight, ArrowUpRight, BookOpen, Sparkles } from './_chrome/icons'
+import { HomeCluster } from './_home/HomeCluster'
+import { HomeTitle } from './_home/HomeTitle'
+
+export const dynamic = 'force-dynamic'
+
+/**
+ * Home page, carried over from the reference build's HomePage. Static for now; the two
+ * pathway destinations arrive with the read model. Renders with no JavaScript.
+ */
+export default function HomePage() {
+  return (
+    <div className="home">
+      {/* The large decorative circle belongs to the home page only. */}
+      {/* The canvas: the page's 12-column grid drawn very faintly behind everything, sweeping in
+          once. */}
+      <div aria-hidden className="home-canvas">
+        {Array.from({ length: 13 }, (_, k) => (
+          <span
+            key={k}
+            className="home-canvas__v"
+            style={{ left: `${(k / 12) * 100}%`, '--d': `${k * 0.05}s` } as CSSProperties}
+          />
+        ))}
+      </div>
+      <div className="home__hero">
+        <p className="home__meta">
+          <span className="home__ver">v1.0</span>
+        </p>
+        <HomeTitle>The RSD Playbook</HomeTitle>
+        <p className="home__lede">What good design looks like at Transform</p>
+      </div>
+
+      {/* The hero cluster (10 October 2026): tiles of different sizes at staggered heights, with
+          small working controls among them, after Dropbox's typography page and Paper Mono. */}
+      <HomeCluster />
+
+      <div className="home__pathways">
+        <p className="eyebrow eyebrow--lg">Select a pathway</p>
+        <div className="pathway-grid">
+          <PathwayCard
+            eyebrow="Pathway one"
+            beforeWord="Explore the "
+            accentWord="foundations"
+            lede="Learn the principles behind how we research and design services."
+            Icon={BookOpen}
+            cta="Start exploring"
+            href="/foundations"
+          />
+          <PathwayCard
+            eyebrow="Pathway two"
+            beforeWord="Shape your "
+            accentWord="practice"
+            lede="Find the methods and tools for each stage of your work."
+            Icon={Sparkles}
+            cta="Go deeper"
+            href="/practice"
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+type PathwayCardProps = {
+  eyebrow: string
+  beforeWord: string
+  accentWord: string
+  lede: string
+  Icon: ComponentType<{ size?: number; strokeWidth?: number; className?: string }>
+  cta: string
+  href: string
+}
+
+function PathwayCard({ eyebrow, beforeWord, accentWord, lede, Icon, cta, href }: PathwayCardProps) {
+  return (
+    <Link href={href} className="pathway-card" aria-label={`${beforeWord}${accentWord}. ${cta}`}>
+      <ArrowUpRight size={18} className="pathway-card__arrow" />
+      <div className="pathway-card__body">
+        <Icon size={28} strokeWidth={1.75} className="pathway-card__icon" />
+        <p className="eyebrow">{eyebrow}</p>
+        <h2 className="pathway-card__title">
+          {beforeWord}
+          <span className="accent-underline">{accentWord}</span>
+        </h2>
+        <p className="pathway-card__lede">{lede}</p>
+      </div>
+      <span className="button-primary">
+        {cta}
+        <ArrowRight size={15} />
+      </span>
+    </Link>
+  )
+}

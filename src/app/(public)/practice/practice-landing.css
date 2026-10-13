@@ -75,17 +75,7 @@ a.pl-row:hover {
   color: #5c5c5c;
 }
 
-.pl-ring__pct {
-  display: block;
-  text-align: center;
-  font-size: 12px;
-  font-weight: 700;
-  color: #333;
-}
 
-.pl-ring {
-  margin: -5px;
-}
 
 .pl .pl-done {
   width: 42px;

@@ -3,7 +3,7 @@ id: overview-katsura
 type: overview
 project: katsura
 status: active
-last-updated: 2026-10-02
+last-updated: 2026-10-10
 ---
 
 # katsura: Overview
@@ -18,7 +18,13 @@ Since 25 September the Foundations chapters have been designed on the `foundatio
 
 On 2 October 2026 Foundations was finished (chapter 06, How we collaborate, with the participation model; commit e332051, pushed to main). Pathway two was renamed Shape your practice, and its two gold standard templates were set: the landing page of eight courses (`/landing2?o=7`) and the course page (`/modular?o=4`), both with scoped Mantine components and the Foundations spacing scale and overlay (see `docs/DESIGN-RULES.md`, "Shape your practice standard"). Shape your practice content, progress storage and its real `/practice` route are next; its prototypes are uncommitted.
 
+On 8 October 2026 the reader-facing site went on Vercel as a preview for the MD, a director and a colleague: no environment settings (cookie progress with a built-in key when no database is set), one shared password screen (decision 034), and standalone output off on Vercel. The spacing overlay is now hidden in production builds. The Shape your practice ring removals from 6 October are still uncommitted.
+
+On 10 October 2026 the home page was redesigned in many rounds (index of every design at `/designoptions10oct`). Where it stands: `/newhp3`, a full-window hero (v1.0 tag, "The RSD Playbook" with the orange circle beside it, the lede, the Whisper grid, a centred "Scroll to explore" prompt, and a lithographic control panel under the circle for the title's weight, tracking and ink and the grid) that lifts away to uncover "Our design principles", Shape your practice and the Methods library; the hero shows once per visit. Not yet on `/`; nothing committed. Jason picks it up again on 11 October. The live `/` has an earlier set of changes from the same day. Talk decks are in `~/Desktop/playbook-demo`. On 13 October 2026 `/` was rolled back to the committed 8 October version (the one on the Vercel preview), for the talk; the 10 October changes are saved in `artefacts/`.
+
 ## Active goals
+
+- Planned (10 October 2026): a library of case studies, best practices, methods and examples of Transform's work, so seniors have work to draw on and newer designers can see the thinking in practice. Jason announces it in his talk to the design team.
 
 - Paused 2026-09-23. Jason is working through the source manual as a separate project. On return: map its sections and content kinds to block types, then design one chapter from that. Full rewrite of the page layer; platform layer kept.
 

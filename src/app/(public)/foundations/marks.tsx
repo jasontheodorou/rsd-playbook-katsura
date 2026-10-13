@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, stagger, useAnimate, useReducedMotion, type Variants } from 'motion/react'
-import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react'
+import { useEffect, useId, useRef, type CSSProperties, type ReactNode } from 'react'
 
 import './foundation-marks.css'
 
@@ -60,6 +60,8 @@ function MarkFrame({
   children,
 }: FrameProps) {
   const reduce = useReducedMotion()
+  // Unique per mark, for the ambience's gradients and clip.
+  const uid = useId().replace(/:/g, '')
   const [scope, animate] = useAnimate<SVGSVGElement>()
   const wasRead = useRef(read)
 
@@ -108,6 +110,33 @@ function MarkFrame({
       style={style}
     >
       <circle className="fm-disc" cx="80" cy="80" r="77" />
+      {/* A very faint drifting wash of the footer mesh's colours inside the unread circle. Hidden
+          except on the home page (newhp3.css, which sets its strength); a read mark's bloom covers
+          it. */}
+      <g className="fm-ambient" clipPath={`url(#${uid}-clip)`} aria-hidden>
+        <defs>
+          <clipPath id={`${uid}-clip`}>
+            <circle cx="80" cy="80" r="77" />
+          </clipPath>
+          {(
+            [
+              ['y', '#f1d46e', 1],
+              ['p', '#cbd9da', 1],
+              ['t', '#d8b4a3', 1],
+              ['b', '#619cba', 1],
+            ] as const
+          ).map(([k, c, o]) => (
+            <radialGradient key={k} id={`${uid}-${k}`}>
+              <stop offset="0" stopColor={c} stopOpacity={o} />
+              <stop offset="1" stopColor={c} stopOpacity="0" />
+            </radialGradient>
+          ))}
+        </defs>
+        <circle className="fm-pool fm-pool--y" cx="34" cy="128" r="78" fill={`url(#${uid}-y)`} />
+        <circle className="fm-pool fm-pool--p" cx="92" cy="18" r="72" fill={`url(#${uid}-p)`} />
+        <circle className="fm-pool fm-pool--t" cx="132" cy="122" r="74" fill={`url(#${uid}-t)`} />
+        <circle className="fm-pool fm-pool--b" cx="150" cy="40" r="60" fill={`url(#${uid}-b)`} />
+      </g>
       <motion.circle
         className="fm-bloom"
         cx="80"

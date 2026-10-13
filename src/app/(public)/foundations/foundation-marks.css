@@ -125,3 +125,8 @@
     transition: none !important;
   }
 }
+
+/* The unread circle's ambience is shown only where a page asks for it (the home page). */
+.foundation-mark .fm-ambient {
+  display: none;
+}

@@ -50,6 +50,10 @@ The official Payload scaffold shipped a lint config that crashed under the Next 
 
 Where Docker cannot be installed, the `embedded-postgres` package downloads real Postgres binaries into the project and starts them on a spare port with one script. Data lives in a gitignored folder. The company-shaped container environment then runs in CI instead of on the laptop, which is where it needs to be trusted anyway.
 
+### Lesson: after deleting a Next route, restart the dev server and clear .next
+
+Removing an intercepting route left the dev server answering 404 to client-navigation requests (those carrying the `Next-Url` header) while plain page loads still worked, so links silently fell back to full page loads and every transition looked broken. Nothing in the code was wrong. The tell: `curl` with `-H 'RSC: 1' -H 'Next-Url: /x'` returns 404 while the same URL without those headers returns 200. Kill the server, delete `.next`, start again.
+
 ## Databases
 
 ### Lesson: a thrown error inside a transaction can leak the connection
@@ -61,10 +65,6 @@ Payload opens a transaction per operation. When an operation throws part-way (he
 ### Pattern: show completion by completing the picture
 
 For a set of things to read, draw each one's mark as an outline and fill it solid when done. The grid becomes its own progress record, needs no ticks or badges, and the reward is the finished picture. Pair the visual with a non-visual cue (a word in the corner, a count in text) so the state never rests on shape or colour alone, and render the resting state on the server so it holds with no JavaScript.
-
-### Lesson: after deleting a Next route, restart the dev server and clear .next
-
-Removing an intercepting route left the dev server answering 404 to client-navigation requests (those carrying the `Next-Url` header) while plain page loads still worked, so links silently fell back to full page loads and every transition looked broken. Nothing in the code was wrong. The tell: `curl` with `-H 'RSC: 1' -H 'Next-Url: /x'` returns 404 while the same URL without those headers returns 200. Kill the server, delete `.next`, start again.
 
 ### Pattern: keep the parent view mounted and open children over it
 

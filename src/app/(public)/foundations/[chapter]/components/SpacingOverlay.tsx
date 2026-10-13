@@ -140,7 +140,9 @@ function Overlay({ root, spaces }: OverlayProps) {
       const oy = el.scrollTop - base.top
       const ox = -base.left
       const find = (s: string) => {
-        const n = el.querySelector<HTMLElement>(s)
+        // Inside the root first; then anywhere on the page, for a gap that starts outside it (such
+        // as the top bar above the home page).
+        const n = el.querySelector<HTMLElement>(s) ?? document.querySelector<HTMLElement>(s)
         return n ? visibleBox(n, ctx, ox, oy) : null
       }
       const out: Box[] = []

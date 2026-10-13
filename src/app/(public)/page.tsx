@@ -2,6 +2,7 @@ import Link from 'next/link'
 import type { ComponentType } from 'react'
 
 import { ArrowRight, ArrowUpRight, BookOpen, Sparkles } from './_chrome/icons'
+import { HomeSpacing } from './_home/HomeSpacing'
 
 export const dynamic = 'force-dynamic'
 
@@ -14,12 +15,17 @@ export default function HomePage() {
     <div className="home">
       {/* The large decorative circle belongs to the home page only. */}
       <span aria-hidden className="orange-circle home__circle" />
+      {/* The spacing overlay, while the page's spacing is being settled (development only). */}
+      <HomeSpacing />
       <div className="home__hero">
-        <p className="eyebrow">Research and design</p>
-        <h1 className="home__headline">
-          The RSD <span className="accent-underline accent-underline--thick">Playbook</span>
-        </h1>
-        <p className="home__lede">What good design looks like at Transform</p>
+        {/* The title with a small tag at its top left, as the v1.0 tag on the alternate home page. */}
+        <div className="home__lockup">
+          <p className="home__tag">MVP</p>
+          <h1 className="home__headline">
+            The RSD <span className="accent-underline accent-underline--thick">Playbook</span>
+          </h1>
+        </div>
+        <p className="home__lede">What good research and design looks like at Transform</p>
       </div>
 
       <div className="home__pathways">

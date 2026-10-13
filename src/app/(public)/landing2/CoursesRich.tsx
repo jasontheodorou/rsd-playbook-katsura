@@ -1,9 +1,8 @@
 'use client'
 
-import { MantineProvider, Progress, RingProgress } from '@mantine/core'
+import { MantineProvider, Progress } from '@mantine/core'
 import '@mantine/core/styles/default-css-variables.css'
 import '@mantine/core/styles/Progress.css'
-import '@mantine/core/styles/RingProgress.css'
 import Link from 'next/link'
 import { useRef } from 'react'
 
@@ -14,7 +13,7 @@ import { useDoneMap } from '../practice/progress'
  * Landing option 7, Courses, richer (2 October 2026). Option 6 with patterns from Mantine UI,
  * rebuilt in the playbook's own style: a stats-ring card for your progress beside the opening, and
  * each course row with its own quiet ambience on a soft tile (two muted washes and a faint grain), an "Up next" badge, its cards
- * and minutes as small chips, a ring with its percentage (ring progress), and one clear action.
+ * and minutes as small chips and one clear action.
  * Grouping, wording and progress are stand-ins, as in option 6.
  */
 /** Each course's ambience: a pale base and two muted washes, and where the washes sit. */
@@ -99,22 +98,6 @@ export const BASE: Course[] = [
     wash: { base: '#f3eeea', a: '#c4a99a', b: '#a9b8bf', at: '76% 30%, 28% 74%' },
   },
 ]
-
-/** A course's progress: Mantine's RingProgress, a soft green ring on a pale green track, as on the module page. */
-function Ring({ value, label }: { value: number; label: string }) {
-  return (
-    <RingProgress
-      className="cr-ring"
-      size={64}
-      thickness={6}
-      roundCaps
-      rootColor="#e4f2ea"
-      sections={value ? [{ value: value * 100, color: '#3f9a6b' }] : []}
-      transitionDuration={800}
-      label={<span className="cr-ring__pct">{label}</span>}
-    />
-  )
-}
 
 /** Every named gap on the page, for the Foundations spacing overlay (Spacing button, bottom right). */
 const SPACES: Space[] = [
@@ -284,13 +267,15 @@ export function CoursesRich({ live }: { live?: LiveCourse[] } = {}) {
                 size={4}
                 radius="xl"
                 color="#34566b"
-                aria-label={`${Math.round((read / cards) * 100)}% of your courses complete`}
+                aria-label={`${complete} of ${COURSES.length} courses complete`}
                 classNames={{ root: 'cr-progress__root' }}
                 transitionDuration={600}
               />
               <p className="cr-progress__text">
-                <strong>{Math.round((read / cards) * 100)}% complete</strong> · {complete} of{' '}
-                {COURSES.length} courses · about {Math.round((left / 60) * 2) / 2} hours to go
+                <strong>
+                  {complete} of {COURSES.length} courses complete
+                </strong>{' '}
+                · about {Math.round((left / 60) * 2) / 2} hours to go
               </p>
             </div>
           </div>
@@ -338,7 +323,7 @@ export function CoursesRich({ live }: { live?: LiveCourse[] } = {}) {
                       </svg>
                     </span>
                   ) : (
-                    <Ring value={c.done / c.cards} label={`${pct}%`} />
+                    <span aria-hidden />
                   )}
                   {hrefOf(c) && (
                     <span className={isNext ? 'cr-cta cr-cta--primary' : 'cr-cta'}>
