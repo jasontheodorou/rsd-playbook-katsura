@@ -22,5 +22,8 @@ export const tokenFor = async (password: string): Promise<string | null> => {
 export const isValidToken = async (token: string | undefined): Promise<boolean> =>
   Boolean(token) && (await sha256(token as string)) === GATE_HASH
 
-/** The gate is off in `next dev`, so local work needs no password. */
-export const gateOn = (): boolean => process.env.NODE_ENV !== 'development'
+/**
+ * Switched off everywhere on 14 October 2026 so the site is open for the all-hands talk.
+ * To turn it back on, return `process.env.NODE_ENV !== 'development'` (off in `next dev` only).
+ */
+export const gateOn = (): boolean => false
