@@ -107,7 +107,6 @@ export function PatternPage({ id }: { id: string }) {
                   ) : (
                     w.label
                   )}
-                  {w.ref && <code className="pl-ref">{w.ref}</code>}
                 </li>
               ))}
             </ul>
@@ -161,12 +160,6 @@ export function PatternPage({ id }: { id: string }) {
             </details>
           </section>
         )}
-
-        <p className="pl-back">
-          <Link className="pl-link" href="/patterns">
-            All patterns
-          </Link>
-        </p>
       </div>
     </div>
   )
