@@ -1,0 +1,120 @@
+/* Scoped under .plo for the pattern library: every rule only applies inside an original-build demo. */
+/*
+ * Images Reveal — horizontal row of loosely-stacked, rotated photo tiles
+ * in a clean modern-agency frame with a handwritten caption in the
+ * bottom strip.
+ *
+ * Scoped under `.p1v2__reveal` so it participates in the p1v2 body's
+ * sibling-adjacency rhythm without leaking styles elsewhere.
+ */
+
+.plo .p1v2__reveal {
+  margin: 0;
+  max-width: var(--w-body);
+  padding-block: 14px;
+}
+
+.plo .p1v2__reveal-title {
+  margin: 0 0 var(--sp-6);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #EC671B;
+}
+
+.plo .p1v2__reveal-row {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding-left: 40px;
+  margin: 0;
+  list-style: none;
+}
+
+.plo .p1v2__reveal-cell {
+  position: relative;
+  margin-left: -40px;
+  width: 106px;
+  flex: 0 0 auto;
+  background: #FFFFFF;
+  border-radius: 3px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  box-shadow:
+    0 2px 6px rgba(17, 17, 17, 0.05),
+    0 20px 40px rgba(17, 17, 17, 0.08);
+  outline: none;
+  cursor: default;
+  will-change: transform;
+}
+
+.plo .p1v2__reveal-cell:focus-visible {
+  outline: 2px solid var(--pilot-accent, #EC671B);
+  outline-offset: 4px;
+}
+
+.plo .p1v2__reveal-photo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  margin: 0;
+  overflow: hidden;
+  background: #E9E6E1;
+}
+
+.plo .p1v2__reveal-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.plo .p1v2__reveal-caption {
+  padding: 2px 6px 8px;
+  min-height: 26px;
+  font-family: 'Caveat', 'Segoe Script', 'Bradley Hand', cursive;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 1.1;
+  letter-spacing: 0.005em;
+  color: #6A7386;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (min-width: 56.25rem) {
+  .plo .p1v2__reveal { padding-block: 19px; }
+  .plo .p1v2__reveal-row { padding-left: 80px; }
+  .plo .p1v2__reveal-cell {
+    margin-left: -80px;
+    width: 156px;
+    padding: 6px;
+  }
+  .plo .p1v2__reveal-caption {
+    padding: 4px 8px 12px;
+    min-height: 36px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 40rem) {
+  .plo .p1v2__reveal { padding-block: 11px; }
+  .plo .p1v2__reveal-row { padding-left: 32px; }
+  .plo .p1v2__reveal-cell {
+    margin-left: -32px;
+    width: 88px;
+    padding: 4px;
+  }
+  .plo .p1v2__reveal-caption {
+    padding: 2px 4px 6px;
+    min-height: 22px;
+    font-size: 9px;
+  }
+}

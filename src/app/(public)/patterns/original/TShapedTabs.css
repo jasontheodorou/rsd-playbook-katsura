@@ -1,0 +1,422 @@
+/* Scoped under .plo for the pattern library: every rule only applies inside an original-build demo. */
+/* ── T-shaped skills · tabbed practice panels ───────────────────────────────
+   Five treatments of the same content. Transform palette:
+   ground #FAF8F6 · ink #3A3A3E · orange #EC671B · navy #213D59
+   sand #EDE1D2 · paleblue #619CBA · rule #E6E3DF                          */
+
+.plo .otst {
+  font-family: 'Open Sans', -apple-system, 'Segoe UI', sans-serif;
+  color: #3A3A3E;
+  width: 100%;
+}
+
+.plo .otst *,
+.plo .otst *::before,
+.plo .otst *::after { box-sizing: border-box; }
+
+/* ── Shared type ─────────────────────────────────────────────────────────── */
+
+.plo .otst__eyebrow {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+}
+
+.plo .otst__eyebrow--grey  { color: #8C8781; }
+.plo .otst__eyebrow--light { color: rgba(250, 248, 246, 0.62); }
+
+.plo .otst__sub {
+  margin: 0 0 14px;
+  font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
+  font-weight: 700;
+  line-height: 1.3;
+  color: #213D59;
+  letter-spacing: -0.01em;
+}
+
+.plo .otst__body {
+  margin: 0;
+  font-size: clamp(0.9375rem, 1.15vw, 1.0625rem);
+  line-height: 1.62;
+  color: #55524E;
+  max-width: 62ch;
+}
+
+.plo .otst__body + .otst__body { margin-top: 0.85em; }
+
+/* ── Prose + bullets ─────────────────────────────────────────────────────
+   Single column by default. Once the panel itself is wide enough the two
+   sit side by side, so a wide box doesn't stretch prose to an unreadable
+   measure or make the panel unnecessarily tall. Keyed to the panel width
+   (container query) rather than the viewport, because this pattern appears
+   at several widths: 800px in Pathway 1, full-container on /layouts. */
+
+.plo .otst__cols {
+  display: grid;
+  gap: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+@container (min-width: 560px) {
+  .plo .otst__cols {
+    grid-template-columns: 1.08fr 1fr;
+    gap: clamp(1.75rem, 4cqi, 3rem);
+    align-items: start;
+  }
+}
+
+.plo .otst__prose .otst__body { max-width: 46ch; }
+
+.plo .otst__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.plo .otst__list li {
+  position: relative;
+  padding-left: 1.15rem;
+  font-size: clamp(0.875rem, 1.05vw, 0.9688rem);
+  line-height: 1.5;
+  color: #55524E;
+}
+
+/* Orange dot, matching the pathway's existing card lists. */
+.plo .otst__list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.52em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #EC671B;
+}
+
+/* A hairline between the columns once they're side by side. */
+@container (min-width: 560px) {
+  .plo .otst__list {
+    padding-left: clamp(1.5rem, 3.5cqi, 2.5rem);
+    border-left: 1px solid #E6E3DF;
+  }
+}
+
+/* ── Shared tab primitives ───────────────────────────────────────────────── */
+
+.plo .otst__tabs {
+  display: flex;
+  align-items: stretch;
+}
+
+.plo .otst__tab {
+  position: relative;
+  appearance: none;
+  border: 0;
+  background: none;
+  margin: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #8C8781;
+  transition: color 0.28s ease;
+}
+
+.plo .otst__tab:hover { color: #3A3A3E; }
+.plo .otst__tab.is-active { color: #213D59; font-weight: 700; }
+
+.plo .otst__tab:focus-visible {
+  outline: 2px solid #EC671B;
+  outline-offset: 3px;
+}
+
+.plo .otst__tab-label { position: relative; z-index: 1; }
+
+/* ══ T01 · Sliding underline ═════════════════════════════════════════════ */
+
+.plo .otst--underline {
+  background: #FFFFFF;
+  border: 1px solid #E6E3DF;
+  border-radius: 5px;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.plo .otst--underline .otst__eyebrow { margin-bottom: 18px; }
+
+.plo .otst__tabs--underline {
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  border-bottom: 1px solid #E6E3DF;
+  flex-wrap: wrap;
+}
+
+.plo .otst__tab--underline {
+  padding: 0 0 13px;
+  font-size: clamp(0.875rem, 1.1vw, 0.9688rem);
+}
+
+.plo .otst__rule {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: #EC671B;
+  border-radius: 2px;
+}
+
+.plo .otst--underline .otst__panel {
+  padding-top: 26px;
+  min-height: 168px;
+}
+
+/* Establish the query containers the .otst__cols rules above key off. */
+.plo .otst__panel,
+.plo .otst__cell,
+.plo .otst__sizer { container-type: inline-size; }
+
+/* ══ T02 · Morphing pill ════════════════════════════════════════════════ */
+
+.plo .otst--pill {
+  background: #FFFFFF;
+  border: 1px solid #E6E3DF;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.plo .otst__tabs--pill {
+  gap: 6px;
+  padding: 12px;
+  background: #EDE1D2;
+  flex-wrap: wrap;
+}
+
+.plo .otst__tab--pill {
+  padding: 9px 18px;
+  border-radius: 999px;
+  color: #6E655B;
+}
+
+.plo .otst__tab--pill:hover { color: #3A2E24; }
+.plo .otst__tab--pill.is-active { color: #FFFFFF; }
+
+.plo .otst__pillbg {
+  position: absolute;
+  inset: 0;
+  background: #EC671B;
+  border-radius: 999px;
+  z-index: 0;
+}
+
+.plo .otst__panel--pill {
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+/* All children share one grid cell, so the row takes the height of the
+   tallest — the height reservation the panel relies on. */
+.plo .otst__stage { display: grid; }
+.plo .otst__stage > * { grid-area: 1 / 1; }
+
+.plo .otst__reserve {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ══ T03 · Filmstrip rail ═══════════════════════════════════════════════ */
+
+.plo .otst--rail {
+  background: #FFFFFF;
+  border: 1px solid #E6E3DF;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.plo .otst__tabs--rail {
+  border-bottom: 1px solid #E6E3DF;
+}
+
+.plo .otst__tab--rail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  padding: 18px clamp(0.75rem, 1.6vw, 1.25rem) 16px;
+  text-align: left;
+  border-right: 1px solid #E6E3DF;
+}
+
+.plo .otst__tab--rail:last-child { border-right: 0; }
+.plo .otst__tab--rail.is-active { background: #FAF8F6; }
+
+.plo .otst__tick {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #EC671B;
+  transform-origin: 0% 50%;
+}
+
+.plo .otst__tab-num {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #B8B2AB;
+}
+
+.plo .otst__tab--rail.is-active .otst__tab-num { color: #EC671B; }
+
+.plo .otst__viewport { overflow: hidden; }
+
+.plo .otst__track { display: flex; }
+
+.plo .otst__cell {
+  flex: 0 0 100%;
+  min-width: 100%;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  min-height: 176px;
+}
+
+/* ══ T04 · Stacked depth ════════════════════════════════════════════════ */
+
+.plo .otst--stack {
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid #1B3049;
+}
+
+.plo .otst__stackhead {
+  background: #213D59;
+  padding: clamp(1.125rem, 2.2vw, 1.5rem) clamp(1.25rem, 2.6vw, 1.75rem) clamp(1rem, 2vw, 1.25rem);
+}
+
+.plo .otst__stackhead .otst__eyebrow { margin-bottom: 14px; }
+
+.plo .otst__tabs--stack {
+  gap: 4px;
+  padding: 4px;
+  background: rgba(250, 248, 246, 0.09);
+  border-radius: 4px;
+  flex-wrap: wrap;
+}
+
+.plo .otst__tab--stack {
+  flex: 1;
+  min-width: 88px;
+  padding: 9px 12px;
+  border-radius: 3px;
+  color: rgba(250, 248, 246, 0.66);
+}
+
+.plo .otst__tab--stack:hover { color: #FAF8F6; }
+.plo .otst__tab--stack.is-active { color: #FFFFFF; }
+
+.plo .otst__segbg {
+  position: absolute;
+  inset: 0;
+  background: #EC671B;
+  border-radius: 3px;
+  z-index: 0;
+}
+
+.plo .otst__panel--stack {
+  position: relative;
+  background: #FFFFFF;
+}
+
+/* Sizer and card must share identical padding or the height will be wrong. */
+.plo .otst__sizer,
+.plo .otst__stackcard {
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.plo .otst__sizer { visibility: hidden; }
+
+.plo .otst__stackcard {
+  position: absolute;
+  inset: 0;
+}
+
+/* ══ T05 · Editorial wipe ═══════════════════════════════════════════════ */
+
+.plo .otst--wipe {
+  background: #FAF8F6;
+  border: 1px solid #E6E3DF;
+  border-left: 3px solid #EC671B;
+  border-radius: 0 5px 5px 0;
+  overflow: hidden;
+}
+
+.plo .otst__tabs--wipe {
+  gap: clamp(1rem, 2.6vw, 2rem);
+  padding: clamp(1.125rem, 2.4vw, 1.5rem) clamp(1.5rem, 3vw, 2.25rem) 0;
+  flex-wrap: wrap;
+}
+
+.plo .otst__tab--wipe {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.plo .otst__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #EC671B;
+  flex: 0 0 7px;
+}
+
+.plo .otst__panel--wipe {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1.25rem, 2.6vw, 1.75rem) clamp(1.5rem, 3vw, 2.25rem) clamp(1.75rem, 3.4vw, 2.5rem);
+  min-height: 190px;
+}
+
+.plo .otst__ghost {
+  position: absolute;
+  top: -0.1em;
+  right: clamp(1rem, 2.4vw, 2rem);
+  font-size: clamp(5rem, 11vw, 8.5rem);
+  font-weight: 800;
+  line-height: 1;
+  color: #EDE1D2;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+.plo .otst__wipecopy { position: relative; z-index: 1; }
+
+.plo .otst__edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #EC671B;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ── Narrow screens ──────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .plo .otst__tab--rail {
+    flex: 1 1 50%;
+    border-bottom: 1px solid #E6E3DF;
+  }
+  .plo .otst__tabs--rail { flex-wrap: wrap; }
+  .plo .otst__ghost { font-size: 4.5rem; opacity: 0.7; }
+}

@@ -1,0 +1,55 @@
+/* Scoped under .plo for the pattern library: every rule only applies inside an original-build demo. */
+/*
+ * North Star Pattern — narrow horizontal band with an aligning field of
+ * Transform-branded stars. Focal star is intentionally oversized and
+ * cropped by the right edge.
+ *
+ * Top/bottom borders from the original spec omitted to match the
+ * project's no-horizontal-dividers preference.
+ */
+
+.plo .north-star-pattern {
+  position: relative;
+  width: 100%;
+  height: clamp(110px, 11vw, 150px);
+  overflow: hidden;
+  background: #FCFBF8;
+  cursor: default;
+  outline: none;
+}
+
+.plo .north-star-pattern svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.plo .north-star-pattern__label {
+  position: absolute;
+  left: clamp(18px, 4vw, 48px);
+  bottom: 12px;
+  font-family: 'Open Sans', -apple-system, 'Segoe UI', sans-serif;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #5C5C5C;
+}
+
+.plo .north-star-pattern:focus-visible {
+  outline: 2px solid #213D59;
+  outline-offset: 3px;
+}
+
+@media (max-width: 40rem) {
+  .plo .north-star-pattern { height: 108px; }
+  .plo .north-star-pattern__label { left: 16px; bottom: 9px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plo .north-star-pattern * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

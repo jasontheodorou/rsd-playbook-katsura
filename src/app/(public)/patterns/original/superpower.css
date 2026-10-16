@@ -1,0 +1,118 @@
+/* Scoped under .plo for the pattern library: every rule only applies inside an original-build demo. */
+/* ── The artwork ─────────────────────────────────────────────────────────── */
+
+.plo .spw-stage { position: relative; width: 100%; }
+.plo .spw-stage--tall     { padding-bottom: clamp(7rem, 15vw, 11rem); } /* popover hangs below */
+.plo .spw-stage--ghost    { padding-bottom: clamp(7rem, 14vw, 11rem); } /* room for the tag */
+.plo .spw-stage--labelled { padding-bottom: 2.25rem; }                  /* room for the badges */
+
+/* Padding lives on the stage; anything positioned lives in the frame, which
+   is exactly the artwork's box. Percentages resolve against the padding box,
+   so overlays inside a padded stage would otherwise stretch vertically. */
+.plo .spw-frame { position: relative; width: 100%; }
+
+.plo .spw-art { width: 100%; opacity: 0; transition: opacity 0.5s ease; }
+.plo .spw-art.is-ready { opacity: 1; }
+.plo .spw-art svg { width: 100%; height: auto; display: block; overflow: visible; }
+
+/* Every icon group animates as a unit about its own centre. */
+.plo .spw-art g[data-icon] {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  transition: opacity 0.42s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hover affordance for the click-driven executions — enough to say "this
+   responds" without committing to the full active state. */
+.plo .spw-art[data-hover='clay']     g[data-icon='clay'],
+.plo .spw-art[data-hover='paleblue'] g[data-icon='paleblue'],
+.plo .spw-art[data-hover='yellow']   g[data-icon='yellow'],
+.plo .spw-art[data-hover='palegrey'] g[data-icon='palegrey'] {
+  transform: scale(1.06);
+}
+
+/* Dim only the icons that aren't active. Written as :not() per key rather
+   than "dim everything, then undo for the active one" — that version lost,
+   because the blanket rule carried the higher specificity and held every
+   icon at 0.2 including the live one. */
+.plo .spw-art[data-mode='dim-others'][data-active='clay']     g[data-icon]:not([data-icon='clay']),
+.plo .spw-art[data-mode='dim-others'][data-active='paleblue'] g[data-icon]:not([data-icon='paleblue']),
+.plo .spw-art[data-mode='dim-others'][data-active='yellow']   g[data-icon]:not([data-icon='yellow']),
+.plo .spw-art[data-mode='dim-others'][data-active='palegrey'] g[data-icon]:not([data-icon='palegrey']) {
+  opacity: 0.2;
+}
+
+/* The active icon lifts forward. */
+.plo .spw-art[data-mode='dim-others'][data-active='clay']     g[data-icon='clay'],
+.plo .spw-art[data-mode='dim-others'][data-active='paleblue'] g[data-icon='paleblue'],
+.plo .spw-art[data-mode='dim-others'][data-active='yellow']   g[data-icon='yellow'],
+.plo .spw-art[data-mode='dim-others'][data-active='palegrey'] g[data-icon='palegrey'] {
+  opacity: 1;
+  transform: scale(1.12) translateY(-2px);
+}
+
+/* Subtle mode — the unselected icons lose a little vividness rather than
+   dropping away, so activating one reads as a nudge, not a spotlight. */
+.plo .spw-art[data-mode='subtle'][data-active='clay']     g[data-icon]:not([data-icon='clay']),
+.plo .spw-art[data-mode='subtle'][data-active='paleblue'] g[data-icon]:not([data-icon='paleblue']),
+.plo .spw-art[data-mode='subtle'][data-active='yellow']   g[data-icon]:not([data-icon='yellow']),
+.plo .spw-art[data-mode='subtle'][data-active='palegrey'] g[data-icon]:not([data-icon='palegrey']) {
+  opacity: 0.9;
+}
+
+.plo .spw-art[data-mode='subtle'][data-active='clay']     g[data-icon='clay'],
+.plo .spw-art[data-mode='subtle'][data-active='paleblue'] g[data-icon='paleblue'],
+.plo .spw-art[data-mode='subtle'][data-active='yellow']   g[data-icon='yellow'],
+.plo .spw-art[data-mode='subtle'][data-active='palegrey'] g[data-icon='palegrey'] {
+  opacity: 1;
+  transform: scale(1.07);
+}
+
+/* Ghost mode — drained until touched. */
+.plo .spw-art[data-mode='ghost'] g[data-icon] { opacity: 0.16; }
+.plo .spw-art[data-mode='ghost'][data-active='clay']     g[data-icon='clay'],
+.plo .spw-art[data-mode='ghost'][data-active='paleblue'] g[data-icon='paleblue'],
+.plo .spw-art[data-mode='ghost'][data-active='yellow']   g[data-icon='yellow'],
+.plo .spw-art[data-mode='ghost'][data-active='palegrey'] g[data-icon='palegrey'] {
+  opacity: 1;
+  transform: scale(1.14);
+}
+.plo .spw-art[data-mode='ghost'] { filter: saturate(0.9); }
+
+@media (prefers-reduced-motion: reduce) {
+  .plo .spw-art g[data-icon] { transition-duration: 0.01ms; }
+  .plo .spw-art g[data-icon] { transform: none !important; }
+}
+
+/* ── Hit targets ─────────────────────────────────────────────────────────── */
+
+.plo .spw-hot {
+  position: absolute; appearance: none; padding: 0; margin: 0; cursor: pointer;
+  background: transparent; border: 1px solid transparent; border-radius: 8px;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+.plo .spw-hot:focus-visible { outline: 2px solid #EC671B; outline-offset: 2px; }
+
+.plo .spw-hot__num {
+  position: absolute; left: 50%; bottom: -26px; transform: translateX(-50%);
+  width: 20px; height: 20px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 10px; font-weight: 800; color: #FFFFFF; background: #C9C4BE;
+  transition: background 0.3s ease;
+}
+.plo .spw-hot.is-active .spw-hot__num { background: #EC671B; }
+
+/* ── S05 connector ───────────────────────────────────────────────────────── */
+
+.plo .spw-conn__wire { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+
+.plo .spw-strip { }
+.plo .spw-strip__inner {
+  padding: clamp(1.25rem, 2.6vw, 1.75rem);
+  background: #FFFFFF; border: 1px solid #E6E3DF; border-top-width: 3px; border-radius: 0 0 5px 5px;
+}
+.plo .spw[data-bg='white'] .spw-strip__inner { background: #FAF8F6; }
+.plo .spw-strip__title { margin: 0 0 8px; font-size: 1.125rem; font-weight: 700; color: #213D59; }
+.plo .spw-strip__body  { margin: 0; max-width: 68ch; font-size: 0.9375rem; line-height: 1.6; color: #55524E; }
+.plo .spw-strip__body + .spw-strip__body { margin-top: 0.75em; }
+

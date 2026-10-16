@@ -1,7 +1,6 @@
 import { Open_Sans } from 'next/font/google'
 import React from 'react'
 
-import { DemoGate } from './_chrome/DemoGate'
 import { TopBar } from './_chrome/TopBar'
 import './styles.css'
 
@@ -22,7 +21,6 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
   return (
     <html lang="en" className={openSans.variable}>
       <body>
-        <DemoGate />
         <a className="skip-link" href="#main">
           Skip to main content
         </a>

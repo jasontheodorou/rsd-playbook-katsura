@@ -1,0 +1,387 @@
+/* Scoped under .plo for the pattern library: every rule only applies inside an original-build demo. */
+.plo .rebuild-tower {
+  --rt-text: #222;
+  --rt-muted: #68615b;
+  --rt-orange: #ff6a00;
+  --rt-red: #d84512;
+  --rt-yellow: #f6b515;
+  --rt-cream: #ead0a2;
+  --rt-grey: #c8c6c1;
+
+  padding: 8px 0 0;
+  background: transparent;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--rt-text);
+}
+
+.plo .rebuild-tower * { box-sizing: border-box; }
+
+.plo .rebuild-tower__scene {
+  position: relative;
+  width: 100%;
+  min-height: 560px;
+  overflow-x: clip;
+  overflow-y: visible;
+  background: transparent;
+  isolation: isolate;
+}
+
+.plo .rebuild-tower__floor {
+  position: absolute;
+  left: 3%;
+  right: 3%;
+  top: min(480px, calc(100% - 60px));
+  height: 1px;
+  background: rgba(80, 70, 60, 0.13);
+  pointer-events: none;
+}
+
+.plo .rebuild-tower__brick {
+  position: absolute;
+  height: 46px;
+  border-radius: 4px 4px 7px 7px;
+  box-shadow:
+    0 14px 23px rgba(66, 49, 35, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    inset 0 -5px 0 rgba(0, 0, 0, 0.07);
+}
+.plo .rebuild-tower__brick::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(0,0,0,0.05), transparent 16%, transparent 78%, rgba(255,255,255,0.13));
+  pointer-events: none;
+}
+.plo .rebuild-tower__brick::after {
+  content: '';
+  position: absolute;
+  left: 9%;
+  right: 9%;
+  bottom: -10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(55, 43, 33, 0.14);
+  filter: blur(7px);
+  z-index: -1;
+}
+
+.plo .rebuild-tower__brick--fixed {
+  pointer-events: none;
+  user-select: none;
+}
+
+.plo .rebuild-tower__brick--loose {
+  padding: 0;
+  border: 0;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  outline: none;
+  transition:
+    left 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.08),
+    top 0.68s cubic-bezier(0.28, 1.2, 0.42, 1),
+    transform 0.22s ease;
+}
+.plo .rebuild-tower__brick--loose:active { cursor: grabbing; }
+.plo .rebuild-tower__brick--dragging {
+  transition: none;
+  z-index: 100 !important;
+  transform: scale(1.025);
+}
+
+.plo .rebuild-tower__brick--orange { background: var(--rt-orange); }
+.plo .rebuild-tower__brick--red { background: var(--rt-red); }
+.plo .rebuild-tower__brick--yellow { background: var(--rt-yellow); }
+.plo .rebuild-tower__brick--cream { background: var(--rt-cream); }
+.plo .rebuild-tower__brick--grey { background: var(--rt-grey); }
+
+.plo .rebuild-tower__studs {
+  position: absolute;
+  left: 7px;
+  right: 7px;
+  top: -8px;
+  display: flex;
+  justify-content: space-around;
+  pointer-events: none;
+}
+.plo .rebuild-tower__studs i {
+  width: 23px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 2px 3px rgba(255, 255, 255, 0.27),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.12),
+    0 2px 2px rgba(0, 0, 0, 0.08);
+}
+.plo .rebuild-tower__brick--orange .rebuild-tower__studs i { background: #ff7618; }
+.plo .rebuild-tower__brick--red .rebuild-tower__studs i { background: #e45321; }
+.plo .rebuild-tower__brick--yellow .rebuild-tower__studs i { background: #ffc129; }
+.plo .rebuild-tower__brick--cream .rebuild-tower__studs i { background: #f0dbb7; }
+.plo .rebuild-tower__brick--grey .rebuild-tower__studs i { background: #d3d1cc; }
+
+/* Elegant fade-in FYI — richer content, still no chrome. Top-right corner. */
+.plo .rebuild-tower__hint {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  z-index: 120;
+  width: min(280px, 45%);
+  opacity: 0;
+  transform: translateX(6px);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+  pointer-events: none;
+}
+.plo .rebuild-tower__hint--show {
+  opacity: 1;
+  transform: none;
+}
+
+.plo .rebuild-tower__hint-title {
+  margin: 0 0 10px;
+  color: var(--rt-orange);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.plo .rebuild-tower__hint-summary {
+  margin: 0;
+  color: var(--rt-text);
+  font-size: 20px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  max-width: 15ch;
+}
+
+.plo .rebuild-tower__hint-sub {
+  margin: 16px 0 6px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(33, 31, 28, 0.09);
+  color: var(--rt-orange);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.plo .rebuild-tower__hint-why {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.plo .rebuild-tower__hint-why li {
+  position: relative;
+  margin: 6px 0;
+  padding-left: 18px;
+  color: var(--rt-muted);
+  font-size: 13px;
+  line-height: 1.35;
+}
+.plo .rebuild-tower__hint-why li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--rt-orange);
+  font-weight: 800;
+}
+
+.plo .rebuild-tower__hint-tip {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 106, 0, 0.08);
+  color: #5e5247;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.plo .rebuild-tower__hint-tip strong {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--rt-orange);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.plo .rebuild-tower__reset {
+  position: absolute;
+  left: 18px;
+  bottom: 8px;
+  z-index: 110;
+  padding: 7px 12px;
+  border: 1px solid rgba(35, 31, 27, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--rt-text);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  box-shadow: 0 7px 20px rgba(55, 45, 37, 0.07);
+}
+
+/* Success message — same top-right slot and format as the explainer hint. */
+.plo .rebuild-tower__success {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  z-index: 140;
+  width: min(280px, 45%);
+  opacity: 0;
+  transform: translateX(6px);
+  transition: opacity 0.34s ease, transform 0.34s ease;
+  pointer-events: none;
+}
+.plo .rebuild-tower__success--show {
+  opacity: 1;
+  transform: none;
+}
+
+.plo .rebuild-tower__success-title {
+  margin: 0 0 10px;
+  color: var(--rt-orange);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.plo .rebuild-tower__success-title span {
+  margin-left: 6px;
+  font-size: 14px;
+}
+
+.plo .rebuild-tower__success-summary {
+  margin: 0;
+  color: var(--rt-text);
+  font-size: 20px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  max-width: 18ch;
+}
+
+.plo .rebuild-tower__halo {
+  position: absolute;
+  left: 50px;
+  top: 60px;
+  width: 280px;
+  height: 420px;
+  border: 2px solid rgba(255, 106, 0, 0.28);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+.plo .rebuild-tower__halo--go {
+  animation: plo-rebuild-tower-halo 1.05s ease-out;
+}
+@keyframes plo-rebuild-tower-halo {
+  0% { opacity: 0; transform: scale(0.86); }
+  32% { opacity: 0.35; }
+  100% { opacity: 0; transform: scale(1.24); }
+}
+
+.plo .rebuild-tower__snap {
+  position: absolute;
+  height: 46px;
+  border: 2px dashed rgba(255, 106, 0, 0.26);
+  border-radius: 6px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 7;
+}
+.plo .rebuild-tower__snap--show { opacity: 1; }
+
+/* ── Completion celebration ────────────────────────────────────────────── */
+
+/* Cascading brick pulse — bottom to top. Each brick reads its --rt-layer
+   custom property and staggers its animation-delay from that. */
+.plo .rebuild-tower[data-celebrating="true"] .rebuild-tower__brick {
+  animation: plo-rebuild-tower-cascade 780ms cubic-bezier(0.2, 1.5, 0.35, 1) both;
+  animation-delay: calc(var(--rt-layer, 0) * 70ms);
+}
+
+@keyframes plo-rebuild-tower-cascade {
+  0%   { transform: translateY(0) scale(1); filter: brightness(1); }
+  30%  { transform: translateY(-10px) scale(1.06); filter: brightness(1.28) saturate(1.2); }
+  55%  { transform: translateY(-2px) scale(1.02); filter: brightness(1.14) saturate(1.1); }
+  100% { transform: translateY(0) scale(1); filter: brightness(1); }
+}
+
+/* Sparkles that pop outward from the tower centre. */
+.plo .rebuild-tower__sparkles {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 130;
+}
+.plo .rebuild-tower__sparkles span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 999px;
+  background: var(--rt-orange);
+  box-shadow: 0 0 12px rgba(255, 106, 0, 0.65);
+  opacity: 0;
+  transform: translate(0, 0) scale(0.6);
+}
+.plo .rebuild-tower__sparkles--go span {
+  animation: plo-rebuild-tower-sparkle 1200ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc((var(--i, 0) % 12) * 30ms + 300ms);
+}
+.plo .rebuild-tower__sparkles--go span:nth-child(6n+1) { background: var(--rt-orange); }
+.plo .rebuild-tower__sparkles--go span:nth-child(6n+2) { background: var(--rt-yellow); }
+.plo .rebuild-tower__sparkles--go span:nth-child(6n+3) { background: var(--rt-red); }
+.plo .rebuild-tower__sparkles--go span:nth-child(6n+4) { background: var(--rt-cream); }
+.plo .rebuild-tower__sparkles--go span:nth-child(6n+5) { background: var(--rt-orange); }
+.plo .rebuild-tower__sparkles--go span:nth-child(6n+6) { background: var(--rt-yellow); }
+
+/* Each sparkle flies to its own angle. The custom property --i (0..11) is
+   set inline; we use it here to pick a direction across a circle. */
+.plo .rebuild-tower__sparkles--go span:nth-child(1)  { --dx:  120px; --dy: -180px; }
+.plo .rebuild-tower__sparkles--go span:nth-child(2)  { --dx:  220px; --dy:  -60px; }
+.plo .rebuild-tower__sparkles--go span:nth-child(3)  { --dx:  180px; --dy:  120px; }
+.plo .rebuild-tower__sparkles--go span:nth-child(4)  { --dx:   40px; --dy:  220px; }
+.plo .rebuild-tower__sparkles--go span:nth-child(5)  { --dx: -120px; --dy:  180px; }
+.plo .rebuild-tower__sparkles--go span:nth-child(6)  { --dx: -220px; --dy:   40px; }
+.plo .rebuild-tower__sparkles--go span:nth-child(7)  { --dx: -180px; --dy: -120px; }
+.plo .rebuild-tower__sparkles--go span:nth-child(8)  { --dx:  -50px; --dy: -220px; }
+.plo .rebuild-tower__sparkles--go span:nth-child(9)  { --dx:   80px; --dy: -240px; }
+.plo .rebuild-tower__sparkles--go span:nth-child(10) { --dx:  260px; --dy:   40px; }
+.plo .rebuild-tower__sparkles--go span:nth-child(11) { --dx:   90px; --dy:  240px; }
+.plo .rebuild-tower__sparkles--go span:nth-child(12) { --dx: -160px; --dy:  -30px; }
+
+@keyframes plo-rebuild-tower-sparkle {
+  0%   { opacity: 0; transform: translate(0, 0) scale(0.5); }
+  20%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--dx, 100px), var(--dy, -100px)) scale(0.3); }
+}
+
+@media (max-width: 760px) {
+  .plo .rebuild-tower__scene { min-height: 620px; }
+  .plo .rebuild-tower__hint {
+    top: 8px;
+    right: 14px;
+    width: min(220px, 55%);
+  }
+  .plo .rebuild-tower__success {
+    max-width: calc(100% - 28px);
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plo .rebuild-tower__brick--loose { transition: none; }
+  .plo .rebuild-tower[data-celebrating="true"] .rebuild-tower__brick { animation: none; }
+  .plo .rebuild-tower__sparkles--go span { animation: none; }
+  .plo .rebuild-tower__halo--go { animation: none; }
+}

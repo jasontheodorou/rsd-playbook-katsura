@@ -1,0 +1,116 @@
+/* The few wrapper rules the original build's demos relied on, from its Pathway1.css, Layouts.css
+   and patterns-library/patterns.css. Scoped under .plo so they only apply inside an original demo. */
+
+.plo {
+  --plo-muted: #6e6a65;
+  /* The original pathway's spacing tokens (Pathway1.css), which the ported styles read. */
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-7: 28px;
+  --sp-8: 32px;
+  --sp-12: 48px;
+  --sp-14: 56px;
+  --sp-16: 64px;
+  --sp-20: 80px;
+  --w-body: 800px;
+  --w-photo: 800px;
+  --w-panel: 720px;
+  color: #111;
+  font-family: 'Open Sans', -apple-system, 'Segoe UI', sans-serif;
+}
+
+.plo .ly-panel__eyebrow {
+  display: block;
+  font-weight: 700;
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #ec671b;
+  margin-bottom: 16px;
+}
+
+/* The participation model sat on the page's cream ground with no card round it. */
+.plo .p1v2__participation .ly-panel__eyebrow {
+  margin-bottom: 10px;
+}
+
+.plo .p1v2__participation-lede {
+  margin: 0 0 clamp(0.75rem, 1.6vw, 1.25rem);
+  max-width: 52ch;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: #6e6a65;
+}
+
+.plo .p1v2__participation .spw-strip__inner {
+  padding: clamp(1rem, 2.2vw, 1.375rem) 0 0;
+  background: none;
+  border: 0;
+  border-top: 2px solid currentColor;
+  border-radius: 0;
+}
+
+.plo .p1v2__participation .spw-strip__title {
+  font-size: clamp(1.0625rem, 1.6vw, 1.1875rem);
+  color: #1f1f23;
+}
+
+.plo .p1v2__participation .spw-strip__body {
+  max-width: 64ch;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #3a3a3e;
+}
+
+/* Demo helpers from the original library. */
+.plo.pl-demo-column--wide {
+  width: 900px;
+}
+
+.plo.pl-centre {
+  display: flex;
+  justify-content: center;
+}
+
+.plo .pl-demo-hint,
+.plo .pl-demo-label {
+  margin: 0 0 12px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--plo-muted);
+}
+
+.plo .pl-demo-label {
+  margin-top: 30px;
+}
+
+.plo .pl-demo-label:first-child {
+  margin-top: 0;
+}
+
+/* Scroll-driven patterns need a box of their own to scroll within. */
+.plo .pl-scrollbox {
+  position: relative;
+  height: 440px;
+  overflow-y: auto;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.plo .pl-scrollbox__spacer {
+  height: 330px;
+}
+
+/* Collapse a demo's leading and trailing margins; the spacing between its parts is the pattern's. */
+.plo > :first-child {
+  margin-top: 0;
+}
+
+.plo > :last-child {
+  margin-bottom: 0;
+}

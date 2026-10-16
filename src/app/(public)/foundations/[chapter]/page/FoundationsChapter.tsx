@@ -127,7 +127,7 @@ export function FoundationsChapter({
 /** Only the page's first sticky-note stack carries the prompt and pulse. */
 const FAN_PROMPT = 'Expand the sticky notes'
 
-function BlockView({ block, firstFan = false }: { block: Block; firstFan?: boolean }) {
+export function BlockView({ block, firstFan = false }: { block: Block; firstFan?: boolean }) {
   switch (block.kind) {
     case 'text':
       return (
