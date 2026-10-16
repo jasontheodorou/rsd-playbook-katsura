@@ -31,8 +31,7 @@ export function PatternsIndex() {
           <span className="pl-stop" aria-hidden="true" />
         </h1>
         <p className="pl-lede">
-          The graphical and interactive patterns the Playbook is built from. Each one is live, using the same
-          component and the same words as its page.
+          Every visual and interactive pattern in the Playbook.
         </p>
       </header>
 
