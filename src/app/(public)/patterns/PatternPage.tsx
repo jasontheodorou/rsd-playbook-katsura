@@ -7,15 +7,15 @@ import { CATEGORY_LABEL, findPattern, SOURCES, STATUS_LABEL } from './registry'
 import type { LibraryPattern } from './types'
 
 const TRIGGER_LABEL: Record<LibraryPattern['trigger'], string> = {
-  mount: 'Shows as the page loads',
-  inView: 'Plays when scrolled into view',
-  scroll: 'Moves with the scroll position',
-  press: 'Waits for the reader to choose',
+  mount: 'It shows when the page loads',
+  inView: 'It plays when you scroll to it',
+  scroll: 'It moves as you scroll',
+  press: 'It waits for you to use it',
 }
 
 /**
  * One pattern: the live pattern on a wide canvas with a "Play again" control, then what it does,
- * where it is used, how it behaves, and the developer's details folded away.
+ * where it is used and how it behaves.
  */
 export function PatternPage({ id }: { id: string }) {
   const pattern = findPattern(id)
@@ -112,7 +112,7 @@ export function PatternPage({ id }: { id: string }) {
               ))}
             </ul>
           ) : (
-            <p className="pl-prose pl-prose--quiet">Nowhere now. It is built and working, but no page uses it.</p>
+            <p className="pl-prose pl-prose--quiet">Not used on any page.</p>
           )}
         </section>
 
@@ -122,45 +122,17 @@ export function PatternPage({ id }: { id: string }) {
             <li>{TRIGGER_LABEL[pattern.trigger]}</li>
             <li>
               {pattern.accessibility.reducedMotion === 'supported'
-                ? 'With reduced motion on, it shows its finished state and nothing moves'
+                ? 'If you turn off animation on your device, it stays still'
                 : pattern.accessibility.reducedMotion === 'partial'
-                  ? 'With reduced motion on, it reads fully, but some movement still runs'
-                  : 'It does not respond to reduced motion'}
+                  ? 'If you turn off animation on your device, some parts still move'
+                  : 'It still moves if you turn off animation on your device'}
             </li>
-            {pattern.accessibility.keyboard === true && <li>It can be used with a keyboard</li>}
-            {pattern.accessibility.keyboard === false && <li>It needs a mouse or touch, and cannot be used with a keyboard</li>}
-            {pattern.accessibility.autoplay && <li>It moves without being asked, until the reader first uses it</li>}
+            {pattern.accessibility.keyboard === true && <li>You can use it with a keyboard</li>}
+            {pattern.accessibility.keyboard === false && <li>You need a mouse or touch screen to use it</li>}
+            {pattern.accessibility.autoplay && <li>It moves on its own until you first use it</li>}
           </ul>
         </section>
 
-        <section className="pl-section">
-          <details className="pl-fold">
-            <summary className="pl-fold__summary">
-              Developer details
-              <span className="pl-fold__count">
-                {pattern.files.length} {pattern.files.length === 1 ? 'file' : 'files'}
-              </span>
-            </summary>
-            <dl className="pl-dl">
-              <dt>Built with</dt>
-              <dd>{pattern.builtWith.join(', ')}</dd>
-              <dt>Weight</dt>
-              <dd>{pattern.weight}</dd>
-              <dt>Packages</dt>
-              <dd>{pattern.packages.length ? pattern.packages.join(', ') : 'None'}</dd>
-              <dt>Files</dt>
-              <dd>
-                <ul className="pl-files">
-                  {pattern.files.map((f) => (
-                    <li key={f}>
-                      <code>{f}</code>
-                    </li>
-                  ))}
-                </ul>
-              </dd>
-            </dl>
-          </details>
-        </section>
 
         {pattern.alsoConsidered && pattern.alsoConsidered.length > 0 && (
           <section className="pl-section">
@@ -170,7 +142,7 @@ export function PatternPage({ id }: { id: string }) {
                 <span className="pl-fold__count">{pattern.alsoConsidered.length} not used</span>
               </summary>
               <p className="pl-prose pl-prose--quiet">
-                Built while this pattern was designed, and set aside. Kept as a record.
+                Other versions tried while this one was designed.
               </p>
               {pattern.alsoConsidered.map((alt) => {
                 const AltDemo = alt.demo

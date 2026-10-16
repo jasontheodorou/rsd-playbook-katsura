@@ -21,11 +21,10 @@ export function WherePage() {
     <div className="pl-page">
       <header className="pl-head">
         <h1 className="pl-title">
-          Where they are used
-          <span className="pl-stop" aria-hidden="true" />
+          Where they are <span className="pl-title__end">used<span className="pl-stop" aria-hidden="true" /></span>
         </h1>
         <p className="pl-lede">
-          Each page of the Playbook, in reading order, with the patterns that build it.
+          Each page of the Playbook in order, with the patterns it uses.
         </p>
       </header>
 
@@ -73,7 +72,7 @@ export function WherePage() {
             <h2 className="pl-group__title" id="pl-where-u">
               Waiting for a page
             </h2>
-            <p className="pl-group__note">Built and working, and not on any page above.</p>
+            <p className="pl-group__note">Not used on any page yet.</p>
           </div>
           <Pills patterns={unplaced} />
         </section>

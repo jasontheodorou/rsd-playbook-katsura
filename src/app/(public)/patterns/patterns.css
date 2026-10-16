@@ -80,7 +80,7 @@
 
 .pl-page { margin-top: 64px; }
 
-.pl-head { max-width: 46rem; }
+.pl-head .pl-lede { max-width: 46rem; }
 
 .pl-title {
   margin: 0;
@@ -91,6 +91,8 @@
   color: var(--pl-ink);
   text-box: trim-both cap alphabetic;
 }
+
+.pl-title__end { white-space: nowrap; }
 
 .pl-stop {
   display: inline-block;
@@ -432,20 +434,6 @@
 
 .pl-fold[open] { padding-bottom: 24px; }
 
-.pl-dl {
-  display: grid;
-  grid-template-columns: 8rem 1fr;
-  gap: 8px 24px;
-  margin: 0;
-  font-size: 15px;
-}
-
-.pl-dl dt { font-weight: 700; color: var(--pl-ink); }
-.pl-dl dd { margin: 0; overflow-wrap: anywhere; }
-
-.pl-files { margin: 0; padding: 0; list-style: none; }
-.pl-files code { font-size: 13px; }
-
 .pl-alt { margin-top: 32px; }
 .pl-alt__name { margin: 0 0 8px; font-size: 17px; font-weight: 700; color: var(--pl-ink); }
 
@@ -584,5 +572,4 @@
 @media (max-width: 767px) {
   .pl-marks__row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .pl-canvas { padding-inline: 16px; min-height: 320px; }
-  .pl-dl { grid-template-columns: 1fr; }
 }

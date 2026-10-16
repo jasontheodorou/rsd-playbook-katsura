@@ -10,7 +10,7 @@ import type { LibraryPattern, Source } from './types'
 type Filter = Source | 'all'
 
 const GROUPS: { status: LibraryPattern['status']; title: string; note: string }[] = [
-  { status: 'live', title: 'In the Playbook', note: 'Rendering on a page now.' },
+  { status: 'live', title: 'In the Playbook', note: 'Used on a page now.' },
 ]
 
 /**
@@ -27,8 +27,7 @@ export function PatternsIndex() {
     <div className="pl-page">
       <header className="pl-head">
         <h1 className="pl-title">
-          Patterns
-          <span className="pl-stop" aria-hidden="true" />
+          <span className="pl-title__end">Patterns<span className="pl-stop" aria-hidden="true" /></span>
         </h1>
         <p className="pl-lede">
           Every visual and interactive pattern in the Playbook.

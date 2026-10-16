@@ -20,12 +20,12 @@ export const SOURCES: { id: Source; label: string; description: string }[] = [
   {
     id: 'foundations',
     label: 'Foundations',
-    description: 'Pathway one: the blocks every Foundations chapter is built from.',
+    description: 'Patterns used in the Foundations chapters.',
   },
   {
     id: 'practice',
     label: 'Shape your practice',
-    description: 'Pathway two: the boxes, exercises and photo formats inside a course card.',
+    description: 'Patterns used in the Shape your practice courses.',
   },
 ]
 
